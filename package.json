@@ -1,0 +1,52 @@
+{
+  "name": "skeleton-express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && tsc-alias",
+    "serve": "node ./dist/index.js",
+    "dev": "nodemon -e ts --ignore ./dist/* --exec \"tsc && tsc-alias && node ./dist/index.js\"",
+    "lint": "eslint src --ext .ts --fix"
+  },
+  "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.0",
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
+    "fs-extra": "^11.1.1",
+    "http-errors": "^2.0.0",
+    "http-terminator": "^3.2.0",
+    "inversify": "^6.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.8.0",
+    "pino": "^8.7.0",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.24.0",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1",
+    "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.14",
+    "@types/fs-extra": "^11.0.1",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/multer": "^1.4.7",
+    "@types/node": "^18.8.3",
+    "@typescript-eslint/eslint-plugin": "^5.59.5",
+    "@typescript-eslint/parser": "^5.59.5",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.20",
+    "pino-pretty": "^9.1.1",
+    "prettier": "^2.7.1",
+    "tsc-alias": "^1.8.6",
+    "typescript": "^4.8.4"
+  },
+  "license": "MIT"
+}
