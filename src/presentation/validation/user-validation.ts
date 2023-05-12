@@ -12,7 +12,7 @@ export const userCreateScheme = z.object({
     email: z.string().email(),
     password: z.string(),
     fullname: z.string(),
-    is_active: z
+    isActive: z
         .any()
         .refine(
             (val) => !(!val || val == "0" || val == "false" || val == ""),
@@ -35,7 +35,7 @@ export const userUpdateScheme = z.object({
     email: z.string().email(),
     password: z.string().nullish(),
     fullname: z.string(),
-    is_active: z.boolean(),
+    isActive: z.boolean(),
     avatar_path: z
         .any()
         .refine((file) => file?.length > 0, "Image is required.")

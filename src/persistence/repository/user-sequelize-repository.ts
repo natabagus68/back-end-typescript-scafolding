@@ -1,19 +1,73 @@
 import { UserRepository } from "@/domain/service/user-repository";
 import { User } from "@/infrastructure/database/models";
-import { User as EntityUser } from "@/domain/models/user";
+import { User as EntityUser, IUser } from "@/domain/models/user";
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
 import { injectable } from "inversify";
 import { sequelize } from "@/infrastructure/database/sequelize";
-import fs from "fs-extra";
-import { createId } from "@paralleldrive/cuid2";
+import { TableData } from "@/domain/models/table-data";
+import { TTableDataParam } from "@/domain/service/types";
+import { Op } from "sequelize";
 
 @injectable()
 export class UserSequelizeRepository implements UserRepository {
+    async findByEmail(email: string): Promise<EntityUser> {
+        const user = await User.findOne({
+            where: {
+                email,
+            },
+        });
+        if (!user) {
+            throw new AppError({
+                statusCode: HttpCode.NOT_FOUND,
+                description: "User with this email not found",
+            });
+        }
+        return EntityUser.create({
+            id: user.getDataValue("id"),
+            email: user.getDataValue("email"),
+            password: user.getDataValue("password"),
+            fullname: user.getDataValue("fullname"),
+            isActive: user.getDataValue("is_active"),
+            avatarPath: user.getDataValue("avatar_path"),
+            createdAt: user.getDataValue("created_at"),
+            updatedAt: user.getDataValue("updated_at"),
+            deletedAt: user.getDataValue("deleted_at"),
+        });
+    }
+    async tableData(param: TTableDataParam): Promise<TableData<IUser>> {
+        const users = await User.findAll({
+            where: {
+                fullname: {
+                    [Op.iLike]: `%${param.search}%`,
+                },
+            },
+            limit: param.limit,
+            offset:
+                (param.page || 1) > 1
+                    ? (param.limit || 10) * ((param.page || 1) - 1)
+                    : 0,
+        });
+        return TableData.create({
+            page: param.page || 1,
+            limit: param.limit || 10,
+            search: param.search || "",
+            data: users.map((item) => ({
+                id: item.id,
+                email: item.email,
+                password: item.password,
+                fullname: item.fullname,
+                isActive: item.is_active,
+                avatarPath: item.avatar_path,
+                createdAt: item.created_at,
+                updatedAt: item.updated_at,
+                deletedAt: item.deleted_at,
+            })),
+        });
+    }
     async findAll(): Promise<EntityUser[]> {
         const users = await User.findAll({
             attributes: ["id", "username", "email"],
         });
-
         return users.map((user) =>
             EntityUser.create({
                 id: user.id,

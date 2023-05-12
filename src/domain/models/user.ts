@@ -1,6 +1,5 @@
 import { File } from "buffer";
 import { Entity } from "./entity";
-import bcrypt from "bcrypt";
 
 export interface IUser {
     id?: string;
@@ -16,11 +15,8 @@ export interface IUser {
 
 export class User extends Entity<IUser> {
     private constructor(props: IUser) {
-        const { id, password, ...data } = props;
+        const { id, ...data } = props;
         super(data, id);
-        this.props.password = password
-            ? bcrypt.hashSync(password, 10)
-            : undefined;
     }
 
     public static create(props: IUser): User {

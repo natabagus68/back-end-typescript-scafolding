@@ -2,6 +2,7 @@ import { IUser, User } from "@/domain/models/user";
 import { UserRepository } from "@/domain/service/user-repository";
 import { TYPES } from "@/types";
 import { inject, injectable } from "inversify";
+import bcrypt from "bcrypt";
 
 @injectable()
 export class UserService {
@@ -24,7 +25,7 @@ export class UserService {
         const user = await this._repository.create(
             User.create({
                 email: _user.email,
-                password: _user.password,
+                password: bcrypt.hashSync(_user.password || "", 10),
                 fullname: _user.fullname,
                 isActive: _user.isActive,
                 avatarPath: _user.avatarPath,

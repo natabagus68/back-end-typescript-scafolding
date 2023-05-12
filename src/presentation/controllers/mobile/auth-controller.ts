@@ -1,5 +1,5 @@
-import { MobileLoginDto } from "@/dto/mobile/auth-dto";
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
+import { AuthRequest } from "@/presentation/utils/types/jwt-request";
 import { mobileLoginSchema } from "@/presentation/validation/mobile/auth-validation";
 import { MobileAuthService } from "@/services/mobile/auth-service";
 import { TYPES } from "@/types";
@@ -21,14 +21,20 @@ export class MobileAuthController {
                 data: loginSchema.error.flatten().fieldErrors,
             });
         }
-        const mobileLoginDto: MobileLoginDto = {
-            email: loginSchema.data.email,
-            password: loginSchema.data.password,
-        };
-        const auth = await this._mobileService.login(mobileLoginDto);
+        const auth = await this._mobileService.login(loginSchema.data);
         return res.json({
             message: "success",
             data: auth,
+        });
+    }
+
+    public async me(req: AuthRequest, res: Response): Promise<Response> {
+        const auth = await this._mobileService.me(
+            <string>req.get("Authorization")?.split(" ")?.[1]
+        );
+        return res.json({
+            message: "success",
+            data: auth.user,
         });
     }
 }

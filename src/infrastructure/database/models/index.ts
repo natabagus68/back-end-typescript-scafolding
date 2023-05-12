@@ -1,5 +1,7 @@
 // Core Sequelize Model Import
 
+import { Customer } from "./customer";
+import { GeneralData } from "./general-data";
 import { User } from "./user-sequelize";
 
 // Apps Sequelize Model Import
@@ -8,6 +10,8 @@ import { User } from "./user-sequelize";
 User.sync({ alter: { drop: false } });
 
 // Apps Model Synchronisation
+GeneralData.sync({ alter: { drop: false } });
+Customer.sync({ alter: { drop: false } });
 
 // Core Model Assosiation
 // User.belongsToMany(Role, {

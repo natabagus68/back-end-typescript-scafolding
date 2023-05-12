@@ -40,7 +40,7 @@ export default class UserController {
             email: parseBody.data.email,
             password: parseBody.data.password,
             fullname: parseBody.data.fullname,
-            isActive: parseBody.data.is_active,
+            isActive: parseBody.data.isActive,
             avatarPath: parseBody.data.avatar_path,
         });
         return res.status(200).send({ message: "success", data: createdUser });
@@ -59,7 +59,7 @@ export default class UserController {
             email: parseBody.data.email,
             password: parseBody.data.password,
             fullname: parseBody.data.fullname,
-            isActive: parseBody.data.is_active,
+            isActive: parseBody.data.isActive,
             avatarPath: parseBody.data.avatar_path,
         });
         return res.status(200).send({ message: "success", data: updatedUser });

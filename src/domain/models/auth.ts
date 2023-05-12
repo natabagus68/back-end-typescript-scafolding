@@ -1,36 +1,41 @@
 import { JWT_SECRET } from "@/libs/utils";
-import { Entity } from "./entity";
 import { IUser, User } from "./user";
 import jwt from "jsonwebtoken";
+import { AppError, HttpCode } from "@/libs/exceptions/app-error";
 
 export interface IAuth {
-    id?: string;
     token?: string;
     user: IUser;
 }
 
-export class Auth extends Entity<IAuth> {
+export class Auth {
+    private props: IAuth;
     private constructor(props: IAuth) {
-        const { id, token, ...data } = props;
-        super(data, id);
-        this.props.token = token || jwt.sign(data.user, JWT_SECRET);
+        this.props = {
+            ...props,
+            token: props.token || jwt.sign(props.user, JWT_SECRET),
+        };
     }
-
     public static create(props: IAuth): Auth {
         const instance = new Auth(props);
         return instance;
     }
-
+    public static createFromToken(token: string): Auth {
+        try {
+            const parsedAuth = <IUser>jwt.verify(token, JWT_SECRET);
+            return new Auth({ user: parsedAuth, token: token });
+        } catch (e) {
+            throw new AppError({
+                statusCode: HttpCode.UNAUTHORIZED,
+                description: "Unauthorized",
+            });
+        }
+    }
     public unmarshal(): IAuth {
         return {
-            id: this._id,
             token: this.token,
             user: this.user.unmarshal(),
         };
-    }
-
-    get id(): string {
-        return this._id;
     }
     get token(): string {
         return this.props.token || "";

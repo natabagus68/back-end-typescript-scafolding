@@ -19,5 +19,13 @@ export class MobileAuthRoute {
                 )
             )
         );
+        router.get(
+            "/mobile/me",
+            asyncWrap(
+                this.MobileAuthControllerInstance.me.bind(
+                    this.MobileAuthControllerInstance
+                )
+            )
+        );
     }
 }
