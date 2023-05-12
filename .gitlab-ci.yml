@@ -7,6 +7,6 @@ deploy_development:
     SECURE_FILES_DOWNLOAD_PATH: './'
   script:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
-    - ssh -i ".secure_files" $SSH_USERNAME@$SSH_HOST:$SSH_PORT "cd ~/apps/nig-backend && git checkout main && git pull origin main && exit"
+    - ssh -i "admin.pem" $SSH_USERNAME@$SSH_HOST:$SSH_PORT "cd ~/apps/nig-backend && git checkout main && git pull origin main && exit"
   only:
     - main
