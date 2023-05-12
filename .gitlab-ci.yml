@@ -22,20 +22,11 @@ cache:
   paths:
     - node_modules/
 
-installing_depedencies:
+async_test:
   script:
     - yarn
-
-eslint_fix:
-  script:
     - yarn lint
-
-build:
-  script:
     - yarn build
-
-test:
-  script:
     - yarn serve
     
 deploy:
