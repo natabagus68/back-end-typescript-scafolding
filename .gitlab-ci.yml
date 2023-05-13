@@ -1,4 +1,4 @@
-image: alpine:latest
+image: ubuntu
 pages:
   stage: deploy
   variables:
@@ -7,18 +7,15 @@ pages:
     - export SSH_USERNAME=$SSH_USERNAME
     - export SSH_HOST=$SSH_HOST
     - export SSH_PORT=$SSH_PORT
-  script:
-    - apk add bash curl
-    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
-    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
+    - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+
+  script:
     - ssh -i "admin.pem" $SSH_USERNAME@$SSH_HOST:$SSH_PORT "cd ~/apps/nig-backend && git checkout main && git pull origin main && exit"
-  artifacts:
-    paths:
-    - public
   only:
     - main
