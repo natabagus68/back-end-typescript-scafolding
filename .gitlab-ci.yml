@@ -13,6 +13,13 @@ deploy_development:
 
   script:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
+    - eval $(ssh-agent -s)
+    - cat admin.pem | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
     - ssh -i "admin.pem" $SSH_USERNAME@$SSH_HOST:$SSH_PORT "cd ~/apps/nig-backend && git checkout main && git pull origin main && exit"
   only:
     - main
