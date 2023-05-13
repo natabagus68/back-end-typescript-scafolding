@@ -14,9 +14,9 @@ pages:
     # - touch ~/.ssh/known_hosts
     - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts || echo "$SSH_HOST" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - chmod 400 ~/admin.pem
     - apk add curl bash
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    - chmod 400 ~/admin.pem
 
   script:
     - ssh -i "admin.pem" $SSH_USERNAME@$SSH_HOST "cd ~/apps/nig-backend && git checkout main && git pull origin main && exit"
