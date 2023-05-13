@@ -7,6 +7,7 @@ pages:
     - export SSH_USERNAME=$SSH_USERNAME
     - export SSH_HOST=$SSH_HOST
     - export SSH_PORT=$SSH_PORT
+    - apk add bash curl
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
     - eval $(ssh-agent -s)
