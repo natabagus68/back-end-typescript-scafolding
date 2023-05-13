@@ -7,13 +7,13 @@ pages:
     - export SSH_USERNAME=$SSH_USERNAME
     - export SSH_HOST=$SSH_HOST
     - export SSH_PORT=$SSH_PORT
+  script:
     - apk add bash curl
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )' 
     - eval $(ssh-agent -s)
     - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-  script:
     - ssh -i "admin.pem" $SSH_USERNAME@$SSH_HOST:$SSH_PORT "cd ~/apps/nig-backend && git checkout main && git pull origin main && exit"
   artifacts:
     paths:
