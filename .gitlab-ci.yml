@@ -2,7 +2,7 @@ image: alpine
 pages:
   stage: deploy
   variables:
-    SECURE_FILES_DOWNLOAD_PATH: './'
+    SECURE_FILES_DOWNLOAD_PATH: '~/'
   before_script:
     - export SSH_USERNAME=$SSH_USERNAME
     - export SSH_HOST=$SSH_HOST
@@ -14,7 +14,7 @@ pages:
     # - touch ~/.ssh/known_hosts
     - ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts || echo "$SSH_HOST" >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - chmod 400 admin.pem
+    - chmod 400 ~/admin.pem
     - apk add curl bash
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
 
