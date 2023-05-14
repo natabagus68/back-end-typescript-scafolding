@@ -3,9 +3,6 @@ deploy_to_dev:
   variables:
     SECURE_FILES_DOWNLOAD_PATH: './'
   before_script:
-    # - export SSH_USERNAME=$SSH_USERNAME
-    # - export SSH_HOST=$SSH_HOST
-    # - export SSH_PORT=$SSH_PORT
     - 'which ssh-agent || ( apk add --no-cache openssh-client )'
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
@@ -17,6 +14,10 @@ deploy_to_dev:
   script:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - chmod 400 ./admin.pem || echo "Gagal Edit Permission admin.pem"
-    - ssh -i "./admin.pem" $SSH_USERNAME@$SSH_HOST "cd ~/apps/nig-backend && git checkout main && git pull origin main && exit"
+    - ssh -i "./admin.pem" $SSH_USERNAME@$SSH_HOST "\
+        cd ~/apps/nig-backend && \
+        git checkout main && \
+        git pull origin main && \
+        exit"
   only:
     - main
