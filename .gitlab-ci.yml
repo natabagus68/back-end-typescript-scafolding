@@ -14,10 +14,6 @@ deploy_to_dev:
   script:
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
     - chmod 400 ./admin.pem || echo "Gagal Edit Permission admin.pem"
-    - ssh -i "./admin.pem" $SSH_USERNAME@$SSH_HOST "\\
-        cd ~/apps/nig-backend && \\
-        git checkout main && \\
-        git pull origin main && \\
-        exit"
+    - ssh -i "./admin.pem" $SSH_USERNAME@$SSH_HOST "cd ~/apps/nig-backend && git checkout main && git pull origin main && exit"
   only:
     - main
