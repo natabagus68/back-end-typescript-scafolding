@@ -1,5 +1,7 @@
 #! /usr/bin/bash
-
+echo "Pull from Repository"
+sudo git checkout main 
+sudo git pull origin main || (sudo git stash && sudo git pull origin main)
 echo "Deploying..."
 echo "Check Node.JS"
 node --version || "echo \"Error: Node JS Not Found\" && exit"
