@@ -10,7 +10,7 @@ yarn
 echo "Build"
 yarn build
 echo "Restart Supervisor"
-supervisorctl restart nig-backend
+supervisorctl restart nig_inspection
 echo "Testing"
 curl http://localhost/api/
 echo "Finish"
