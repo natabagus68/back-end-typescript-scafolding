@@ -1,5 +1,5 @@
 #! /usr/bin/bash
-echo "Pull from Repository"
+echo "Pull from Repository "
 sudo git checkout main 
 sudo git pull origin main || (sudo git stash && sudo git pull origin main)
 echo "Deploying..."
