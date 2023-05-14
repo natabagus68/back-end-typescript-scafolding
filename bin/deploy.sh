@@ -11,8 +11,8 @@ echo "Installing depedencies"
 yarn
 echo "Build"
 yarn build
-echo "Restart Supervisor"
-supervisorctl restart nig_inspection
+echo "Restart PM2"
+pm2 restart all
 echo "Wait 10 Sec for live server testing"
 sleep 10
 curl http://localhost/api/
