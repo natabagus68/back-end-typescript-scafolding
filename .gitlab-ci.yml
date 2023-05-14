@@ -1,6 +1,5 @@
 image: alpine
-pages:
-  stage: deploy
+deploy_to_dev:
   variables:
     SECURE_FILES_DOWNLOAD_PATH: './'
   before_script:
