@@ -2,7 +2,7 @@ image: alpine
 pages:
   stage: deploy
   variables:
-    SECURE_FILES_DOWNLOAD_PATH: '/root/'
+    SECURE_FILES_DOWNLOAD_PATH: '~/'
   before_script:
     - export SSH_USERNAME=$SSH_USERNAME
     - export SSH_HOST=$SSH_HOST
@@ -16,9 +16,10 @@ pages:
     - chmod 644 ~/.ssh/known_hosts
     - apk add curl bash
     - curl --silent "https://gitlab.com/gitlab-org/incubation-engineering/mobile-devops/download-secure-files/-/raw/main/installer" | bash
+    - ls -lah ~/
 
   script:
-    - chmod 400 /root/admin.pem || chmod 400 ~/admin.pem
+    # - chmod 400 /root/admin.pem || chmod 400 ~/admin.pem
     - ssh -i "admin.pem" $SSH_USERNAME@$SSH_HOST "cd ~/apps/nig-backend && git checkout main && git pull origin main && exit"
   only:
     - main
