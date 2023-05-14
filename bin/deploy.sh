@@ -11,7 +11,8 @@ echo "Build"
 yarn build
 echo "Restart Supervisor"
 supervisorctl restart nig_inspection
-echo "Testing"
+echo "Wait 10 Sec for live server testing"
+sleep 10
 curl http://localhost/api/
 echo "Finish"
 exit
