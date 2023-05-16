@@ -41,7 +41,7 @@ export class ResumeCheck extends Entity<IResumeCheck> {
     get checkDate(): Date {
         return this.props.checkDate;
     }
-    get photoPath(): string | File {
+    get photoPath(): string | IMulterFile {
         return this.props.photoPath;
     }
     get notes(): string {
