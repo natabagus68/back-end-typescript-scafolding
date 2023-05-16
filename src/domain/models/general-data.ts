@@ -1,15 +1,15 @@
 import { Entity } from "./entity";
 
 export enum EGeneralDataLastStep {
-    GENERAL_DATA,
-    MACHINE_DATA,
-    INSPECTION_FORM,
-    MACHINE_CHECK,
-    ACCURACY_CHECK,
-    CHECK_LOAD_TONNAGE,
-    RESUME_CHECK,
-    REVIEW,
-    SUBMITTED,
+    GENERAL_DATA = "GENERAL_DATA",
+    MACHINE_DATA = "MACHINE_DATA",
+    INSPECTION_FORM = "INSPECTION_FORM",
+    MACHINE_CHECK = "MACHINE_CHECK",
+    ACCURACY_CHECK = "ACCURACY_CHECK",
+    CHECK_LOAD_TONNAGE = "CHECK_LOAD_TONNAGE",
+    RESUME_CHECK = "RESUME_CHECK",
+    REVIEW = "REVIEW",
+    SUBMITTED = "SUBMITTED",
 }
 
 export interface IGeneralData {
@@ -77,6 +77,9 @@ export class GeneralData extends Entity<IGeneralData> {
     }
     get lastStep(): EGeneralDataLastStep | string {
         return this.props.lastStep;
+    }
+    set lastStep(val: EGeneralDataLastStep | string) {
+        this.props.lastStep = val;
     }
     get submittedAt(): undefined | Date | null {
         return this.props.submittedAt;

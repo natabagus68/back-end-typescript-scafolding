@@ -10,7 +10,7 @@ export class MobileCustomerService {
         private _customerRepo: CustomerRepository
     ) {}
     async getOptionData(): Promise<ICustomerToOption[]> {
-        const customers = await this._customerRepo.get();
+        const customers = await this._customerRepo.findAll();
         return customers.map((item) => ({
             id: item.id || "",
             customerId: item.customerId || "",

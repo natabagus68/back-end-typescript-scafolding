@@ -81,13 +81,13 @@ export class Bootstrap {
 
     private setRoutes(): void {
         const router = express.Router();
+        this.app.use(APP_URL_PREFIX, router);
         router.get("/", (req, res, next) => {
             res.json({
                 message: "server is up boys",
             });
         });
         this.appRoutes.setRoutes(router);
-        this.app.use(APP_URL_PREFIX, router);
         this.app.get("*", (req, res) => {
             try {
                 fs.readFileSync(

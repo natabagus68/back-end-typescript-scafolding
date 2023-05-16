@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { File } from "buffer";
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -45,7 +46,8 @@ export const userUpdateScheme = z.object({
             ".jpg, .jpeg, .png and .webp file are accepted."
         )
         .nullable()
-        .nullish(),
+        .nullish()
+        .transform((val) => new File(val?.buffer, val.name)),
 });
 
 export const userRoleScheme = z.object({

@@ -1,5 +1,7 @@
 import { GeneralData } from "@/domain/models/general-data";
 
-export interface MobileGeneralDataRepository {
-    create(generalData: GeneralData): Promise<GeneralData>;
+export interface GeneralDataRepository {
+    store(generalData: GeneralData): Promise<GeneralData>;
+    findById(id:string):Promise<GeneralData>
+    update(generalData:GeneralData):Promise<GeneralData>;
 }

@@ -36,7 +36,7 @@ export default class UserController {
                 data: parseBody.error.flatten().fieldErrors,
             });
         }
-        const createdUser = await this._userService.create({
+        const createdUser = await this._userService.store({
             email: parseBody.data.email,
             password: parseBody.data.password,
             fullname: parseBody.data.fullname,
@@ -66,7 +66,7 @@ export default class UserController {
     }
 
     public async deleteUser(req: Request, res: Response): Promise<Response> {
-        const user = await this._userService.delete(req.params.id);
+        const user = await this._userService.destroy(req.params.id);
         return res.status(200).send(user);
     }
 }

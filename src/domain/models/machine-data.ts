@@ -1,4 +1,5 @@
 import { Entity } from "./entity";
+import { EGeneralDataLastStep } from "./general-data";
 
 export interface IMachineData {
     id?: string;

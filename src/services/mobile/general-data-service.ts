@@ -1,5 +1,6 @@
 import { GeneralData, IGeneralData } from "@/domain/models/general-data";
-import { MobileGeneralDataRepository } from "@/domain/service/general-data-repository";
+import { CustomerRepository } from "@/domain/service/customer-repository";
+import { GeneralDataRepository } from "@/domain/service/general-data-repository";
 import { TYPES } from "@/types";
 import { inject, injectable } from "inversify";
 
@@ -7,17 +8,20 @@ import { inject, injectable } from "inversify";
 export class MobileGeneralDataService {
     constructor(
         @inject(TYPES.GeneralDataRepository)
-        private _repository: MobileGeneralDataRepository
+        private _repository: GeneralDataRepository,
+        @inject(TYPES.CustomerRepository)
+        private _customerRepo: CustomerRepository
     ) {}
-    async create(generalData: IGeneralData): Promise<IGeneralData> {
+    async store(generalData: IGeneralData): Promise<IGeneralData> {
+        const customer = await this._customerRepo.findById(generalData.customerId);
         const data = GeneralData.create({
-            customerId: generalData.customerId,
+            customerId: customer.id,
             personInCharge: generalData.personInCharge,
             inspectionDate: generalData.inspectionDate,
             inspectorId: generalData.inspectorId,
             lastStep: generalData.lastStep,
         });
-        const created = await this._repository.create(data);
+        const created = await this._repository.store(data);
         return created.unmarshal();
     }
 }

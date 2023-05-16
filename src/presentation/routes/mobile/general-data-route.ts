@@ -21,7 +21,7 @@ export class MobileGeneralDataRoute {
                 this.MobileAuthMiddlewareInstance
             ),
             asyncWrap(
-                this.GeneralDataControllerInstance.create.bind(
+                this.GeneralDataControllerInstance.store.bind(
                     this.GeneralDataControllerInstance
                 )
             )

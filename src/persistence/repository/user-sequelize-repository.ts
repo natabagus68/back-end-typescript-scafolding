@@ -5,7 +5,7 @@ import { AppError, HttpCode } from "@/libs/exceptions/app-error";
 import { injectable } from "inversify";
 import { sequelize } from "@/infrastructure/database/sequelize";
 import { TableData } from "@/domain/models/table-data";
-import { TTableDataParam } from "@/domain/service/types";
+import { TDataTableParam } from "@/domain/service/types";
 import { Op } from "sequelize";
 
 @injectable()
@@ -34,7 +34,7 @@ export class UserSequelizeRepository implements UserRepository {
             deletedAt: user.getDataValue("deleted_at"),
         });
     }
-    async tableData(param: TTableDataParam): Promise<TableData<IUser>> {
+    async getDataTable(param: TDataTableParam): Promise<TableData<IUser>> {
         const users = await User.findAll({
             where: {
                 fullname: {
@@ -104,14 +104,9 @@ export class UserSequelizeRepository implements UserRepository {
         });
     }
 
-    async create(userDomain: EntityUser): Promise<EntityUser> {
+    async store(userDomain: EntityUser): Promise<EntityUser> {
         const transaction = await sequelize.transaction();
         try {
-            // const avatarNames =
-            //     typeof userDomain.avatarPath === "object"
-            //         ? userDomain.avatarPath.name.split(".")
-            //         : [];
-            // const avatarPath = `${userDomain.avatarPath}.${avatarNames[avatarNames.length - 1]}`;
             const user = await User.create(
                 {
                     id: userDomain.id,
@@ -119,7 +114,10 @@ export class UserSequelizeRepository implements UserRepository {
                     password: userDomain.password,
                     fullname: userDomain.fullname,
                     is_active: userDomain.isActive,
-                    avatar_path: "avatarName",
+                    avatar_path:
+                        typeof userDomain.avatarPath === "string"
+                            ? userDomain.avatarPath
+                            : "",
                 },
                 {
                     transaction,
@@ -171,7 +169,7 @@ export class UserSequelizeRepository implements UserRepository {
         });
     }
 
-    async delete(id: string): Promise<boolean> {
+    async destroy(id: string): Promise<boolean> {
         const user = await User.findByPk(id);
         if (!user) {
             throw new AppError({

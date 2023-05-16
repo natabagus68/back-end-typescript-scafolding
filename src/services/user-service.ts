@@ -3,6 +3,7 @@ import { UserRepository } from "@/domain/service/user-repository";
 import { TYPES } from "@/types";
 import { inject, injectable } from "inversify";
 import bcrypt from "bcrypt";
+import fs from "fs-extra";
 
 @injectable()
 export class UserService {
@@ -21,8 +22,12 @@ export class UserService {
         return user.unmarshal();
     }
 
-    public async create(_user: IUser): Promise<IUser> {
-        const user = await this._repository.create(
+    public async store(_user: IUser): Promise<IUser> {
+        if (typeof _user.avatarPath === "object") {
+            console.log("User", _user);
+            // fs.writeFileSync("./../../storage/user/", _user.avatarPath);
+        }
+        const user = await this._repository.store(
             User.create({
                 email: _user.email,
                 password: bcrypt.hashSync(_user.password || "", 10),
@@ -52,8 +57,8 @@ export class UserService {
         return user.unmarshal();
     }
 
-    public async delete(id: string): Promise<boolean> {
-        const user = await this._repository.delete(id);
+    public async destroy(id: string): Promise<boolean> {
+        const user = await this._repository.destroy(id);
         return user;
     }
 }

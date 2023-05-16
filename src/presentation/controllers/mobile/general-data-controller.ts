@@ -14,7 +14,7 @@ export class MobileGeneralDataController {
         private _generalDataService: MobileGeneralDataService
     ) {}
 
-    public async create(req: AuthRequest, res: Response): Promise<Response> {
+    public async store(req: AuthRequest, res: Response): Promise<Response> {
         const validatedData = generalDataCreateSchema.safeParse(req.body);
         if (!validatedData.success) {
             throw new AppError({
@@ -23,7 +23,7 @@ export class MobileGeneralDataController {
                 data: validatedData.error.flatten().fieldErrors,
             });
         }
-        const createdUser = await this._generalDataService.create({
+        const createdUser = await this._generalDataService.store({
             customerId: validatedData.data.customerId,
             personInCharge: validatedData.data.personInCharge,
             inspectionDate: validatedData.data.inspectionDate,
