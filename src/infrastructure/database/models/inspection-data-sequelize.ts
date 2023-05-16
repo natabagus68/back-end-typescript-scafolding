@@ -2,6 +2,7 @@ import {
     Association,
     CreationOptional,
     DataTypes,
+    HasManyRemoveAssociationMixin,
     InferAttributes,
     InferCreationAttributes,
     Model,
@@ -24,6 +25,7 @@ export class InspectionData extends Model<
     declare static associations: {
         items: Association<InspectionData, InspectionDataItem>;
     };
+    declare removeItems: HasManyRemoveAssociationMixin<InspectionDataItem, string>;
 }
 
 InspectionData.init(

@@ -3,9 +3,39 @@ import { InspectionDataRepository } from "@/domain/service/inspection-data-repos
 import { injectable } from "inversify";
 import { InspectionData as InspectionDataDB } from "@/infrastructure/database/models/inspection-data-sequelize";
 import { InspectionDataItem as InspectionDataItemDB } from "@/infrastructure/database/models/inspection-data-item-sequelize";
+import { Op } from "sequelize";
 
 @injectable()
 export class InspectionDataSequelizeRepository implements InspectionDataRepository {
+    async deleteByGeneralDataId(generalDataId: string): Promise<void> {
+        const inspectionDatum = await InspectionDataDB.findAll({
+            where: {
+                general_data_id: generalDataId,
+            },
+            include: [
+                {
+                    model: InspectionDataItemDB,
+                    as: "items",
+                },
+            ],
+        });
+        const inspectionDataIds = inspectionDatum.map((item) => item.id);
+        const inspectionDataItemIds = inspectionDatum.map((item) => item.items.map((i) => i.id)).flat(1);
+        InspectionDataDB.destroy({
+            where: {
+                id: {
+                    [Op.in]: inspectionDataIds,
+                },
+            },
+        });
+        InspectionDataItemDB.destroy({
+            where: {
+                id: {
+                    [Op.in]: inspectionDataItemIds,
+                },
+            },
+        });
+    }
     async store(param: InspectionData[]): Promise<InspectionData[]> {
         const created = await InspectionDataDB.bulkCreate(
             param.map((item) => ({

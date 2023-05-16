@@ -6,6 +6,7 @@ import { MobileGeneralDataRoute } from "./mobile/general-data-route";
 import { MobileCustomerRoute } from "./mobile/customer-route";
 import { MobileMachineDataRoute } from "./mobile/machine-data-route";
 import { MobileInspectionFormRoute } from "./mobile/inspection-form-route";
+import { MobileMachineCheckRoute } from "./mobile/machine-check-route";
 
 @injectable()
 export class Routes {
@@ -15,7 +16,8 @@ export class Routes {
         private mobileGeneralDataRoute: MobileGeneralDataRoute,
         private mobileCustomerRoute: MobileCustomerRoute,
         private mobileMachineDataRoute: MobileMachineDataRoute,
-        private mobileInspectionFormRoute: MobileInspectionFormRoute
+        private mobileInspectionFormRoute: MobileInspectionFormRoute,
+        private mobileMachineCheckRoute: MobileMachineCheckRoute
     ) {}
 
     public setRoutes(router: Router) {
@@ -25,5 +27,6 @@ export class Routes {
         this.mobileCustomerRoute.setRoutes(router);
         this.mobileMachineDataRoute.setRoutes(router);
         this.mobileInspectionFormRoute.setRoutes(router);
+        this.mobileMachineCheckRoute.setRoutes(router);
     }
 }

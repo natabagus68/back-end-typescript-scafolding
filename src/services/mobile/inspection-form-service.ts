@@ -19,6 +19,7 @@ export class MobileInspectionFormService {
 
     public async storeData(param: IInspectionData[]): Promise<IInspectionData[]> {
         const inspectionData = param.map((item) => InspectionData.create(item));
+        param[0] && (await this._inspectionDataRepo.deleteByGeneralDataId(param[0].generalDataId));
         const created = await this._inspectionDataRepo.store(inspectionData);
         return created.map((item) => item.unmarshal());
     }
