@@ -1,10 +1,11 @@
 import { File } from "buffer";
 import { Entity } from "./entity";
+import { IMulterFile } from "@/presentation/validation/types";
 
 export interface IResumeCheck {
     id?: string;
     checkDate: Date;
-    photoPath: string | IFile;
+    photoPath: string | IMulterFile;
     notes: string;
     recommendation: string;
     generalDataId: string;
