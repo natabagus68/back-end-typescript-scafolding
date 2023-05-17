@@ -29,12 +29,7 @@ export class MobileApprovalController {
         });
     }
     public async findAll(req: AuthRequest, res: Response): Promise<Response> {
-        const validatedReq = z
-            .object({
-                limit: z.number(),
-                per_page: z.number(),
-            })
-            .safeParse(req.query);
+        const validatedReq = .safeParse(req.query);
         if (!validatedReq.success) {
             throw new AppError({
                 statusCode: HttpCode.VALIDATION_ERROR,
