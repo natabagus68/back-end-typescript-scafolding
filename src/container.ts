@@ -14,6 +14,7 @@ import { MobileAccuracyCheckRoute } from "./presentation/routes/mobile/accuracy-
 import { MobileCheckLoadTonnageRoute } from "./presentation/routes/mobile/check-load-tonnage-route";
 import { MobileMachineCheckRoute } from "./presentation/routes/mobile/machine-check-route";
 import { MobileResumeCheckRoute } from "./presentation/routes/mobile/resume-check-route";
+import { MobileReviewRoute } from "./presentation/routes/mobile/review-route";
 
 // Domain Repository
 import { UserRepository } from "@/domain/service/user-repository";
@@ -46,6 +47,7 @@ import { MobileAccuracyCheckService } from "./services/mobile/accuracy-check-ser
 import { MobileCheckLoadTonnageService } from "./services/mobile/check-load-tonnage-service";
 import { MobileMachineCheckService } from "./services/mobile/machine-check-service";
 import { MobileResumeCheckService } from "./services/mobile/resume-check-service";
+import { MobileReviewService } from "./services/mobile/review-service";
 
 // Controller
 import UserController from "@/presentation/controllers/user-controller";
@@ -58,6 +60,7 @@ import { MobileAccuracyCheckController } from "./presentation/controllers/mobile
 import { MobileCheckLoadTonnageController } from "./presentation/controllers/mobile/check-load-tonnage-controller";
 import { MobileMachineCheckController } from "./presentation/controllers/mobile/machine-check-controller";
 import { MobileResumeCheckController } from "./presentation/controllers/mobile/resume-check-controller";
+import { MobileReviewController } from "./presentation/controllers/mobile/review-controller";
 
 //Middleware
 import { MobileAuthMiddleware } from "./presentation/middleware/auth-middleware";
@@ -86,6 +89,7 @@ container.bind<MobileAccuracyCheckRoute>(MobileAccuracyCheckRoute).toSelf().inSi
 container.bind<MobileCheckLoadTonnageRoute>(MobileCheckLoadTonnageRoute).toSelf().inSingletonScope();
 container.bind<MobileMachineCheckRoute>(MobileMachineCheckRoute).toSelf().inSingletonScope();
 container.bind<MobileResumeCheckRoute>(MobileResumeCheckRoute).toSelf().inSingletonScope();
+container.bind<MobileReviewRoute>(MobileReviewRoute).toSelf().inSingletonScope();
 
 // Service Layer
 container.bind(TYPES.MobileAuthService).to(MobileAuthService);
@@ -98,6 +102,7 @@ container.bind(TYPES.MobileAccuracyCheckService).to(MobileAccuracyCheckService);
 container.bind(TYPES.MobileCheckLoadTonnageService).to(MobileCheckLoadTonnageService);
 container.bind(TYPES.MobileMachineCheckService).to(MobileMachineCheckService);
 container.bind(TYPES.MobileResumeCheckService).to(MobileResumeCheckService);
+container.bind(TYPES.MobileReviewService).to(MobileReviewService);
 
 // Controller
 container.bind(UserController).toSelf();
@@ -110,6 +115,7 @@ container.bind(MobileAccuracyCheckController).toSelf();
 container.bind(MobileCheckLoadTonnageController).toSelf();
 container.bind(MobileMachineCheckController).toSelf();
 container.bind(MobileResumeCheckController).toSelf();
+container.bind(MobileReviewController).toSelf();
 
 // Middleware
 container.bind(MobileAuthMiddleware).toSelf();

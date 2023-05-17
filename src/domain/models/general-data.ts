@@ -1,4 +1,9 @@
+import { AccuracyCheck, IAccuracyCheck } from "./accuracy-check";
+import { Customer, ICustomer } from "./customer";
 import { Entity } from "./entity";
+import { IInspectionData, InspectionData } from "./inspection-data";
+import { IMachineCheck, MachineCheck } from "./machine-check";
+import { IResumeCheck, ResumeCheck } from "./resume-check";
 
 export enum EGeneralDataLastStep {
     GENERAL_DATA = "GENERAL_DATA",
@@ -18,13 +23,18 @@ export interface IGeneralData {
     personInCharge: string;
     inspectionDate: Date;
     inspectorId: string;
-    createdAt?: Date;
-    updatedAt?: Date | null;
-    deletedAt?: Date | null;
     lastStep: EGeneralDataLastStep | string;
     submittedAt?: Date | null;
     approvedAt?: Date | null;
     approvedBy?: string | null;
+    customer?: ICustomer;
+    inspectionDatum?: IInspectionData[];
+    machineCheck?: IMachineCheck;
+    accuracyCheck?: IAccuracyCheck;
+    resumeCheck?: IResumeCheck;
+    createdAt?: Date;
+    updatedAt?: Date | null;
+    deletedAt?: Date | null;
 }
 
 export class GeneralData extends Entity<IGeneralData> {
@@ -49,6 +59,11 @@ export class GeneralData extends Entity<IGeneralData> {
             submittedAt: this.submittedAt,
             approvedAt: this.approvedAt,
             approvedBy: this.approvedBy,
+            customer: this.customer?.unmarshal(),
+            inspectionDatum: this.inspectionDatum?.map((item) => item.unmarshal()),
+            machineCheck: this.machineCheck?.unmarshal(),
+            accuracyCheck: this.accuracyCheck?.unmarshal(),
+            resumeCheck: this.resumeCheck?.unmarshal(),
         };
     }
     get id(): string {
@@ -84,10 +99,28 @@ export class GeneralData extends Entity<IGeneralData> {
     get submittedAt(): undefined | Date | null {
         return this.props.submittedAt;
     }
+    set submittedAt(val: undefined | Date | null) {
+        this.props.submittedAt = val;
+    }
     get approvedAt(): undefined | Date | null {
         return this.props.approvedAt;
     }
     get approvedBy(): undefined | string | null {
         return this.props.approvedBy;
+    }
+    get inspectionDatum(): undefined | InspectionData[] {
+        return this.props.inspectionDatum ? this.props.inspectionDatum.map((item) => InspectionData.create(item)) : [];
+    }
+    get customer(): undefined | Customer {
+        return this.props.customer ? Customer.create(this.props.customer) : undefined;
+    }
+    get machineCheck(): undefined | MachineCheck {
+        return this.props.machineCheck ? MachineCheck.create(this.props.machineCheck) : undefined;
+    }
+    get accuracyCheck(): undefined | AccuracyCheck {
+        return this.props.accuracyCheck ? AccuracyCheck.create(this.props.accuracyCheck) : undefined;
+    }
+    get resumeCheck(): undefined | ResumeCheck {
+        return this.props.resumeCheck ? ResumeCheck.create(this.props.resumeCheck) : undefined;
     }
 }

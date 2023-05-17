@@ -59,7 +59,7 @@ export class AccuracyCheck extends Entity<IAccuracyCheck> {
         return new AccuracyCheck(props);
     }
 
-    unmarshall(): IAccuracyCheck {
+    unmarshal(): IAccuracyCheck {
         return {
             id: this.id,
             generalDataId: this.generalDataId,

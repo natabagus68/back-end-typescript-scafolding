@@ -16,6 +16,6 @@ export class MobileAccuracyCheckService {
         const accuracyCheck = await this._machineDataRepo.store(AccuracyCheck.create(param));
         generalData.lastStep = EGeneralDataLastStep.ACCURACY_CHECK;
         await this._generalDataRepo.update(generalData);
-        return accuracyCheck.unmarshall();
+        return accuracyCheck.unmarshal();
     }
 }

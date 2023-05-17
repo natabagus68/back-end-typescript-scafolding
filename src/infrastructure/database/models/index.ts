@@ -12,24 +12,26 @@ import { CheckLoadTonnage } from "./check-load-tonnage-sequelize";
 import { InspectionData } from "./inspection-data-sequelize";
 import { InspectionDataItem } from "./inspection-data-item-sequelize";
 import { MachineCheck } from "./machine-check-sequelize";
+import { ResumeCheck } from "./resume-check-sequelize";
 
 // Core Model Synchronisation
 User.sync({ alter: { drop: false } });
 
 // Apps Model Synchronisation
-GeneralData.sync({ alter: { drop: false } });
-Customer.sync({ alter: { drop: false } });
-MachineData.sync({ alter: { drop: false } });
-MachineCheck.sync({ alter: { drop: false } });
+(async () => {
+    await Customer.sync({ alter: { drop: false } });
+    await GeneralData.sync({ alter: { drop: false } });
+    await InspectionData.sync({ alter: { drop: false } });
+    MachineData.sync({ alter: { drop: false } });
+    InspectionDataItem.sync({ alter: { drop: false } });
+    MachineCheck.sync({ alter: { drop: false } });
+    AccuracyCheck.sync({ alter: { drop: false } });
+    ResumeCheck.sync({ alter: { drop: false } });
+    CheckLoadTonnage.sync({ alter: { drop: false } });
+})();
 (async () => {
     await InspectionForm.sync({ alter: { drop: false } });
     InspectionFormItem.sync({ alter: { drop: false } });
-})();
-AccuracyCheck.sync({ alter: { drop: false } });
-CheckLoadTonnage.sync({ alter: { drop: false } });
-(async () => {
-    await InspectionData.sync({ alter: { drop: false } });
-    InspectionDataItem.sync({ alter: { drop: false } });
 })();
 
 // Core Model Assosiation
@@ -44,13 +46,29 @@ InspectionForm.hasMany(InspectionFormItem, {
     foreignKey: "inspection_form_id",
     as: "items",
 });
-GeneralData.hasMany(AccuracyCheck, {
+GeneralData.belongsTo(Customer, {
+    foreignKey: "customer_id",
+    as: "customer",
+});
+GeneralData.hasMany(InspectionData, {
     foreignKey: "general_data_id",
-    as: "accuracy_checks",
+    as: "inspectionDatum",
+});
+GeneralData.hasOne(MachineCheck, {
+    foreignKey: "general_data_id",
+    as: "machineCheck",
+});
+GeneralData.hasOne(ResumeCheck, {
+    foreignKey: "general_data_id",
+    as: "resumeCheck",
+});
+GeneralData.hasOne(AccuracyCheck, {
+    foreignKey: "general_data_id",
+    as: "accuracyCheck",
 });
 GeneralData.hasMany(CheckLoadTonnage, {
     foreignKey: "general_data_id",
-    as: "load_tonnages",
+    as: "loadTonnages",
 });
 InspectionData.hasMany(InspectionDataItem, {
     foreignKey: "inspection_data_id",

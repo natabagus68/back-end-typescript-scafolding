@@ -27,6 +27,7 @@ const TYPES = {
     MobileCheckLoadTonnageService: Symbol.for("MobileCheckLoadTonnageService"),
     MobileMachineCheckService: Symbol.for("MobileMachineCheckService"),
     MobileResumeCheckService: Symbol.for("MobileResumeCheckService"),
+    MobileReviewService: Symbol.for("MobileReviewService"),
 };
 
 export { TYPES };

@@ -1,5 +1,19 @@
-import { CreationOptional, DataTypes, Model } from "sequelize";
+import {
+    Association,
+    CreationOptional,
+    DataTypes,
+    InferAttributes,
+    InferCreationAttributes,
+    Model,
+    NonAttribute,
+} from "sequelize";
 import { sequelize } from "../sequelize";
+import { Customer } from "./customer-sequelize";
+import { MachineCheck } from "./machine-check-sequelize";
+import { ResumeCheck } from "./resume-check-sequelize";
+import { AccuracyCheck } from "./accuracy-check-sequelize";
+import { CheckLoadTonnage } from "./check-load-tonnage-sequelize";
+import { InspectionData } from "./inspection-data-sequelize";
 
 export class GeneralData extends Model {
     declare id: CreationOptional<string>;
@@ -11,9 +25,23 @@ export class GeneralData extends Model {
     declare approved_at: CreationOptional<Date | null>;
     declare approved_by: CreationOptional<string | null>;
     declare last_step: string;
-    declare created_at: CreationOptional<string>;
-    declare updated_at: CreationOptional<string | null>;
-    declare deleted_at: CreationOptional<string | null>;
+    declare created_at: CreationOptional<Date>;
+    declare updated_at: CreationOptional<Date | null>;
+    declare deleted_at: CreationOptional<Date | null>;
+    declare customer: NonAttribute<Customer>;
+    declare inspectionDatum: NonAttribute<InspectionData[]>;
+    declare machineCheck: NonAttribute<MachineCheck>;
+    declare resumeCheck: NonAttribute<ResumeCheck>;
+    declare accuracyCheck: NonAttribute<AccuracyCheck>;
+    declare checkLoadTonnages: NonAttribute<CheckLoadTonnage[]>;
+    declare static associations: {
+        customer: Association<GeneralData, Customer>;
+        inspectionDatum: Association<GeneralData, InspectionData>;
+        machineCheck: Association<GeneralData, MachineCheck>;
+        resumeCheck: Association<GeneralData, ResumeCheck>;
+        accuracyCheck: Association<GeneralData, AccuracyCheck>;
+        checkLoadTonnages: Association<GeneralData, CheckLoadTonnage>;
+    };
 }
 
 GeneralData.init(
