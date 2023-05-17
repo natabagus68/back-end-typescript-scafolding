@@ -44,6 +44,9 @@ export class ResumeCheck extends Entity<IResumeCheck> {
     get photoPath(): string | IMulterFile {
         return this.props.photoPath;
     }
+    set photoPath(val: string | IMulterFile) {
+        this.props.photoPath = val;
+    }
     get notes(): string {
         return this.props.notes;
     }

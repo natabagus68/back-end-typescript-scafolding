@@ -1,4 +1,4 @@
-import { GeneralData } from "@/domain/models/general-data";
+import { EGeneralDataLastStep, GeneralData } from "@/domain/models/general-data";
 import { GeneralDataRepository } from "@/domain/service/general-data-repository";
 import {
     AccuracyCheck as AccuracyCheckDB,
@@ -11,9 +11,41 @@ import {
 import { ResumeCheck as ResumeCheckDB } from "@/infrastructure/database/models/resume-check-sequelize";
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
 import { injectable } from "inversify";
+import { Op } from "sequelize";
 
 @injectable()
 export class GeneralDataSequelizeRepository implements GeneralDataRepository {
+    async findUnsubmittedByInspectorId(inspectorId: string): Promise<GeneralData> {
+        const found = await GeneralDataDB.findOne({
+            where: {
+                inspector_id: inspectorId,
+                last_step: {
+                    [Op.not]: EGeneralDataLastStep.SUBMITTED,
+                },
+                submitted_at: null,
+            },
+        });
+        if (!found) {
+            throw new AppError({
+                statusCode: HttpCode.NOT_FOUND,
+                description: "All Document is Submitted",
+            });
+        }
+        return GeneralData.create({
+            id: found.getDataValue("id"),
+            customerId: found.getDataValue("customer_id"),
+            personInCharge: found.getDataValue("person_in_charge"),
+            inspectionDate: found.getDataValue("inspection_date"),
+            inspectorId: found.getDataValue("inspector_id"),
+            lastStep: found.getDataValue("last_step"),
+            submittedAt: found.getDataValue("submitted_at"),
+            approvedAt: found.getDataValue("approved_at"),
+            approvedBy: found.getDataValue("approved_by"),
+            createdAt: found.getDataValue("created_at"),
+            updatedAt: found.getDataValue("updated_at"),
+            deletedAt: found.getDataValue("deleted_at"),
+        });
+    }
     async findByCustAndDate(customerId: string, date: Date): Promise<GeneralData | null> {
         const found = await GeneralDataDB.findOne({
             where: {

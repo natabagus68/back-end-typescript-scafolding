@@ -32,4 +32,11 @@ export class MobileGeneralDataController {
         });
         return res.status(201).json({ message: "success", data: createdUser });
     }
+    public async getIncomplete(req: AuthRequest, res: Response): Promise<Response> {
+        const found = await this._generalDataService.getIncompleteForm(req.auth.user.id);
+        return res.json({
+            message: "success",
+            data: found,
+        });
+    }
 }

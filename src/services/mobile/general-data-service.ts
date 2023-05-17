@@ -17,10 +17,14 @@ export class MobileGeneralDataService {
         const existingGeneralData = await this._repository.findByCustAndDate(customer.id, generalData.inspectionDate);
         const data = GeneralData.create({
             ...generalData,
-            id : existingGeneralData?.id,
+            id: existingGeneralData?.id,
             customerId: customer.id,
         });
         const created = existingGeneralData ? await this._repository.update(data) : await this._repository.store(data);
         return created.unmarshal();
+    }
+    async getIncompleteForm(inspectorId: string): Promise<IGeneralData> {
+        const generalData = await this._repository.findUnsubmittedByInspectorId(inspectorId);
+        return generalData.unmarshal();
     }
 }

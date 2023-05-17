@@ -8,23 +8,19 @@ import { injectable } from "inversify";
 @injectable()
 export class MobileGeneralDataRoute {
     public route = "mobile/general-data";
-    GeneralDataControllerInstance = container.get<MobileGeneralDataController>(
-        MobileGeneralDataController
-    );
-    MobileAuthMiddlewareInstance =
-        container.get<MobileAuthMiddleware>(MobileAuthMiddleware);
+    GeneralDataControllerInstance = container.get<MobileGeneralDataController>(MobileGeneralDataController);
+    MobileAuthMiddlewareInstance = container.get<MobileAuthMiddleware>(MobileAuthMiddleware);
 
     public setRoutes(router: Router) {
+        router.get(
+            `/${this.route}/incomplete`,
+            this.MobileAuthMiddlewareInstance.handle.bind(this.MobileAuthMiddlewareInstance),
+            asyncWrap(this.GeneralDataControllerInstance.getIncomplete.bind(this.GeneralDataControllerInstance))
+        );
         router.post(
             `/${this.route}`,
-            this.MobileAuthMiddlewareInstance.handle.bind(
-                this.MobileAuthMiddlewareInstance
-            ),
-            asyncWrap(
-                this.GeneralDataControllerInstance.store.bind(
-                    this.GeneralDataControllerInstance
-                )
-            )
+            this.MobileAuthMiddlewareInstance.handle.bind(this.MobileAuthMiddlewareInstance),
+            asyncWrap(this.GeneralDataControllerInstance.store.bind(this.GeneralDataControllerInstance))
         );
     }
 }
