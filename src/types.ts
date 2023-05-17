@@ -11,6 +11,8 @@ const TYPES = {
     MachineDataRepository: Symbol.for("MachineDataRepository"),
     InspectionFormRepository: Symbol.for("InspectionFormRepository"),
     InspectionDataRepository: Symbol.for("InspectionDataRepository"),
+    AccuracyCheckRepository: Symbol.for("AccuracyCheckRepository"),
+    CheckLoadTonnageRepository: Symbol.for("CheckLoadTonnageRepository"),
     MachineCheckRepository: Symbol.for("MachineCheckRepository"),
     ResumeCheckRepository: Symbol.for("ResumeCheckRepository"),
 
@@ -21,6 +23,8 @@ const TYPES = {
     MobileCustomerService: Symbol.for("MobileCustomerService"),
     MobileMachineDataService: Symbol.for("MobileMachineDataService"),
     MobileInspectionFormService: Symbol.for("MobileInspectionFormService"),
+    MobileAccuracyCheckService: Symbol.for("MobileAccuracyCheckService"),
+    MobileCheckLoadTonnageService: Symbol.for("MobileCheckLoadTonnageService"),
     MobileMachineCheckService: Symbol.for("MobileMachineCheckService"),
     MobileResumeCheckService: Symbol.for("MobileResumeCheckService"),
 };
