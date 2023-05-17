@@ -75,5 +75,5 @@ CheckLoadTonnage.init(
         created_at: DataTypes.DATE,
         updated_at: { type: DataTypes.DATE, allowNull: true },
     },
-    { sequelize, underscored: true, tableName: "check_load_tonnage" }
+    { sequelize, underscored: true, tableName: "check_load_tonnages" }
 );

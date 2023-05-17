@@ -1,18 +1,16 @@
 import { IGeneralData } from "@/domain/models/general-data";
+import { ITableData } from "@/domain/models/table-data";
 import { GeneralDataRepository } from "@/domain/service/general-data-repository";
+import { TDataTableParam } from "@/domain/service/types";
 import { TYPES } from "@/types";
 import { inject, injectable } from "inversify";
 
-interface queryParams {
-    limit: number
-    per_page: number
-}
 
 @injectable()
 export class MobileApprovalService {
     constructor(@inject(TYPES.GeneralDataRepository) private _generalDataRepo: GeneralDataRepository) {}
-    public async findAll(query: queryParams): Promise<IGeneralData> {
-        const generalData = await this._generalDataRepo.findById(generalDataId, true);
+    public async findAll(query: TDataTableParam): Promise<ITableData<IGeneralData>> {
+        const generalData = await this._generalDataRepo.getDataTable(query);
         return generalData.unmarshal();
     }
 

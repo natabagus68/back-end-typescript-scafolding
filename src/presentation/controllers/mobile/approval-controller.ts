@@ -1,5 +1,6 @@
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
 import { AuthRequest } from "@/presentation/utils/types/jwt-request";
+import { approvalDataTableScheme } from "@/presentation/validation/mobile/approval-validation";
 import { MobileApprovalService } from "@/services/mobile/approval-service";
 import { TYPES } from "@/types";
 import { Response } from "express";
@@ -28,8 +29,8 @@ export class MobileApprovalController {
             data: approvalData,
         });
     }
-    public async findAll(req: AuthRequest, res: Response): Promise<Response> {
-        const validatedReq = .safeParse(req.query);
+    public async getApprovalList(req: AuthRequest, res: Response): Promise<Response> {
+        const validatedReq = approvalDataTableScheme.safeParse(req.query);
         if (!validatedReq.success) {
             throw new AppError({
                 statusCode: HttpCode.VALIDATION_ERROR,
@@ -37,7 +38,10 @@ export class MobileApprovalController {
                 data: validatedReq.error.flatten().fieldErrors,
             });
         }
-        const approvalData = await this._approvalService.findAll(validatedReq.data);
+        const approvalData = await this._approvalService.findAll({
+            page: 1,
+            limit: 10,
+        });
         return res.json({
             message: "success",
             data: approvalData,

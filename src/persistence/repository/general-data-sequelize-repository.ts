@@ -1,5 +1,7 @@
-import { EGeneralDataLastStep, GeneralData } from "@/domain/models/general-data";
+import { EGeneralDataLastStep, GeneralData, IGeneralData } from "@/domain/models/general-data";
+import { TableData } from "@/domain/models/table-data";
 import { GeneralDataRepository } from "@/domain/service/general-data-repository";
+import { TDataTableParam } from "@/domain/service/types";
 import {
     AccuracyCheck as AccuracyCheckDB,
     Customer as CustomerDB,
@@ -115,30 +117,30 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
         const generalData = await GeneralDataDB.findByPk(id, {
             include: relation
                 ? [
-                      { model: CustomerDB, as: "customer" },
-                      {
-                          model: InspectionDataDB,
-                          as: "inspectionDatum",
-                          include: [
-                              {
-                                  model: InspectionDataItemDB,
-                                  as: "items",
-                              },
-                          ],
-                      },
-                      {
-                          model: MachineCheckDB,
-                          as: "machineCheck",
-                      },
-                      {
-                          model: AccuracyCheckDB,
-                          as: "accuracyCheck",
-                      },
-                      {
-                          model: ResumeCheckDB,
-                          as: "resumeCheck",
-                      },
-                  ]
+                    { model: CustomerDB, as: "customer" },
+                    {
+                        model: InspectionDataDB,
+                        as: "inspectionDatum",
+                        include: [
+                            {
+                                model: InspectionDataItemDB,
+                                as: "items",
+                            },
+                        ],
+                    },
+                    {
+                        model: MachineCheckDB,
+                        as: "machineCheck",
+                    },
+                    {
+                        model: AccuracyCheckDB,
+                        as: "accuracyCheck",
+                    },
+                    {
+                        model: ResumeCheckDB,
+                        as: "resumeCheck",
+                    },
+                ]
                 : undefined,
         });
         if (!generalData) {
@@ -163,138 +165,138 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
             customer:
                 relation && generalData.customer
                     ? {
-                          id: generalData.customer.getDataValue("id"),
-                          customerId: generalData.customer.getDataValue("customer_id"),
-                          customerName: generalData.customer.getDataValue("customer_name"),
-                          address: generalData.customer.getDataValue("address"),
-                          phone: generalData.customer.getDataValue("phone"),
-                          parallelism1Path: generalData.customer.getDataValue("parallelism1_path"),
-                          parallelism2Path: generalData.customer.getDataValue("parallelism2_path"),
-                          gibClearance1Path: generalData.customer.getDataValue("gib_clearance1_path"),
-                          gibClearance2Path: generalData.customer.getDataValue("gib_clearance2_path"),
-                          perpendicularity1Path: generalData.customer.getDataValue("perpendicularity1_path"),
-                          perpendicularity2Path: generalData.customer.getDataValue("perpendicularity2_path"),
-                          createdAt: generalData.customer.getDataValue("created_at"),
-                          updatedAt: generalData.customer.getDataValue("updated_at"),
-                          deletedAt: generalData.customer.getDataValue("deleted_at"),
-                      }
+                        id: generalData.customer.getDataValue("id"),
+                        customerId: generalData.customer.getDataValue("customer_id"),
+                        customerName: generalData.customer.getDataValue("customer_name"),
+                        address: generalData.customer.getDataValue("address"),
+                        phone: generalData.customer.getDataValue("phone"),
+                        parallelism1Path: generalData.customer.getDataValue("parallelism1_path"),
+                        parallelism2Path: generalData.customer.getDataValue("parallelism2_path"),
+                        gibClearance1Path: generalData.customer.getDataValue("gib_clearance1_path"),
+                        gibClearance2Path: generalData.customer.getDataValue("gib_clearance2_path"),
+                        perpendicularity1Path: generalData.customer.getDataValue("perpendicularity1_path"),
+                        perpendicularity2Path: generalData.customer.getDataValue("perpendicularity2_path"),
+                        createdAt: generalData.customer.getDataValue("created_at"),
+                        updatedAt: generalData.customer.getDataValue("updated_at"),
+                        deletedAt: generalData.customer.getDataValue("deleted_at"),
+                    }
                     : undefined,
             inspectionDatum:
                 relation && generalData.inspectionDatum
                     ? generalData.inspectionDatum.map((item) => ({
-                          id: item.getDataValue("id"),
-                          name: item.getDataValue("name"),
-                          order: item.getDataValue("order"),
-                          generalDataId: item.getDataValue("general_data_id"),
-                          items: item.items.map((i) => ({
-                              id: i.getDataValue("id"),
-                              name: i.getDataValue("name"),
-                              determination: i.getDataValue("determination"),
-                              hasNote: i.getDataValue("has_note"),
-                              notes: i.getDataValue("notes"),
-                              backlash: i.getDataValue("backlash"),
-                              r: i.getDataValue("r"),
-                              s: i.getDataValue("s"),
-                          })),
-                          createdAt: item.getDataValue("created_at"),
-                          updatedAt: item.getDataValue("updated_at"),
-                      }))
+                        id: item.getDataValue("id"),
+                        name: item.getDataValue("name"),
+                        order: item.getDataValue("order"),
+                        generalDataId: item.getDataValue("general_data_id"),
+                        items: item.items.map((i) => ({
+                            id: i.getDataValue("id"),
+                            name: i.getDataValue("name"),
+                            determination: i.getDataValue("determination"),
+                            hasNote: i.getDataValue("has_note"),
+                            notes: i.getDataValue("notes"),
+                            backlash: i.getDataValue("backlash"),
+                            r: i.getDataValue("r"),
+                            s: i.getDataValue("s"),
+                        })),
+                        createdAt: item.getDataValue("created_at"),
+                        updatedAt: item.getDataValue("updated_at"),
+                    }))
                     : undefined,
             machineCheck:
                 relation && generalData.machineCheck
                     ? {
-                          id: generalData.machineCheck.getDataValue("id"),
-                          generalDataId: generalData.machineCheck.getDataValue("general_data_id"),
-                          idleAmp: generalData.machineCheck.getDataValue("idle_amp"),
-                          runningAmp: generalData.machineCheck.getDataValue("running_amp"),
-                          runningDuration: generalData.machineCheck.getDataValue("running_duration"),
-                          runningTimes: generalData.machineCheck.getDataValue("running_times"),
-                          clearanceTotal: generalData.machineCheck.getDataValue("clearance_total"),
-                          clearancePoint: generalData.machineCheck.getDataValue("clearance_point"),
-                          p: generalData.machineCheck.getDataValue("p"),
-                          actual: generalData.machineCheck.getDataValue("actual"),
-                          determinationResult: generalData.machineCheck.getDataValue("determination_result"),
-                          slideUpAmp: generalData.machineCheck.getDataValue("slide_up_amp"),
-                          slideDownAmp: generalData.machineCheck.getDataValue("slide_down_amp"),
-                          prlsmBlstrSlide: generalData.machineCheck.getDataValue("prlsm_blstr_slide"),
-                          test1: generalData.machineCheck.getDataValue("test1"),
-                          test2: generalData.machineCheck.getDataValue("test2"),
-                          test3: generalData.machineCheck.getDataValue("test3"),
-                          test4: generalData.machineCheck.getDataValue("test4"),
-                          test5: generalData.machineCheck.getDataValue("test5"),
-                          test6: generalData.machineCheck.getDataValue("test6"),
-                          test7: generalData.machineCheck.getDataValue("test7"),
-                          test8: generalData.machineCheck.getDataValue("test8"),
-                          test9: generalData.machineCheck.getDataValue("test9"),
-                          test10: generalData.machineCheck.getDataValue("test10"),
-                          createdAt: generalData.machineCheck.getDataValue("created_at"),
-                          updatedAt: generalData.machineCheck.getDataValue("updated_at"),
-                      }
+                        id: generalData.machineCheck.getDataValue("id"),
+                        generalDataId: generalData.machineCheck.getDataValue("general_data_id"),
+                        idleAmp: generalData.machineCheck.getDataValue("idle_amp"),
+                        runningAmp: generalData.machineCheck.getDataValue("running_amp"),
+                        runningDuration: generalData.machineCheck.getDataValue("running_duration"),
+                        runningTimes: generalData.machineCheck.getDataValue("running_times"),
+                        clearanceTotal: generalData.machineCheck.getDataValue("clearance_total"),
+                        clearancePoint: generalData.machineCheck.getDataValue("clearance_point"),
+                        p: generalData.machineCheck.getDataValue("p"),
+                        actual: generalData.machineCheck.getDataValue("actual"),
+                        determinationResult: generalData.machineCheck.getDataValue("determination_result"),
+                        slideUpAmp: generalData.machineCheck.getDataValue("slide_up_amp"),
+                        slideDownAmp: generalData.machineCheck.getDataValue("slide_down_amp"),
+                        prlsmBlstrSlide: generalData.machineCheck.getDataValue("prlsm_blstr_slide"),
+                        test1: generalData.machineCheck.getDataValue("test1"),
+                        test2: generalData.machineCheck.getDataValue("test2"),
+                        test3: generalData.machineCheck.getDataValue("test3"),
+                        test4: generalData.machineCheck.getDataValue("test4"),
+                        test5: generalData.machineCheck.getDataValue("test5"),
+                        test6: generalData.machineCheck.getDataValue("test6"),
+                        test7: generalData.machineCheck.getDataValue("test7"),
+                        test8: generalData.machineCheck.getDataValue("test8"),
+                        test9: generalData.machineCheck.getDataValue("test9"),
+                        test10: generalData.machineCheck.getDataValue("test10"),
+                        createdAt: generalData.machineCheck.getDataValue("created_at"),
+                        updatedAt: generalData.machineCheck.getDataValue("updated_at"),
+                    }
                     : undefined,
             accuracyCheck:
                 relation && generalData.accuracyCheck
                     ? {
-                          id: generalData.accuracyCheck.getDataValue("id"),
-                          generalDataId: generalData.accuracyCheck.getDataValue("general_data_id"),
-                          unit: generalData.accuracyCheck.getDataValue("unit"),
-                          balancerAirPsr: generalData.accuracyCheck.getDataValue("balancer_air_psr"),
-                          prlAdj_0A: generalData.accuracyCheck.getDataValue("prl_adj_0_a"),
-                          prlAdj_0B: generalData.accuracyCheck.getDataValue("prl_adj_0_b"),
-                          prlAdj_0C: generalData.accuracyCheck.getDataValue("prl_adj_0_c"),
-                          prlAdj_0D: generalData.accuracyCheck.getDataValue("prl_adj_0_d"),
-                          prlAdj_180A: generalData.accuracyCheck.getDataValue("prl_adj_180_a"),
-                          prlAdj_180B: generalData.accuracyCheck.getDataValue("prl_adj_180_b"),
-                          prlAdj_180C: generalData.accuracyCheck.getDataValue("prl_adj_180_c"),
-                          prlAdj_180D: generalData.accuracyCheck.getDataValue("prl_adj_180_d"),
-                          prlActVlv: generalData.accuracyCheck.getDataValue("prl_act_vlv"),
-                          prlAllowance: generalData.accuracyCheck.getDataValue("prl_allowance"),
-                          prlJudgement: generalData.accuracyCheck.getDataValue("prl_judgement"),
-                          gibAdj_0A: generalData.accuracyCheck.getDataValue("gib_adj_0_a"),
-                          gibAdj_0B: generalData.accuracyCheck.getDataValue("gib_adj_0_b"),
-                          gibAdj_0C: generalData.accuracyCheck.getDataValue("gib_adj_0_c"),
-                          gibAdj_0D: generalData.accuracyCheck.getDataValue("gib_adj_0_d"),
-                          gibAdj_180A: generalData.accuracyCheck.getDataValue("gib_adj_180_a"),
-                          gibAdj_180B: generalData.accuracyCheck.getDataValue("gib_adj_180_b"),
-                          gibAdj_180C: generalData.accuracyCheck.getDataValue("gib_adj_180_c"),
-                          gibAdj_180D: generalData.accuracyCheck.getDataValue("gib_adj_180_d"),
-                          gibActVlv: generalData.accuracyCheck.getDataValue("gib_act_vlv"),
-                          gibAllowance: generalData.accuracyCheck.getDataValue("gib_allowance"),
-                          gibJudgement: generalData.accuracyCheck.getDataValue("gib_judgement"),
-                          ppdcltSlideStroke: generalData.accuracyCheck.getDataValue("ppdclt_slide_stroke"),
-                          ppdcltAdjLrA: generalData.accuracyCheck.getDataValue("ppdclt_adj_lr_a"),
-                          ppdcltAdjLrB: generalData.accuracyCheck.getDataValue("ppdclt_adj_lr_b"),
-                          ppdcltAdjLrC: generalData.accuracyCheck.getDataValue("ppdclt_adj_lr_c"),
-                          ppdcltAdjLrD: generalData.accuracyCheck.getDataValue("ppdclt_adj_lr_d"),
-                          ppdcltAdjFrA: generalData.accuracyCheck.getDataValue("ppdclt_adj_fr_a"),
-                          ppdcltAdjFrB: generalData.accuracyCheck.getDataValue("ppdclt_adj_fr_b"),
-                          ppdcltAdjFrC: generalData.accuracyCheck.getDataValue("ppdclt_adj_fr_c"),
-                          ppdcltAdjFrD: generalData.accuracyCheck.getDataValue("ppdclt_adj_fr_d"),
-                          ppdcltLrActValue: generalData.accuracyCheck.getDataValue("ppdclt_lr_act_value"),
-                          ppdcltLrAllowance: generalData.accuracyCheck.getDataValue("ppdclt_lr_allowance"),
-                          ppdcltLrJudgement: generalData.accuracyCheck.getDataValue("ppdclt_lr_judgement"),
-                          ppdcltFrActValue: generalData.accuracyCheck.getDataValue("ppdclt_fr_act_value"),
-                          ppdcltFrAllowance: generalData.accuracyCheck.getDataValue("ppdclt_fr_allowance"),
-                          ppdcltFrJudgement: generalData.accuracyCheck.getDataValue("ppdclt_fr_judgement"),
-                          ttlClrActValue: generalData.accuracyCheck.getDataValue("ttl_clr_act_value"),
-                          ttlClrActValve: generalData.accuracyCheck.getDataValue("ttl_clr_act_valve"),
-                          ttlClrAllowance: generalData.accuracyCheck.getDataValue("ttl_clr_allowance"),
-                          ttlClrJudgement: generalData.accuracyCheck.getDataValue("ttl_clr_judgement"),
-                          createdAt: generalData.accuracyCheck.getDataValue("created_at"),
-                          updatedAt: generalData.accuracyCheck.getDataValue("updated_at"),
-                      }
+                        id: generalData.accuracyCheck.getDataValue("id"),
+                        generalDataId: generalData.accuracyCheck.getDataValue("general_data_id"),
+                        unit: generalData.accuracyCheck.getDataValue("unit"),
+                        balancerAirPsr: generalData.accuracyCheck.getDataValue("balancer_air_psr"),
+                        prlAdj_0A: generalData.accuracyCheck.getDataValue("prl_adj_0_a"),
+                        prlAdj_0B: generalData.accuracyCheck.getDataValue("prl_adj_0_b"),
+                        prlAdj_0C: generalData.accuracyCheck.getDataValue("prl_adj_0_c"),
+                        prlAdj_0D: generalData.accuracyCheck.getDataValue("prl_adj_0_d"),
+                        prlAdj_180A: generalData.accuracyCheck.getDataValue("prl_adj_180_a"),
+                        prlAdj_180B: generalData.accuracyCheck.getDataValue("prl_adj_180_b"),
+                        prlAdj_180C: generalData.accuracyCheck.getDataValue("prl_adj_180_c"),
+                        prlAdj_180D: generalData.accuracyCheck.getDataValue("prl_adj_180_d"),
+                        prlActVlv: generalData.accuracyCheck.getDataValue("prl_act_vlv"),
+                        prlAllowance: generalData.accuracyCheck.getDataValue("prl_allowance"),
+                        prlJudgement: generalData.accuracyCheck.getDataValue("prl_judgement"),
+                        gibAdj_0A: generalData.accuracyCheck.getDataValue("gib_adj_0_a"),
+                        gibAdj_0B: generalData.accuracyCheck.getDataValue("gib_adj_0_b"),
+                        gibAdj_0C: generalData.accuracyCheck.getDataValue("gib_adj_0_c"),
+                        gibAdj_0D: generalData.accuracyCheck.getDataValue("gib_adj_0_d"),
+                        gibAdj_180A: generalData.accuracyCheck.getDataValue("gib_adj_180_a"),
+                        gibAdj_180B: generalData.accuracyCheck.getDataValue("gib_adj_180_b"),
+                        gibAdj_180C: generalData.accuracyCheck.getDataValue("gib_adj_180_c"),
+                        gibAdj_180D: generalData.accuracyCheck.getDataValue("gib_adj_180_d"),
+                        gibActVlv: generalData.accuracyCheck.getDataValue("gib_act_vlv"),
+                        gibAllowance: generalData.accuracyCheck.getDataValue("gib_allowance"),
+                        gibJudgement: generalData.accuracyCheck.getDataValue("gib_judgement"),
+                        ppdcltSlideStroke: generalData.accuracyCheck.getDataValue("ppdclt_slide_stroke"),
+                        ppdcltAdjLrA: generalData.accuracyCheck.getDataValue("ppdclt_adj_lr_a"),
+                        ppdcltAdjLrB: generalData.accuracyCheck.getDataValue("ppdclt_adj_lr_b"),
+                        ppdcltAdjLrC: generalData.accuracyCheck.getDataValue("ppdclt_adj_lr_c"),
+                        ppdcltAdjLrD: generalData.accuracyCheck.getDataValue("ppdclt_adj_lr_d"),
+                        ppdcltAdjFrA: generalData.accuracyCheck.getDataValue("ppdclt_adj_fr_a"),
+                        ppdcltAdjFrB: generalData.accuracyCheck.getDataValue("ppdclt_adj_fr_b"),
+                        ppdcltAdjFrC: generalData.accuracyCheck.getDataValue("ppdclt_adj_fr_c"),
+                        ppdcltAdjFrD: generalData.accuracyCheck.getDataValue("ppdclt_adj_fr_d"),
+                        ppdcltLrActValue: generalData.accuracyCheck.getDataValue("ppdclt_lr_act_value"),
+                        ppdcltLrAllowance: generalData.accuracyCheck.getDataValue("ppdclt_lr_allowance"),
+                        ppdcltLrJudgement: generalData.accuracyCheck.getDataValue("ppdclt_lr_judgement"),
+                        ppdcltFrActValue: generalData.accuracyCheck.getDataValue("ppdclt_fr_act_value"),
+                        ppdcltFrAllowance: generalData.accuracyCheck.getDataValue("ppdclt_fr_allowance"),
+                        ppdcltFrJudgement: generalData.accuracyCheck.getDataValue("ppdclt_fr_judgement"),
+                        ttlClrActValue: generalData.accuracyCheck.getDataValue("ttl_clr_act_value"),
+                        ttlClrActValve: generalData.accuracyCheck.getDataValue("ttl_clr_act_valve"),
+                        ttlClrAllowance: generalData.accuracyCheck.getDataValue("ttl_clr_allowance"),
+                        ttlClrJudgement: generalData.accuracyCheck.getDataValue("ttl_clr_judgement"),
+                        createdAt: generalData.accuracyCheck.getDataValue("created_at"),
+                        updatedAt: generalData.accuracyCheck.getDataValue("updated_at"),
+                    }
                     : undefined,
             resumeCheck:
                 relation && generalData.resumeCheck
                     ? {
-                          id: generalData.resumeCheck.getDataValue("id"),
-                          checkDate: generalData.resumeCheck.getDataValue("checkDate"),
-                          photoPath: generalData.resumeCheck.getDataValue("photoPath"),
-                          notes: generalData.resumeCheck.getDataValue("notes"),
-                          recommendation: generalData.resumeCheck.getDataValue("recommendation"),
-                          generalDataId: generalData.resumeCheck.getDataValue("generalDataId"),
-                          createdAt: generalData.resumeCheck.getDataValue("created_at"),
-                          updatedAt: generalData.resumeCheck.getDataValue("updated_at"),
-                      }
+                        id: generalData.resumeCheck.getDataValue("id"),
+                        checkDate: generalData.resumeCheck.getDataValue("checkDate"),
+                        photoPath: generalData.resumeCheck.getDataValue("photoPath"),
+                        notes: generalData.resumeCheck.getDataValue("notes"),
+                        recommendation: generalData.resumeCheck.getDataValue("recommendation"),
+                        generalDataId: generalData.resumeCheck.getDataValue("generalDataId"),
+                        createdAt: generalData.resumeCheck.getDataValue("created_at"),
+                        updatedAt: generalData.resumeCheck.getDataValue("updated_at"),
+                    }
                     : undefined,
         });
     }
@@ -320,6 +322,34 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
             submittedAt: created.getDataValue("submitted_at"),
             approvedAt: created.getDataValue("approved_at"),
             approvedBy: created.getDataValue("approved_by"),
+        });
+    }
+    async getDataTable(param: TDataTableParam): Promise<TableData<IGeneralData>> {
+        const generalData = await GeneralDataDB.findAll({
+            attributes: ["id", "customer_id", "inspector_id", "person_in_charge", "inspector_date", "submitted_at", "last_step"],
+            where: { submitted_at: { [Op.ne]: null } },
+            include: [
+                { model: CustomerDB, as: "customer" }
+            ],
+            order: [["inspection_date", "DESC"]],
+            limit: param.limit,
+            offset:
+                (param.page || 1) > 1
+                    ? (param.limit || 10) * ((param.page || 1) - 1)
+                    : 0,
+        });
+        return TableData.create({
+            page: param.page || 1,
+            limit: param.limit || 10,
+            search: param.search || "",
+            data: generalData.map((item) => ({
+                id: item.id,
+                customerId: item.customer_id,
+                personInCharge: item.person_in_charge,
+                inspectionDate: item.inspection_date,
+                inspectorId: item.inspector_id,
+                lastStep: item.last_step,
+            })),
         });
     }
 }

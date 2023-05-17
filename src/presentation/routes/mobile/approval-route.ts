@@ -20,7 +20,7 @@ export class MobileApprovalRoute {
         router.get(
             `/${this.route}`,
             this.MobileAuthMiddlewareInstance.handle.bind(this.MobileAuthMiddlewareInstance),
-            asyncWrap(this.MobileApprovalControllerInstance.get.bind(this.MobileApprovalControllerInstance))
+            asyncWrap(this.MobileApprovalControllerInstance.getApprovalList.bind(this.MobileApprovalControllerInstance))
         );
         router.put(
             `/${this.route}/:generalDataId/confirm`,
