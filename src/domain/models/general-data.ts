@@ -102,8 +102,14 @@ export class GeneralData extends Entity<IGeneralData> {
     set submittedAt(val: undefined | Date | null) {
         this.props.submittedAt = val;
     }
+    set approvedAt(val: undefined | Date | null) {
+        this.props.approvedAt = val;
+    }
     get approvedAt(): undefined | Date | null {
         return this.props.approvedAt;
+    }
+    set approvedBy(val: undefined| string | null) {
+        this.props.approvedBy = val;
     }
     get approvedBy(): undefined | string | null {
         return this.props.approvedBy;

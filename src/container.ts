@@ -15,6 +15,7 @@ import { MobileCheckLoadTonnageRoute } from "./presentation/routes/mobile/check-
 import { MobileMachineCheckRoute } from "./presentation/routes/mobile/machine-check-route";
 import { MobileResumeCheckRoute } from "./presentation/routes/mobile/resume-check-route";
 import { MobileReviewRoute } from "./presentation/routes/mobile/review-route";
+import { MobileApprovalRoute } from "./presentation/routes/mobile/approval-route";
 
 // Domain Repository
 import { UserRepository } from "@/domain/service/user-repository";
@@ -48,6 +49,7 @@ import { MobileCheckLoadTonnageService } from "./services/mobile/check-load-tonn
 import { MobileMachineCheckService } from "./services/mobile/machine-check-service";
 import { MobileResumeCheckService } from "./services/mobile/resume-check-service";
 import { MobileReviewService } from "./services/mobile/review-service";
+import { MobileApprovalService } from "./services/mobile/approval-service";
 
 // Controller
 import UserController from "@/presentation/controllers/user-controller";
@@ -61,6 +63,7 @@ import { MobileCheckLoadTonnageController } from "./presentation/controllers/mob
 import { MobileMachineCheckController } from "./presentation/controllers/mobile/machine-check-controller";
 import { MobileResumeCheckController } from "./presentation/controllers/mobile/resume-check-controller";
 import { MobileReviewController } from "./presentation/controllers/mobile/review-controller";
+import { MobileApprovalController } from "./presentation/controllers/mobile/approval-controller";
 
 //Middleware
 import { MobileAuthMiddleware } from "./presentation/middleware/auth-middleware";
@@ -90,6 +93,7 @@ container.bind<MobileCheckLoadTonnageRoute>(MobileCheckLoadTonnageRoute).toSelf(
 container.bind<MobileMachineCheckRoute>(MobileMachineCheckRoute).toSelf().inSingletonScope();
 container.bind<MobileResumeCheckRoute>(MobileResumeCheckRoute).toSelf().inSingletonScope();
 container.bind<MobileReviewRoute>(MobileReviewRoute).toSelf().inSingletonScope();
+container.bind<MobileApprovalRoute>(MobileApprovalRoute).toSelf().inSingletonScope();
 
 // Service Layer
 container.bind(TYPES.MobileAuthService).to(MobileAuthService);
@@ -103,6 +107,7 @@ container.bind(TYPES.MobileCheckLoadTonnageService).to(MobileCheckLoadTonnageSer
 container.bind(TYPES.MobileMachineCheckService).to(MobileMachineCheckService);
 container.bind(TYPES.MobileResumeCheckService).to(MobileResumeCheckService);
 container.bind(TYPES.MobileReviewService).to(MobileReviewService);
+container.bind(TYPES.MobileApprovalService).to(MobileApprovalService);
 
 // Controller
 container.bind(UserController).toSelf();
@@ -116,6 +121,7 @@ container.bind(MobileCheckLoadTonnageController).toSelf();
 container.bind(MobileMachineCheckController).toSelf();
 container.bind(MobileResumeCheckController).toSelf();
 container.bind(MobileReviewController).toSelf();
+container.bind(MobileApprovalController).toSelf();
 
 // Middleware
 container.bind(MobileAuthMiddleware).toSelf();
