@@ -4,9 +4,7 @@ import { GeneralDataRepository } from "@/domain/service/general-data-repository"
 import { ResumeCheckRepository } from "@/domain/service/resume-check-repository";
 import { TYPES } from "@/types";
 import { inject, injectable } from "inversify";
-// import fs from "fs";
-// import { basename } from "path";
-// import { createId } from "@paralleldrive/cuid2";
+import { FileSystem } from "@/infrastructure/file-system";
 
 @injectable()
 export class MobileResumeCheckService {
@@ -16,13 +14,12 @@ export class MobileResumeCheckService {
     ) {}
     async store(props: IResumeCheck): Promise<IResumeCheck> {
         const generalData = await this._generalDataRepo.findById(props.generalDataId);
-        // if (typeof props.photoPath === "object") {
-        //     const uploadedFile = fs.writeFileSync(
-        //         `${basename}/storage/mobile-resume/${createId()}${props.photoPath.name}`,
-        //         props.photoPath
-        //     );
-        // }
-        const created = await this._resumeCheckRepo.store(ResumeCheck.create(props));
+        const resumeCheck = ResumeCheck.create(props);
+        if (typeof props.photoPath === "object") {
+            const photoPath = FileSystem.store(props.photoPath, "resume-check");
+            resumeCheck.photoPath = photoPath;
+        }
+        const created = await this._resumeCheckRepo.store(resumeCheck);
         generalData.lastStep = EGeneralDataLastStep.RESUME_CHECK;
         await this._generalDataRepo.update(generalData);
         return created.unmarshal();

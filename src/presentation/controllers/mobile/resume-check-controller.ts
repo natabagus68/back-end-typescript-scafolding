@@ -10,7 +10,7 @@ import { inject, injectable } from "inversify";
 export class MobileResumeCheckController {
     constructor(@inject(TYPES.MobileResumeCheckService) private _resumeCheckService: MobileResumeCheckService) {}
     public async store(req: AuthRequest, res: Response): Promise<Response> {
-        const validatedReq = mobileResumeCheckCreateSchema.safeParse(req.body);
+        const validatedReq = mobileResumeCheckCreateSchema.safeParse({ ...req.body, photoPath: req.file });
         if (!validatedReq.success) {
             throw new AppError({
                 statusCode: HttpCode.VALIDATION_ERROR,

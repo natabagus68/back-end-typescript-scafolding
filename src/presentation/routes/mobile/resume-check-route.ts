@@ -4,11 +4,10 @@ import { MobileResumeCheckController } from "@/presentation/controllers/mobile/r
 import { MobileAuthMiddleware } from "@/presentation/middleware/auth-middleware";
 import { Router } from "express";
 import { injectable } from "inversify";
-import multer, { memoryStorage } from "multer";
+import multer from "multer";
 
 const tmpUploadedFiles = multer({
     dest: "tmp_uploaded_files/",
-    storage: memoryStorage(),
 });
 
 @injectable()

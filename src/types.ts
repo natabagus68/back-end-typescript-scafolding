@@ -29,6 +29,7 @@ const TYPES = {
     MobileResumeCheckService: Symbol.for("MobileResumeCheckService"),
     MobileReviewService: Symbol.for("MobileReviewService"),
     MobileApprovalService: Symbol.for("MobileApprovalService"),
+    MobileNotificationService: Symbol.for("MobileNotificationService"),
 };
 
 export { TYPES };
