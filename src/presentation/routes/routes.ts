@@ -21,7 +21,6 @@ export class Routes {
         private mobileInspectionFormRoute: MobileInspectionFormRoute,
         private mobileAccuracyCheckRoute: MobileAccuracyCheckRoute,
         private mobileCheckLoadTonnageRoute: MobileCheckLoadTonnageRoute,
-,
         private mobileMachineCheckRoute: MobileMachineCheckRoute
     ) {}
 

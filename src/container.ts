@@ -65,6 +65,9 @@ import { MobileAuthMiddleware } from "./presentation/middleware/auth-middleware"
 // Bootstrap / kernel
 import { IServer, Server } from "@/presentation/server";
 import { ResumeCheckRepository } from "./domain/service/resume-check-repository";
+import { AccuracyCheckRepository } from "./domain/service/accuracy-check-repository";
+import { CheckLoadTonnageRepository } from "./domain/service/check-load-tonnage-repository";
+import { MachineCheckRepository } from "./domain/service/machine-check-repository";
 
 const container = new Container();
 
