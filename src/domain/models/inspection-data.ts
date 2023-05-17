@@ -24,14 +24,14 @@ export class InspectionData extends Entity<IInspectionData> {
             id: this.id,
             name: this.name,
             order: this.order,
-            items: this.items,
+            items: this.items.map(item => item.unmarshal()),
             generalDataId: this.generalDataId,
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
         };
     }
-    get id(): undefined | string {
-        return this.props.id;
+    get id(): string {
+        return this._id;
     }
     get name(): string {
         return this.props.name;

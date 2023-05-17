@@ -8,7 +8,9 @@ import { inject, injectable } from "inversify";
 
 @injectable()
 export class MobileInspectionFormController {
-    constructor(@inject(TYPES.MobileInspectionFormService) private _inspectionFormService: MobileInspectionFormService) {}
+    constructor(
+        @inject(TYPES.MobileInspectionFormService) private _inspectionFormService: MobileInspectionFormService
+    ) {}
     public async getForm(req: AuthRequest, res: Response): Promise<Response> {
         const data = await this._inspectionFormService.getForm();
         return res.json({
@@ -26,7 +28,9 @@ export class MobileInspectionFormController {
                 data: validatedData.error.flatten().fieldErrors,
             });
         }
-        const createdData = await this._inspectionFormService.storeData(validatedData.data.inspectionData);
+        const createdData = await this._inspectionFormService.storeData(
+            validatedData.data.map((item, i) => ({ ...item, order: i + 1 }))
+        );
         return res.json({
             message: "success",
             data: createdData,

@@ -9,6 +9,9 @@ import { InspectionForm } from "./inspection-form-sequelize";
 import { InspectionFormItem } from "./inspection-form-item-sequelize";
 import { AccuracyCheck } from "./accuracy-check-sequelize";
 import { CheckLoadTonnage } from "./check-load-tonnage-sequelize";
+import { InspectionData } from "./inspection-data-sequelize";
+import { InspectionDataItem } from "./inspection-data-item-sequelize";
+import { MachineCheck } from "./machine-check-sequelize";
 
 // Core Model Synchronisation
 User.sync({ alter: { drop: false } });
@@ -17,12 +20,17 @@ User.sync({ alter: { drop: false } });
 GeneralData.sync({ alter: { drop: false } });
 Customer.sync({ alter: { drop: false } });
 MachineData.sync({ alter: { drop: false } });
+MachineCheck.sync({ alter: { drop: false } });
 (async () => {
     await InspectionForm.sync({ alter: { drop: false } });
     InspectionFormItem.sync({ alter: { drop: false } });
 })();
 AccuracyCheck.sync({ alter: { drop: false } });
 CheckLoadTonnage.sync({ alter: { drop: false } });
+(async () => {
+    await InspectionData.sync({ alter: { drop: false } });
+    InspectionDataItem.sync({ alter: { drop: false } });
+})();
 
 // Core Model Assosiation
 // User.belongsToMany(Role, {
@@ -44,6 +52,10 @@ GeneralData.hasMany(CheckLoadTonnage, {
     foreignKey: "general_data_id",
     as: "load_tonnages",
 });
+InspectionData.hasMany(InspectionDataItem, {
+    foreignKey: "inspection_data_id",
+    as: "items",
+});
 
 // Core Model Export
 export * from "./user-sequelize";
@@ -55,3 +67,6 @@ export * from "./inspection-form-sequelize";
 export * from "./inspection-form-item-sequelize";
 export * from "./accuracy-check-sequelize";
 export * from "./check-load-tonnage-sequelize";
+export * from "./inspection-data-sequelize";
+export * from "./inspection-data-item-sequelize";
+export * from "./machine-check-sequelize";

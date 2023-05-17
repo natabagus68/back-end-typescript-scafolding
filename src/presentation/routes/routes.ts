@@ -8,6 +8,7 @@ import { MobileMachineDataRoute } from "./mobile/machine-data-route";
 import { MobileInspectionFormRoute } from "./mobile/inspection-form-route";
 import { MobileAccuracyCheckRoute } from "./mobile/accuracy-check-route";
 import { MobileCheckLoadTonnageRoute } from "./mobile/check-load-tonnage-route";
+import { MobileMachineCheckRoute } from "./mobile/machine-check-route";
 
 @injectable()
 export class Routes {
@@ -20,7 +21,7 @@ export class Routes {
         private mobileInspectionFormRoute: MobileInspectionFormRoute,
         private mobileAccuracyCheckRoute: MobileAccuracyCheckRoute,
         private mobileCheckLoadTonnageRoute: MobileCheckLoadTonnageRoute,
-
+        private mobileMachineCheckRoute: MobileMachineCheckRoute
     ) {}
 
     public setRoutes(router: Router) {
@@ -32,5 +33,6 @@ export class Routes {
         this.mobileInspectionFormRoute.setRoutes(router);
         this.mobileAccuracyCheckRoute.setRoutes(router);
         this.mobileCheckLoadTonnageRoute.setRoutes(router);
+        this.mobileMachineCheckRoute.setRoutes(router);
     }
 }

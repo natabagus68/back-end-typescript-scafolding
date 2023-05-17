@@ -22,6 +22,21 @@ export class InspectionDataItem extends Entity<IInspectionDataItem> {
     static create(props: IInspectionDataItem): InspectionDataItem {
         return new InspectionDataItem(props);
     }
+    public unmarshal(): IInspectionDataItem {
+        return {
+            id: this.id,
+            name: this.name,
+            determination: this.determination,
+            hasNote: this.hasNote,
+            notes: this.notes,
+            backlash: this.backlash,
+            r: this.r,
+            s: this.s,
+            inspectionDataId: this.inspectionDataId,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+        };
+    }
     get id(): string {
         return this._id;
     }
