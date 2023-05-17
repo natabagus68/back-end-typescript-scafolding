@@ -4,12 +4,12 @@ import { TYPES } from "@/types";
 import { inject, injectable } from "inversify";
 import bcrypt from "bcrypt";
 import fs from "fs-extra";
+import { ITableData } from "@/domain/models/table-data";
+import { TDataTableParam } from "@/domain/service/types";
 
 @injectable()
 export class UserService {
-    constructor(
-        @inject(TYPES.UserRepository) private _repository: UserRepository
-    ) {}
+    constructor(@inject(TYPES.UserRepository) private _repository: UserRepository) {}
 
     public async findAll(): Promise<IUser[]> {
         const users = await this._repository.findAll();
@@ -60,5 +60,10 @@ export class UserService {
     public async destroy(id: string): Promise<boolean> {
         const user = await this._repository.destroy(id);
         return user;
+    }
+
+    public async getDataTable(param: TDataTableParam): Promise<ITableData<IUser>> {
+        const dataTable = await this._repository.getDataTable(param);
+        return dataTable.unmarshal();
     }
 }

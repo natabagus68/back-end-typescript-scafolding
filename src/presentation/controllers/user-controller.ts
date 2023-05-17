@@ -3,10 +3,8 @@ import { UserService } from "@/services/user-service";
 import { TYPES } from "@/types";
 import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
-import {
-    userCreateScheme,
-    userUpdateScheme,
-} from "../validation/user-validation";
+import { userCreateScheme, userDataTableScheme, userUpdateScheme } from "../validation/user-validation";
+import { AuthRequest } from "../utils/types/jwt-request";
 
 @injectable()
 export default class UserController {
@@ -14,9 +12,7 @@ export default class UserController {
 
     public async listUsers(req: Request, res: Response): Promise<Response> {
         const users = await this._userService.findAll();
-        return res
-            .status(200)
-            .send({ message: "success", data: users.map((val) => val) });
+        return res.status(200).send({ message: "success", data: users.map((val) => val) });
     }
 
     public async findUserById(req: Request, res: Response): Promise<Response> {
@@ -68,5 +64,21 @@ export default class UserController {
     public async deleteUser(req: Request, res: Response): Promise<Response> {
         const user = await this._userService.destroy(req.params.id);
         return res.status(200).send(user);
+    }
+
+    public async getDataTable(req: AuthRequest, res: Response): Promise<Response> {
+        const validatedReq = userDataTableScheme.safeParse(req.query);
+        if (!validatedReq.success) {
+            throw new AppError({
+                statusCode: HttpCode.VALIDATION_ERROR,
+                description: "Validation Error",
+                data: validatedReq.error.flatten().fieldErrors,
+            });
+        }
+        const users = await this._userService.getDataTable(validatedReq.data);
+        return res.json({
+            message: "success",
+            data: users,
+        });
     }
 }
