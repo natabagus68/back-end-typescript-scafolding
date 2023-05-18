@@ -38,10 +38,7 @@ export class MobileApprovalController {
                 data: validatedReq.error.flatten().fieldErrors,
             });
         }
-        const approvalData = await this._approvalService.findAll({
-            page: 1,
-            limit: 10,
-        });
+        const approvalData = await this._approvalService.findAll(validatedReq.data);
         return res.json({
             message: "success",
             data: approvalData,

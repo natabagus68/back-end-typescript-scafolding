@@ -326,8 +326,8 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
     }
     async getDataTable(param: TDataTableParam): Promise<TableData<IGeneralData>> {
         const generalData = await GeneralDataDB.findAll({
-            attributes: ["id", "customer_id", "inspector_id", "person_in_charge", "inspector_date", "submitted_at", "last_step"],
-            where: { submitted_at: { [Op.ne]: null } },
+            // attributes: ["id", "customer_id", "inspector_id", "person_in_charge", "inspector_date", "submitted_at", "last_step"],
+            // where: { submitted_at: { [Op.ne]: null } },
             include: [
                 { model: CustomerDB, as: "customer" }
             ],
@@ -349,6 +349,17 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
                 inspectionDate: item.inspection_date,
                 inspectorId: item.inspector_id,
                 lastStep: item.last_step,
+                customer: {
+                    customerName: item.customer.customer_name,
+                    address: item.customer.address,
+                    phone: item.customer.phone,
+                    parallelism1Path: item.customer.parallelism1_path,
+                    parallelism2Path: item.customer.parallelism2_path,
+                    gibClearance1Path: item.customer.gib_clearance1_path,
+                    gibClearance2Path: item.customer.gib_clearance2_path,
+                    perpendicularity1Path: item.customer.perpendicularity1_path,
+                    perpendicularity2Path: item.customer.perpendicularity2_path,
+                }
             })),
         });
     }
