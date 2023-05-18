@@ -1,5 +1,7 @@
-import { EGeneralDataLastStep, GeneralData } from "@/domain/models/general-data";
+import { EGeneralDataLastStep, GeneralData, IGeneralData } from "@/domain/models/general-data";
+import { TableData } from "@/domain/models/table-data";
 import { GeneralDataRepository } from "@/domain/service/general-data-repository";
+import { TDataTableParam } from "@/domain/service/types";
 import {
     AccuracyCheck as AccuracyCheckDB,
     Customer as CustomerDB,
@@ -7,8 +9,10 @@ import {
     InspectionData as InspectionDataDB,
     InspectionDataItem as InspectionDataItemDB,
     MachineCheck as MachineCheckDB,
+    MachineData as MachineDatumDB,
 } from "@/infrastructure/database/models";
 import { ResumeCheck as ResumeCheckDB } from "@/infrastructure/database/models/resume-check-sequelize";
+import { sequelize } from "@/infrastructure/database/sequelize";
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
 import { injectable } from "inversify";
 import { Op } from "sequelize";
@@ -320,6 +324,111 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
             submittedAt: created.getDataValue("submitted_at"),
             approvedAt: created.getDataValue("approved_at"),
             approvedBy: created.getDataValue("approved_by"),
+        });
+    }
+    async getApprovalList(param: TDataTableParam): Promise<TableData<IGeneralData>> {
+        const generalData = await GeneralDataDB.findAll({
+            attributes: [
+                "id",
+                "customer_id",
+                "inspector_id",
+                "person_in_charge",
+                "inspection_date",
+                "submitted_at",
+                "last_step",
+                [
+                    sequelize.literal("(SELECT users.fullname FROM users WHERE users.id = inspector_id)"),
+                    "inspector_name",
+                ],
+            ],
+            where: { submitted_at: { [Op.ne]: null } },
+            include: [
+                { model: CustomerDB, as: "customer" },
+                { model: MachineDatumDB, as: "machineDatum" },
+            ],
+            order: [["inspection_date", "DESC"]],
+            limit: param.limit,
+            offset: (param.page || 1) > 1 ? (param.limit || 10) * ((param.page || 1) - 1) : 0,
+        });
+        return TableData.create({
+            page: param.page || 1,
+            limit: param.limit || 10,
+            search: param.search || "",
+            data: generalData.map((item) => ({
+                id: item.getDataValue("id"),
+                customerId: item.getDataValue("customer_id"),
+                personInCharge: item.getDataValue("person_in_charge"),
+                inspectionDate: item.getDataValue("inspection_date"),
+                inspectorId: item.getDataValue("inspector_id"),
+                lastStep: item.getDataValue("last_step"),
+                inspectorName: item.getDataValue("inspector_name"),
+                machineDatum: item.getDataValue("machineDatum"),
+                customer: {
+                    customerName: item.customer.customer_name,
+                    address: item.customer.address,
+                    phone: item.customer.phone,
+                    parallelism1Path: item.customer.parallelism1_path,
+                    parallelism2Path: item.customer.parallelism2_path,
+                    gibClearance1Path: item.customer.gib_clearance1_path,
+                    gibClearance2Path: item.customer.gib_clearance2_path,
+                    perpendicularity1Path: item.customer.perpendicularity1_path,
+                    perpendicularity2Path: item.customer.perpendicularity2_path,
+                },
+            })),
+        });
+    }
+    async getHistoryReportList(param: TDataTableParam, start: Date, end: Date): Promise<TableData<IGeneralData>> {
+        const generalData = await GeneralDataDB.findAll({
+            attributes: [
+                "id",
+                "customer_id",
+                "inspector_id",
+                "person_in_charge",
+                "inspection_date",
+                "submitted_at",
+                "last_step",
+                [
+                    sequelize.literal("(SELECT users.fullname FROM users WHERE users.id = inspector_id)"),
+                    "inspector_name",
+                ],
+            ],
+            where:
+                !start && !end
+                    ? { approved_at: { [Op.ne]: null } }
+                    : { approved_at: { [Op.ne]: null }, inspection_date: { [Op.between]: [start, end] } },
+            include: [
+                { model: CustomerDB, as: "customer" },
+                { model: MachineDatumDB, as: "machineDatum" },
+            ],
+            order: [["inspection_date", "DESC"]],
+            limit: param.limit,
+            offset: (param.page || 1) > 1 ? (param.limit || 10) * ((param.page || 1) - 1) : 0,
+        });
+        return TableData.create({
+            page: param.page || 1,
+            limit: param.limit || 10,
+            search: param.search || "",
+            data: generalData.map((item) => ({
+                id: item.getDataValue("id"),
+                customerId: item.getDataValue("customer_id"),
+                personInCharge: item.getDataValue("person_in_charge"),
+                inspectionDate: item.getDataValue("inspection_date"),
+                inspectorId: item.getDataValue("inspector_id"),
+                lastStep: item.getDataValue("last_step"),
+                inspectorName: item.getDataValue("inspector_name"),
+                machineDatum: item.getDataValue("machineDatum"),
+                customer: {
+                    customerName: item.customer.customer_name,
+                    address: item.customer.address,
+                    phone: item.customer.phone,
+                    parallelism1Path: item.customer.parallelism1_path,
+                    parallelism2Path: item.customer.parallelism2_path,
+                    gibClearance1Path: item.customer.gib_clearance1_path,
+                    gibClearance2Path: item.customer.gib_clearance2_path,
+                    perpendicularity1Path: item.customer.perpendicularity1_path,
+                    perpendicularity2Path: item.customer.perpendicularity2_path,
+                },
+            })),
         });
     }
 }

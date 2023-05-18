@@ -15,8 +15,10 @@ import { MobileCheckLoadTonnageRoute } from "./presentation/routes/mobile/check-
 import { MobileMachineCheckRoute } from "./presentation/routes/mobile/machine-check-route";
 import { MobileResumeCheckRoute } from "./presentation/routes/mobile/resume-check-route";
 import { MobileReviewRoute } from "./presentation/routes/mobile/review-route";
+import { MobileApprovalRoute } from "./presentation/routes/mobile/approval-route";
 import { MobileNotificationRoute } from "./presentation/routes/mobile/notification-route";
 import { MobileProfileRoute } from "./presentation/routes/mobile/profile-route";
+import { MobileHistoryReportRoute } from "./presentation/routes/mobile/history-report-route";
 
 // Domain Repository
 import { UserRepository } from "@/domain/service/user-repository";
@@ -25,10 +27,6 @@ import { CustomerRepository } from "./domain/service/customer-repository";
 import { MachineDataRepository } from "./domain/service/machine-data-repository";
 import { InspectionFormRepository } from "./domain/service/inspection-form-repository";
 import { InspectionDataRepository } from "./domain/service/inspection-data-repository";
-import { ResumeCheckRepository } from "./domain/service/resume-check-repository";
-import { AccuracyCheckRepository } from "./domain/service/accuracy-check-repository";
-import { CheckLoadTonnageRepository } from "./domain/service/check-load-tonnage-repository";
-import { MachineCheckRepository } from "./domain/service/machine-check-repository";
 import { NotificationRepository } from "./domain/service/notification-repository";
 
 // Domain Repository / Infrastructur implementation
@@ -56,6 +54,8 @@ import { MobileCheckLoadTonnageService } from "./services/mobile/check-load-tonn
 import { MobileMachineCheckService } from "./services/mobile/machine-check-service";
 import { MobileResumeCheckService } from "./services/mobile/resume-check-service";
 import { MobileReviewService } from "./services/mobile/review-service";
+import { MobileApprovalService } from "./services/mobile/approval-service";
+import { MobileHistoryReportService } from "./services/mobile/history-report-service";
 import { MobileNotificationService } from "./services/mobile/notification-service";
 import { MobileProfileService } from "./services/mobile/profile-service";
 
@@ -71,14 +71,20 @@ import { MobileCheckLoadTonnageController } from "./presentation/controllers/mob
 import { MobileMachineCheckController } from "./presentation/controllers/mobile/machine-check-controller";
 import { MobileResumeCheckController } from "./presentation/controllers/mobile/resume-check-controller";
 import { MobileReviewController } from "./presentation/controllers/mobile/review-controller";
+import { MobileApprovalController } from "./presentation/controllers/mobile/approval-controller";
 import { MobileNotificationController } from "./presentation/controllers/mobile/notification-controller";
 import { MobileProfileController } from "./presentation/controllers/mobile/profile-controller";
+import { MobileHistoryReportController } from "./presentation/controllers/mobile/history-report-controller";
 
 //Middleware
 import { MobileAuthMiddleware } from "./presentation/middleware/auth-middleware";
 
 // Bootstrap / kernel
 import { IServer, Server } from "@/presentation/server";
+import { ResumeCheckRepository } from "./domain/service/resume-check-repository";
+import { AccuracyCheckRepository } from "./domain/service/accuracy-check-repository";
+import { CheckLoadTonnageRepository } from "./domain/service/check-load-tonnage-repository";
+import { MachineCheckRepository } from "./domain/service/machine-check-repository";
 
 const container = new Container();
 
@@ -98,6 +104,8 @@ container.bind<MobileCheckLoadTonnageRoute>(MobileCheckLoadTonnageRoute).toSelf(
 container.bind<MobileMachineCheckRoute>(MobileMachineCheckRoute).toSelf().inSingletonScope();
 container.bind<MobileResumeCheckRoute>(MobileResumeCheckRoute).toSelf().inSingletonScope();
 container.bind<MobileReviewRoute>(MobileReviewRoute).toSelf().inSingletonScope();
+container.bind<MobileApprovalRoute>(MobileApprovalRoute).toSelf().inSingletonScope();
+container.bind<MobileHistoryReportRoute>(MobileHistoryReportRoute).toSelf().inSingletonScope();
 container.bind<MobileNotificationRoute>(MobileNotificationRoute).toSelf().inSingletonScope();
 container.bind<MobileProfileRoute>(MobileProfileRoute).toSelf().inSingletonScope();
 
@@ -113,6 +121,8 @@ container.bind(TYPES.MobileCheckLoadTonnageService).to(MobileCheckLoadTonnageSer
 container.bind(TYPES.MobileMachineCheckService).to(MobileMachineCheckService);
 container.bind(TYPES.MobileResumeCheckService).to(MobileResumeCheckService);
 container.bind(TYPES.MobileReviewService).to(MobileReviewService);
+container.bind(TYPES.MobileApprovalService).to(MobileApprovalService);
+container.bind(TYPES.MobileHistoryReportService).to(MobileHistoryReportService);
 container.bind(TYPES.MobileNotificationService).to(MobileNotificationService);
 container.bind(TYPES.MobileProfileService).to(MobileProfileService);
 
@@ -128,6 +138,8 @@ container.bind(MobileCheckLoadTonnageController).toSelf();
 container.bind(MobileMachineCheckController).toSelf();
 container.bind(MobileResumeCheckController).toSelf();
 container.bind(MobileReviewController).toSelf();
+container.bind(MobileApprovalController).toSelf();
+container.bind(MobileHistoryReportController).toSelf();
 container.bind(MobileNotificationController).toSelf();
 container.bind(MobileProfileController).toSelf();
 

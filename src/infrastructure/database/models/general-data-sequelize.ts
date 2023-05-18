@@ -2,8 +2,6 @@ import {
     Association,
     CreationOptional,
     DataTypes,
-    InferAttributes,
-    InferCreationAttributes,
     Model,
     NonAttribute,
 } from "sequelize";
@@ -14,6 +12,7 @@ import { ResumeCheck } from "./resume-check-sequelize";
 import { AccuracyCheck } from "./accuracy-check-sequelize";
 import { CheckLoadTonnage } from "./check-load-tonnage-sequelize";
 import { InspectionData } from "./inspection-data-sequelize";
+import { MachineData } from "./machine-data-sequelize";
 
 export class GeneralData extends Model {
     declare id: CreationOptional<string>;
@@ -21,6 +20,7 @@ export class GeneralData extends Model {
     declare person_in_charge: string;
     declare inspection_date: Date;
     declare inspector_id: string;
+    declare inspector_name: NonAttribute<string | undefined>;
     declare submitted_at: CreationOptional<Date | null>;
     declare approved_at: CreationOptional<Date | null>;
     declare approved_by: CreationOptional<string | null>;
@@ -30,6 +30,7 @@ export class GeneralData extends Model {
     declare deleted_at: CreationOptional<Date | null>;
     declare customer: NonAttribute<Customer>;
     declare inspectionDatum: NonAttribute<InspectionData[]>;
+    declare machineDatum: NonAttribute<MachineData>;
     declare machineCheck: NonAttribute<MachineCheck>;
     declare resumeCheck: NonAttribute<ResumeCheck>;
     declare accuracyCheck: NonAttribute<AccuracyCheck>;

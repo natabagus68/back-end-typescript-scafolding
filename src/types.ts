@@ -29,7 +29,9 @@ const TYPES = {
     MobileMachineCheckService: Symbol.for("MobileMachineCheckService"),
     MobileResumeCheckService: Symbol.for("MobileResumeCheckService"),
     MobileReviewService: Symbol.for("MobileReviewService"),
+    MobileApprovalService: Symbol.for("MobileApprovalService"),
     MobileNotificationService: Symbol.for("MobileNotificationService"),
+    MobileHistoryReportService: Symbol.for("MobileHistoryReportService"),
     MobileProfileService: Symbol.for("MobileProfileService"),
 };
 

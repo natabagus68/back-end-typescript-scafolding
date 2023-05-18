@@ -212,5 +212,5 @@ AccuracyCheck.init(
         created_at: DataTypes.DATE,
         updated_at: { type: DataTypes.DATE, allowNull: true },
     },
-    { sequelize, underscored: true, tableName: "accuracy_check" }
+    { sequelize, underscored: true, tableName: "accuracy_checks" }
 );

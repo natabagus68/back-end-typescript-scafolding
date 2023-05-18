@@ -10,7 +10,9 @@ import { MobileAccuracyCheckRoute } from "./mobile/accuracy-check-route";
 import { MobileCheckLoadTonnageRoute } from "./mobile/check-load-tonnage-route";
 import { MobileMachineCheckRoute } from "./mobile/machine-check-route";
 import { MobileReviewRoute } from "./mobile/review-route";
+import { MobileApprovalRoute } from "./mobile/approval-route";
 import { MobileResumeCheckRoute } from "./mobile/resume-check-route";
+import { MobileHistoryReportRoute } from "./mobile/history-report-route";
 import { MobileNotificationRoute } from "./mobile/notification-route";
 import { MobileProfileRoute } from "./mobile/profile-route";
 
@@ -27,7 +29,9 @@ export class Routes {
         private mobileCheckLoadTonnageRoute: MobileCheckLoadTonnageRoute,
         private mobileMachineCheckRoute: MobileMachineCheckRoute,
         private mobileReviewRoute: MobileReviewRoute,
+        private mobileApprovalRoute: MobileApprovalRoute,
         private mobileResumeCheckRoute: MobileResumeCheckRoute,
+        private mobileHistoryReportRoute: MobileHistoryReportRoute,
         private mobileNotificationRoute: MobileNotificationRoute,
         private mobileProfileRoute: MobileProfileRoute
     ) {}
@@ -43,7 +47,9 @@ export class Routes {
         this.mobileCheckLoadTonnageRoute.setRoutes(router);
         this.mobileMachineCheckRoute.setRoutes(router);
         this.mobileReviewRoute.setRoutes(router);
+        this.mobileApprovalRoute.setRoutes(router);
         this.mobileResumeCheckRoute.setRoutes(router);
+        this.mobileHistoryReportRoute.setRoutes(router);
         this.mobileNotificationRoute.setRoutes(router);
         this.mobileProfileRoute.setRoutes(router);
     }
