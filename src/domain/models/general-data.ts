@@ -4,6 +4,7 @@ import { Entity } from "./entity";
 import { IInspectionData, InspectionData } from "./inspection-data";
 import { IMachineCheck, MachineCheck } from "./machine-check";
 import { IResumeCheck, ResumeCheck } from "./resume-check";
+import { IMachineData, MachineData } from "./machine-data";
 
 export enum EGeneralDataLastStep {
     GENERAL_DATA = "GENERAL_DATA",
@@ -23,12 +24,14 @@ export interface IGeneralData {
     personInCharge: string;
     inspectionDate: Date;
     inspectorId: string;
+    inspectorName?: string;
     lastStep: EGeneralDataLastStep | string;
     submittedAt?: Date | null;
     approvedAt?: Date | null;
     approvedBy?: string | null;
     customer?: ICustomer;
     inspectionDatum?: IInspectionData[];
+    machineDatum?: IMachineData;
     machineCheck?: IMachineCheck;
     accuracyCheck?: IAccuracyCheck;
     resumeCheck?: IResumeCheck;
@@ -52,6 +55,7 @@ export class GeneralData extends Entity<IGeneralData> {
             personInCharge: this.personInCharge,
             inspectionDate: this.inspectionDate,
             inspectorId: this.inspectorId,
+            inspectorName: this.inspectorId,
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
             deletedAt: this.deletedAt,
@@ -62,6 +66,7 @@ export class GeneralData extends Entity<IGeneralData> {
             customer: this.customer?.unmarshal(),
             inspectionDatum: this.inspectionDatum?.map((item) => item.unmarshal()),
             machineCheck: this.machineCheck?.unmarshal(),
+            machineDatum: this.machineDatum?.unmarshall(),
             accuracyCheck: this.accuracyCheck?.unmarshal(),
             resumeCheck: this.resumeCheck?.unmarshal(),
         };
@@ -80,6 +85,9 @@ export class GeneralData extends Entity<IGeneralData> {
     }
     get inspectorId(): string {
         return this.props.inspectorId;
+    }
+    get inspectorName(): string | undefined {
+        return this.props.inspectorName;
     }
     get createdAt(): undefined | Date {
         return this.props.createdAt;
@@ -116,6 +124,9 @@ export class GeneralData extends Entity<IGeneralData> {
     }
     get inspectionDatum(): undefined | InspectionData[] {
         return this.props.inspectionDatum ? this.props.inspectionDatum.map((item) => InspectionData.create(item)) : [];
+    }
+    get machineDatum(): undefined | MachineData {
+        return this.props.machineDatum ? MachineData.create(this.props.machineDatum) : undefined;
     }
     get customer(): undefined | Customer {
         return this.props.customer ? Customer.create(this.props.customer) : undefined;

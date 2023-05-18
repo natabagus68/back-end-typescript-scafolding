@@ -3,7 +3,6 @@ import { InspectionFormRepository } from "@/domain/service/inspection-form-repos
 import { InspectionForm } from "@/domain/models/inspection-form";
 import { InspectionForm as InspectionFormDB } from "@/infrastructure/database/models";
 import { InspectionFormItem as InspectionFormItemDB } from "@/infrastructure/database/models";
-import { InspectionFormItem } from "@/domain/models/inspection-form-item";
 
 @injectable()
 export class InspectionFormSequelizeRepository implements InspectionFormRepository {

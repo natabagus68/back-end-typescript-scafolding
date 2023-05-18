@@ -58,6 +58,10 @@ GeneralData.hasOne(MachineCheck, {
     foreignKey: "general_data_id",
     as: "machineCheck",
 });
+GeneralData.hasOne(MachineData, {
+    foreignKey: "general_data_id",
+    as: "machineDatum",
+});
 GeneralData.hasOne(ResumeCheck, {
     foreignKey: "general_data_id",
     as: "resumeCheck",

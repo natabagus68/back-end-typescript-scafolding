@@ -50,6 +50,7 @@ import { MobileMachineCheckService } from "./services/mobile/machine-check-servi
 import { MobileResumeCheckService } from "./services/mobile/resume-check-service";
 import { MobileReviewService } from "./services/mobile/review-service";
 import { MobileApprovalService } from "./services/mobile/approval-service";
+import { MobileHistoryReportService } from "./services/mobile/history-report-service";
 
 // Controller
 import UserController from "@/presentation/controllers/user-controller";
@@ -74,6 +75,8 @@ import { ResumeCheckRepository } from "./domain/service/resume-check-repository"
 import { AccuracyCheckRepository } from "./domain/service/accuracy-check-repository";
 import { CheckLoadTonnageRepository } from "./domain/service/check-load-tonnage-repository";
 import { MachineCheckRepository } from "./domain/service/machine-check-repository";
+import { MobileHistoryReportController } from "./presentation/controllers/mobile/history-report-controller";
+import { MobileHistoryReportRoute } from "./presentation/routes/mobile/history-report-route";
 
 const container = new Container();
 
@@ -94,6 +97,7 @@ container.bind<MobileMachineCheckRoute>(MobileMachineCheckRoute).toSelf().inSing
 container.bind<MobileResumeCheckRoute>(MobileResumeCheckRoute).toSelf().inSingletonScope();
 container.bind<MobileReviewRoute>(MobileReviewRoute).toSelf().inSingletonScope();
 container.bind<MobileApprovalRoute>(MobileApprovalRoute).toSelf().inSingletonScope();
+container.bind<MobileHistoryReportRoute>(MobileHistoryReportRoute).toSelf().inSingletonScope();
 
 // Service Layer
 container.bind(TYPES.MobileAuthService).to(MobileAuthService);
@@ -108,6 +112,7 @@ container.bind(TYPES.MobileMachineCheckService).to(MobileMachineCheckService);
 container.bind(TYPES.MobileResumeCheckService).to(MobileResumeCheckService);
 container.bind(TYPES.MobileReviewService).to(MobileReviewService);
 container.bind(TYPES.MobileApprovalService).to(MobileApprovalService);
+container.bind(TYPES.MobileHistoryReportService).to(MobileHistoryReportService);
 
 // Controller
 container.bind(UserController).toSelf();
@@ -122,6 +127,7 @@ container.bind(MobileMachineCheckController).toSelf();
 container.bind(MobileResumeCheckController).toSelf();
 container.bind(MobileReviewController).toSelf();
 container.bind(MobileApprovalController).toSelf();
+container.bind(MobileHistoryReportController).toSelf();
 
 // Middleware
 container.bind(MobileAuthMiddleware).toSelf();

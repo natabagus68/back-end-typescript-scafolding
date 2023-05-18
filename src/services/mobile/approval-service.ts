@@ -10,7 +10,7 @@ import { inject, injectable } from "inversify";
 export class MobileApprovalService {
     constructor(@inject(TYPES.GeneralDataRepository) private _generalDataRepo: GeneralDataRepository) {}
     public async findAll(query: TDataTableParam): Promise<ITableData<IGeneralData>> {
-        const generalData = await this._generalDataRepo.getDataTable(query);
+        const generalData = await this._generalDataRepo.getApprovalList(query);
         return generalData.unmarshal();
     }
 
