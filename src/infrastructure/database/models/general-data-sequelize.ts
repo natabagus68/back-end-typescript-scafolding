@@ -13,6 +13,7 @@ import { AccuracyCheck } from "./accuracy-check-sequelize";
 import { CheckLoadTonnage } from "./check-load-tonnage-sequelize";
 import { InspectionData } from "./inspection-data-sequelize";
 import { MachineData } from "./machine-data-sequelize";
+import { User } from "./user-sequelize";
 
 export class GeneralData extends Model {
     declare id: CreationOptional<string>;
@@ -35,6 +36,7 @@ export class GeneralData extends Model {
     declare resumeCheck: NonAttribute<ResumeCheck>;
     declare accuracyCheck: NonAttribute<AccuracyCheck>;
     declare checkLoadTonnages: NonAttribute<CheckLoadTonnage[]>;
+    declare inspector: NonAttribute<User>;
     declare static associations: {
         customer: Association<GeneralData, Customer>;
         inspectionDatum: Association<GeneralData, InspectionData>;
@@ -42,6 +44,7 @@ export class GeneralData extends Model {
         resumeCheck: Association<GeneralData, ResumeCheck>;
         accuracyCheck: Association<GeneralData, AccuracyCheck>;
         checkLoadTonnages: Association<GeneralData, CheckLoadTonnage>;
+        inspector: Association<GeneralData, User>;
     };
 }
 

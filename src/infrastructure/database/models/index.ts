@@ -48,6 +48,10 @@ InspectionForm.hasMany(InspectionFormItem, {
     foreignKey: "inspection_form_id",
     as: "items",
 });
+GeneralData.belongsTo(User, {
+    foreignKey: "inspector_id",
+    as: "inspector",
+});
 GeneralData.belongsTo(Customer, {
     foreignKey: "customer_id",
     as: "customer",

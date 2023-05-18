@@ -9,5 +9,6 @@ export interface GeneralDataRepository {
     getHistoryReportList(param: TDataTableParam, start?: Date, end?: Date): Promise<TableData<IGeneralData>>;
     findByCustAndDate(customerId: string, date: Date): Promise<GeneralData | null>;
     findUnsubmittedByInspectorId(inspectorId: string): Promise<GeneralData>;
+    findUnapproveTable(param:TDataTableParam): Promise<TableData<IGeneralData>>;
     update(generalData: GeneralData): Promise<GeneralData>;
 }
