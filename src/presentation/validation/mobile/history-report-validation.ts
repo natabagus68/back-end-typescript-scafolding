@@ -1,14 +1,8 @@
 import { z } from "zod";
 
 export const historyReportScheme = z.object({
-    page: z
-        .number()
-        .nullish()
-        .transform((value) => value ?? undefined),
-    limit: z
-        .number()
-        .nullish()
-        .transform((value) => value ?? undefined),
+    page: z.preprocess((val) => Number(val), z.number()).nullish().transform((value) => value ?? undefined),
+    limit: z.preprocess((val) => Number(val), z.number()).nullish().transform((value) => value ?? undefined),
     search: z
         .string()
         .nullish()
