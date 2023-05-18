@@ -8,12 +8,8 @@ import { mobileLoginSchema } from "@/presentation/validation/mobile/auth-validat
 
 @injectable()
 export class MobileAuthService {
-    constructor(
-        @inject(TYPES.UserRepository) private _userRepo: UserRepository
-    ) {}
-    public async login(
-        creds: typeof mobileLoginSchema._output
-    ): Promise<IAuth> {
+    constructor(@inject(TYPES.UserRepository) private _userRepo: UserRepository) {}
+    public async login(creds: typeof mobileLoginSchema._output): Promise<IAuth> {
         const user = await this._userRepo.findByEmail(creds.email);
         if (!bcrypt.compareSync(creds.password, user.password || "")) {
             throw new AppError({
@@ -22,7 +18,7 @@ export class MobileAuthService {
             });
         }
         const auth = Auth.create({
-            user: user.unmarshal(),
+            user: { ...user.unmarshal(), password: undefined },
         });
         return auth.unmarshal();
     }
@@ -42,7 +38,7 @@ export class MobileAuthService {
             });
         }
         return Auth.create({
-            user: user.unmarshal(),
+            user: { ...user.unmarshal(), password: undefined },
             token: token,
         }).unmarshal();
     }

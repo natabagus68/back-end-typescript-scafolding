@@ -11,6 +11,8 @@ import { MobileCheckLoadTonnageRoute } from "./mobile/check-load-tonnage-route";
 import { MobileMachineCheckRoute } from "./mobile/machine-check-route";
 import { MobileReviewRoute } from "./mobile/review-route";
 import { MobileResumeCheckRoute } from "./mobile/resume-check-route";
+import { MobileNotificationRoute } from "./mobile/notification-route";
+import { MobileProfileRoute } from "./mobile/profile-route";
 
 @injectable()
 export class Routes {
@@ -25,7 +27,9 @@ export class Routes {
         private mobileCheckLoadTonnageRoute: MobileCheckLoadTonnageRoute,
         private mobileMachineCheckRoute: MobileMachineCheckRoute,
         private mobileReviewRoute: MobileReviewRoute,
-        private mobileResumeCheckRoute: MobileResumeCheckRoute
+        private mobileResumeCheckRoute: MobileResumeCheckRoute,
+        private mobileNotificationRoute: MobileNotificationRoute,
+        private mobileProfileRoute: MobileProfileRoute
     ) {}
 
     public setRoutes(router: Router) {
@@ -40,5 +44,7 @@ export class Routes {
         this.mobileMachineCheckRoute.setRoutes(router);
         this.mobileReviewRoute.setRoutes(router);
         this.mobileResumeCheckRoute.setRoutes(router);
+        this.mobileNotificationRoute.setRoutes(router);
+        this.mobileProfileRoute.setRoutes(router);
     }
 }

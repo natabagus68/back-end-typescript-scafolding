@@ -34,6 +34,7 @@ export class UserService {
                 fullname: _user.fullname,
                 isActive: _user.isActive,
                 avatarPath: _user.avatarPath,
+                role: _user.role,
             })
         );
         return user.unmarshal();
@@ -49,6 +50,7 @@ export class UserService {
                 fullname: _user.fullname,
                 isActive: _user.isActive,
                 avatarPath: _user.avatarPath,
+                role: _user.role,
                 createdAt: _user.createdAt,
                 updatedAt: _user.updatedAt,
                 deletedAt: _user.deletedAt,

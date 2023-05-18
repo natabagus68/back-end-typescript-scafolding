@@ -15,6 +15,8 @@ import { MobileCheckLoadTonnageRoute } from "./presentation/routes/mobile/check-
 import { MobileMachineCheckRoute } from "./presentation/routes/mobile/machine-check-route";
 import { MobileResumeCheckRoute } from "./presentation/routes/mobile/resume-check-route";
 import { MobileReviewRoute } from "./presentation/routes/mobile/review-route";
+import { MobileNotificationRoute } from "./presentation/routes/mobile/notification-route";
+import { MobileProfileRoute } from "./presentation/routes/mobile/profile-route";
 
 // Domain Repository
 import { UserRepository } from "@/domain/service/user-repository";
@@ -23,6 +25,11 @@ import { CustomerRepository } from "./domain/service/customer-repository";
 import { MachineDataRepository } from "./domain/service/machine-data-repository";
 import { InspectionFormRepository } from "./domain/service/inspection-form-repository";
 import { InspectionDataRepository } from "./domain/service/inspection-data-repository";
+import { ResumeCheckRepository } from "./domain/service/resume-check-repository";
+import { AccuracyCheckRepository } from "./domain/service/accuracy-check-repository";
+import { CheckLoadTonnageRepository } from "./domain/service/check-load-tonnage-repository";
+import { MachineCheckRepository } from "./domain/service/machine-check-repository";
+import { NotificationRepository } from "./domain/service/notification-repository";
 
 // Domain Repository / Infrastructur implementation
 import { UserSequelizeRepository } from "@/persistence/repository/user-sequelize-repository";
@@ -34,6 +41,7 @@ import { AccuracyCheckSequelizeRepository } from "./persistence/repository/accur
 import { CheckLoadTonnageSequelizeRepository } from "./persistence/repository/load-tonnage-sequelize-repository";
 import { MachineCheckSequelizeRepository } from "./persistence/repository/machine-check-sequelize-repository";
 import { ResumeCheckSequelizeRepository } from "./persistence/repository/resume-check-sequelize-repository";
+import { NotificationSequelizeRepository } from "./persistence/repository/notification-sequelize-repository";
 
 // Service Implementation
 import { UserService } from "@/services/user-service";
@@ -48,6 +56,8 @@ import { MobileCheckLoadTonnageService } from "./services/mobile/check-load-tonn
 import { MobileMachineCheckService } from "./services/mobile/machine-check-service";
 import { MobileResumeCheckService } from "./services/mobile/resume-check-service";
 import { MobileReviewService } from "./services/mobile/review-service";
+import { MobileNotificationService } from "./services/mobile/notification-service";
+import { MobileProfileService } from "./services/mobile/profile-service";
 
 // Controller
 import UserController from "@/presentation/controllers/user-controller";
@@ -61,16 +71,14 @@ import { MobileCheckLoadTonnageController } from "./presentation/controllers/mob
 import { MobileMachineCheckController } from "./presentation/controllers/mobile/machine-check-controller";
 import { MobileResumeCheckController } from "./presentation/controllers/mobile/resume-check-controller";
 import { MobileReviewController } from "./presentation/controllers/mobile/review-controller";
+import { MobileNotificationController } from "./presentation/controllers/mobile/notification-controller";
+import { MobileProfileController } from "./presentation/controllers/mobile/profile-controller";
 
 //Middleware
 import { MobileAuthMiddleware } from "./presentation/middleware/auth-middleware";
 
 // Bootstrap / kernel
 import { IServer, Server } from "@/presentation/server";
-import { ResumeCheckRepository } from "./domain/service/resume-check-repository";
-import { AccuracyCheckRepository } from "./domain/service/accuracy-check-repository";
-import { CheckLoadTonnageRepository } from "./domain/service/check-load-tonnage-repository";
-import { MachineCheckRepository } from "./domain/service/machine-check-repository";
 
 const container = new Container();
 
@@ -90,6 +98,8 @@ container.bind<MobileCheckLoadTonnageRoute>(MobileCheckLoadTonnageRoute).toSelf(
 container.bind<MobileMachineCheckRoute>(MobileMachineCheckRoute).toSelf().inSingletonScope();
 container.bind<MobileResumeCheckRoute>(MobileResumeCheckRoute).toSelf().inSingletonScope();
 container.bind<MobileReviewRoute>(MobileReviewRoute).toSelf().inSingletonScope();
+container.bind<MobileNotificationRoute>(MobileNotificationRoute).toSelf().inSingletonScope();
+container.bind<MobileProfileRoute>(MobileProfileRoute).toSelf().inSingletonScope();
 
 // Service Layer
 container.bind(TYPES.MobileAuthService).to(MobileAuthService);
@@ -103,6 +113,8 @@ container.bind(TYPES.MobileCheckLoadTonnageService).to(MobileCheckLoadTonnageSer
 container.bind(TYPES.MobileMachineCheckService).to(MobileMachineCheckService);
 container.bind(TYPES.MobileResumeCheckService).to(MobileResumeCheckService);
 container.bind(TYPES.MobileReviewService).to(MobileReviewService);
+container.bind(TYPES.MobileNotificationService).to(MobileNotificationService);
+container.bind(TYPES.MobileProfileService).to(MobileProfileService);
 
 // Controller
 container.bind(UserController).toSelf();
@@ -116,6 +128,8 @@ container.bind(MobileCheckLoadTonnageController).toSelf();
 container.bind(MobileMachineCheckController).toSelf();
 container.bind(MobileResumeCheckController).toSelf();
 container.bind(MobileReviewController).toSelf();
+container.bind(MobileNotificationController).toSelf();
+container.bind(MobileProfileController).toSelf();
 
 // Middleware
 container.bind(MobileAuthMiddleware).toSelf();
@@ -131,5 +145,6 @@ container.bind<AccuracyCheckRepository>(TYPES.AccuracyCheckRepository).to(Accura
 container.bind<CheckLoadTonnageRepository>(TYPES.CheckLoadTonnageRepository).to(CheckLoadTonnageSequelizeRepository);
 container.bind<MachineCheckRepository>(TYPES.MachineCheckRepository).to(MachineCheckSequelizeRepository);
 container.bind<ResumeCheckRepository>(TYPES.ResumeCheckRepository).to(ResumeCheckSequelizeRepository);
+container.bind<NotificationRepository>(TYPES.NotificationRepository).to(NotificationSequelizeRepository);
 
 export { container };

@@ -17,6 +17,7 @@ export class User extends Model<
     declare fullname: string;
     declare is_active: boolean;
     declare avatar_path: string;
+    declare role: string;
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
     declare deleted_at: CreationOptional<Date>;
@@ -42,6 +43,7 @@ User.init(
             defaultValue: "",
             type: DataTypes.STRING,
         },
+        role: DataTypes.STRING,
         created_at: DataTypes.DATE,
         updated_at: DataTypes.DATE,
         deleted_at: DataTypes.DATE,

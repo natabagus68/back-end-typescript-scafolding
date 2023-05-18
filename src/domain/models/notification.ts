@@ -1,9 +1,13 @@
 import { Entity } from "./entity";
+import { EGeneralDataLastStep } from "./general-data";
 
 export interface INotification {
     id?: string;
-    title: string;
-    createdAt: string;
+    type: EGeneralDataLastStep | string;
+    inspectorId: string;
+    generalDataId: string;
+    createdAt?: Date;
+    updatedAt?: Date | null;
 }
 
 export class Notification extends Entity<INotification> {
@@ -17,17 +21,29 @@ export class Notification extends Entity<INotification> {
     unmarshal(): INotification {
         return {
             id: this.id,
-            title: this.title,
+            type: this.type,
+            inspectorId: this.inspectorId,
+            generalDataId: this.generalDataId,
             createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
         };
     }
     get id(): string {
         return this._id;
     }
-    get title(): string {
-        return this.props.title;
+    get type(): EGeneralDataLastStep | string {
+        return this.props.type;
     }
-    get createdAt(): string {
+    get inspectorId(): string {
+        return this.props.inspectorId;
+    }
+    get generalDataId(): string {
+        return this.props.generalDataId;
+    }
+    get createdAt(): Date | undefined {
         return this.props.createdAt;
+    }
+    get updatedAt(): undefined | Date | null {
+        return this.props.updatedAt;
     }
 }

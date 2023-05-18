@@ -13,12 +13,13 @@ import { InspectionData } from "./inspection-data-sequelize";
 import { InspectionDataItem } from "./inspection-data-item-sequelize";
 import { MachineCheck } from "./machine-check-sequelize";
 import { ResumeCheck } from "./resume-check-sequelize";
+import { Notification } from "./notification-sequelize";
 
-// Core Model Synchronisation
-User.sync({ alter: { drop: false } });
-
-// Apps Model Synchronisation
 (async () => {
+    // Core Model Synchronisation
+    await User.sync({ alter: { drop: false } });
+
+    // Apps Model Synchronisation
     await Customer.sync({ alter: { drop: false } });
     await GeneralData.sync({ alter: { drop: false } });
     await InspectionData.sync({ alter: { drop: false } });
@@ -28,10 +29,11 @@ User.sync({ alter: { drop: false } });
     AccuracyCheck.sync({ alter: { drop: false } });
     ResumeCheck.sync({ alter: { drop: false } });
     CheckLoadTonnage.sync({ alter: { drop: false } });
-})();
-(async () => {
-    await InspectionForm.sync({ alter: { drop: false } });
-    InspectionFormItem.sync({ alter: { drop: false } });
+    Notification.sync({ alter: { drop: false } });
+    (async () => {
+        await InspectionForm.sync({ alter: { drop: false } });
+        InspectionFormItem.sync({ alter: { drop: false } });
+    })();
 })();
 
 // Core Model Assosiation
@@ -73,6 +75,10 @@ GeneralData.hasMany(CheckLoadTonnage, {
 InspectionData.hasMany(InspectionDataItem, {
     foreignKey: "inspection_data_id",
     as: "items",
+});
+Notification.belongsTo(GeneralData, {
+    foreignKey: "general_data_id",
+    as: "generalData",
 });
 
 // Core Model Export
