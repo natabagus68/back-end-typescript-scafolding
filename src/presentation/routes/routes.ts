@@ -13,6 +13,8 @@ import { MobileReviewRoute } from "./mobile/review-route";
 import { MobileApprovalRoute } from "./mobile/approval-route";
 import { MobileResumeCheckRoute } from "./mobile/resume-check-route";
 import { MobileHistoryReportRoute } from "./mobile/history-report-route";
+import { MobileNotificationRoute } from "./mobile/notification-route";
+import { MobileProfileRoute } from "./mobile/profile-route";
 
 @injectable()
 export class Routes {
@@ -30,6 +32,8 @@ export class Routes {
         private mobileApprovalRoute: MobileApprovalRoute,
         private mobileResumeCheckRoute: MobileResumeCheckRoute,
         private mobileHistoryReportRoute: MobileHistoryReportRoute,
+        private mobileNotificationRoute: MobileNotificationRoute,
+        private mobileProfileRoute: MobileProfileRoute
     ) {}
 
     public setRoutes(router: Router) {
@@ -46,5 +50,7 @@ export class Routes {
         this.mobileApprovalRoute.setRoutes(router);
         this.mobileResumeCheckRoute.setRoutes(router);
         this.mobileHistoryReportRoute.setRoutes(router);
+        this.mobileNotificationRoute.setRoutes(router);
+        this.mobileProfileRoute.setRoutes(router);
     }
 }

@@ -8,8 +8,12 @@ export const userCreateScheme = z.object({
     email: z.string().email(),
     password: z.string(),
     fullname: z.string(),
-    isActive: z.any().refine((val) => !(!val || val == "0" || val == "false" || val == ""), "Is Active must boolean"),
-    avatar_path: z
+    isActive: z
+        .any()
+        .refine((val) => !(!val || val == "0" || val == "false" || val == ""), "Is Active must boolean")
+        .transform((val) => !!val),
+    role: z.string(),
+    avatarPath: z
         .any()
         .refine((files) => files, "Image is required.")
         .refine((files) => files?.size <= MAX_FILE_SIZE, "Max file size is 5MB.")
@@ -35,11 +39,7 @@ export const userUpdateScheme = z.object({
         .nullable()
         .nullish()
         .transform((val) => new File(val?.buffer, val.name)),
-});
-
-export const userRoleScheme = z.object({
-    user_id: z.string(),
-    role_id: z.string().array(),
+    role: z.string(),
 });
 
 export const userDataTableScheme = z.object({
@@ -47,3 +47,17 @@ export const userDataTableScheme = z.object({
     limit: z.number(),
     search: z.string(),
 });
+export const mobileChangePasswordSchema = z
+    .object({
+        currentPassword: z.string(),
+        newPassword: z.string(),
+        confirmNewPassword: z.string(),
+    })
+    .superRefine(({ newPassword, confirmNewPassword }, ctx) => {
+        if (newPassword !== confirmNewPassword) {
+            ctx.addIssue({
+                code: "custom",
+                message: "The passwords did not match",
+            });
+        }
+    });

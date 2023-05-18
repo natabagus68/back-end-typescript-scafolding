@@ -32,13 +32,7 @@ export default class UserController {
                 data: parseBody.error.flatten().fieldErrors,
             });
         }
-        const createdUser = await this._userService.store({
-            email: parseBody.data.email,
-            password: parseBody.data.password,
-            fullname: parseBody.data.fullname,
-            isActive: parseBody.data.isActive,
-            avatarPath: parseBody.data.avatar_path,
-        });
+        const createdUser = await this._userService.store(parseBody.data);
         return res.status(200).send({ message: "success", data: createdUser });
     }
 
@@ -51,13 +45,7 @@ export default class UserController {
                 data: parseBody.error.flatten(),
             });
         }
-        const updatedUser = await this._userService.update(req.params.id, {
-            email: parseBody.data.email,
-            password: parseBody.data.password,
-            fullname: parseBody.data.fullname,
-            isActive: parseBody.data.isActive,
-            avatarPath: parseBody.data.avatar_path,
-        });
+        const updatedUser = await this._userService.update(req.params.id, parseBody.data);
         return res.status(200).send({ message: "success", data: updatedUser });
     }
 

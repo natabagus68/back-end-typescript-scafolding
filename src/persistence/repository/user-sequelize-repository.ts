@@ -29,6 +29,7 @@ export class UserSequelizeRepository implements UserRepository {
             fullname: user.getDataValue("fullname"),
             isActive: user.getDataValue("is_active"),
             avatarPath: user.getDataValue("avatar_path"),
+            role: user.getDataValue("role"),
             createdAt: user.getDataValue("created_at"),
             updatedAt: user.getDataValue("updated_at"),
             deletedAt: user.getDataValue("deleted_at"),
@@ -42,10 +43,7 @@ export class UserSequelizeRepository implements UserRepository {
                 },
             },
             limit: param.limit,
-            offset:
-                (param.page || 1) > 1
-                    ? (param.limit || 10) * ((param.page || 1) - 1)
-                    : 0,
+            offset: (param.page || 1) > 1 ? (param.limit || 10) * ((param.page || 1) - 1) : 0,
         });
         return TableData.create({
             page: param.page || 1,
@@ -58,6 +56,7 @@ export class UserSequelizeRepository implements UserRepository {
                 fullname: item.fullname,
                 isActive: item.is_active,
                 avatarPath: item.avatar_path,
+                role: item.role,
                 createdAt: item.created_at,
                 updatedAt: item.updated_at,
                 deletedAt: item.deleted_at
@@ -76,6 +75,7 @@ export class UserSequelizeRepository implements UserRepository {
                 fullname: user.fullname,
                 isActive: user.is_active,
                 avatarPath: user.avatar_path,
+                role: user.role,
                 createdAt: user.created_at,
                 updatedAt: user.updated_at,
                 deletedAt: user.deleted_at,
@@ -98,6 +98,7 @@ export class UserSequelizeRepository implements UserRepository {
             fullname: user.fullname,
             isActive: user.is_active,
             avatarPath: user.avatar_path,
+            role: user.role,
             createdAt: user.created_at,
             updatedAt: user.updated_at,
             deletedAt: user.deleted_at,
@@ -114,10 +115,8 @@ export class UserSequelizeRepository implements UserRepository {
                     password: userDomain.password,
                     fullname: userDomain.fullname,
                     is_active: userDomain.isActive,
-                    avatar_path:
-                        typeof userDomain.avatarPath === "string"
-                            ? userDomain.avatarPath
-                            : "",
+                    avatar_path: typeof userDomain.avatarPath === "string" ? userDomain.avatarPath : "",
+                    role: userDomain.role,
                 },
                 {
                     transaction,
@@ -131,6 +130,7 @@ export class UserSequelizeRepository implements UserRepository {
                 fullname: user.fullname,
                 isActive: user.is_active,
                 avatarPath: user.avatar_path,
+                role: user.role,
                 createdAt: user.created_at,
                 updatedAt: user.updated_at,
                 deletedAt: user.deleted_at,
@@ -163,6 +163,7 @@ export class UserSequelizeRepository implements UserRepository {
             fullname: user.fullname,
             isActive: user.is_active,
             avatarPath: user.avatar_path,
+            role: user.role,
             createdAt: user.created_at,
             updatedAt: user.updated_at,
             deletedAt: user.deleted_at,
