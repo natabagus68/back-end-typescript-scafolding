@@ -15,6 +15,7 @@ import { MobileResumeCheckRoute } from "./mobile/resume-check-route";
 import { MobileHistoryReportRoute } from "./mobile/history-report-route";
 import { MobileNotificationRoute } from "./mobile/notification-route";
 import { MobileProfileRoute } from "./mobile/profile-route";
+import { WebadminReportRoute } from "./web-admin/report-route";
 
 @injectable()
 export class Routes {
@@ -33,7 +34,8 @@ export class Routes {
         private mobileResumeCheckRoute: MobileResumeCheckRoute,
         private mobileHistoryReportRoute: MobileHistoryReportRoute,
         private mobileNotificationRoute: MobileNotificationRoute,
-        private mobileProfileRoute: MobileProfileRoute
+        private mobileProfileRoute: MobileProfileRoute,
+        private webadminReportRoute: WebadminReportRoute
     ) {}
 
     public setRoutes(router: Router) {
@@ -52,5 +54,6 @@ export class Routes {
         this.mobileHistoryReportRoute.setRoutes(router);
         this.mobileNotificationRoute.setRoutes(router);
         this.mobileProfileRoute.setRoutes(router);
+        this.webadminReportRoute.setRoutes(router);
     }
 }

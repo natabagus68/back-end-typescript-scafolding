@@ -5,6 +5,7 @@ import { IInspectionData, InspectionData } from "./inspection-data";
 import { IMachineCheck, MachineCheck } from "./machine-check";
 import { IResumeCheck, ResumeCheck } from "./resume-check";
 import { IMachineData, MachineData } from "./machine-data";
+import { IUser, User } from "./user";
 
 export enum EGeneralDataLastStep {
     GENERAL_DATA = "GENERAL_DATA",
@@ -35,6 +36,7 @@ export interface IGeneralData {
     machineCheck?: IMachineCheck;
     accuracyCheck?: IAccuracyCheck;
     resumeCheck?: IResumeCheck;
+    inspector?: IUser;
     createdAt?: Date;
     updatedAt?: Date | null;
     deletedAt?: Date | null;
@@ -69,6 +71,7 @@ export class GeneralData extends Entity<IGeneralData> {
             machineDatum: this.machineDatum?.unmarshall(),
             accuracyCheck: this.accuracyCheck?.unmarshal(),
             resumeCheck: this.resumeCheck?.unmarshal(),
+            inspector: this.inspector?.unmarshal(),
         };
     }
     get id(): string {
@@ -116,7 +119,7 @@ export class GeneralData extends Entity<IGeneralData> {
     get approvedAt(): undefined | Date | null {
         return this.props.approvedAt;
     }
-    set approvedBy(val: undefined| string | null) {
+    set approvedBy(val: undefined | string | null) {
         this.props.approvedBy = val;
     }
     get approvedBy(): undefined | string | null {
@@ -139,5 +142,8 @@ export class GeneralData extends Entity<IGeneralData> {
     }
     get resumeCheck(): undefined | ResumeCheck {
         return this.props.resumeCheck ? ResumeCheck.create(this.props.resumeCheck) : undefined;
+    }
+    get inspector(): undefined | User {
+        return this.props.inspector ? User.create(this.props.inspector) : undefined;
     }
 }
