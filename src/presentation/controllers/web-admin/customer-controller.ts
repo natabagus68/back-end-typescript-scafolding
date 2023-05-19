@@ -22,7 +22,7 @@ export class WebAdminCustomerController {
                 description: "Upload file required",
             });
         }
-        console.log(<any>req.files.values);
+        // console.log(req.files);
         const validatedReq = webAdminCustomerCreateSchema.safeParse({
             ...req.body,
             parallelism1Path: req.files,
