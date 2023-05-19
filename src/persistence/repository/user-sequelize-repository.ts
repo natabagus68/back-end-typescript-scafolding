@@ -42,7 +42,7 @@ export class UserSequelizeRepository implements UserRepository {
                     [Op.iLike]: `%${param.search}%`,
                 },
             },
-            limit: param.limit,
+            limit: param.limit ? param.limit : undefined,
             offset: (param.page || 1) > 1 ? (param.limit || 10) * ((param.page || 1) - 1) : 0,
         });
         return TableData.create({
@@ -59,7 +59,7 @@ export class UserSequelizeRepository implements UserRepository {
                 role: item.role,
                 createdAt: item.created_at,
                 updatedAt: item.updated_at,
-                deletedAt: item.deleted_at
+                deletedAt: item.deleted_at,
             })),
         });
     }
