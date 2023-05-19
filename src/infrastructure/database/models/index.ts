@@ -14,6 +14,7 @@ import { InspectionDataItem } from "./inspection-data-item-sequelize";
 import { MachineCheck } from "./machine-check-sequelize";
 import { ResumeCheck } from "./resume-check-sequelize";
 import { Notification } from "./notification-sequelize";
+import { InspectionResult } from "./inspection-result-sequelize";
 
 (async () => {
     // Core Model Synchronisation
@@ -21,6 +22,7 @@ import { Notification } from "./notification-sequelize";
 
     // Apps Model Synchronisation
     await Customer.sync({ alter: { drop: false } });
+    await InspectionResult.sync({ alter: { drop: false } });
     await GeneralData.sync({ alter: { drop: false } });
     await InspectionData.sync({ alter: { drop: false } });
     MachineData.sync({ alter: { drop: false } });
@@ -47,6 +49,10 @@ import { Notification } from "./notification-sequelize";
 InspectionForm.hasMany(InspectionFormItem, {
     foreignKey: "inspection_form_id",
     as: "items",
+});
+GeneralData.belongsTo(InspectionResult, {
+    foreignKey: "inspection_result_id",
+    as: "inspectionResult",
 });
 GeneralData.belongsTo(User, {
     foreignKey: "inspector_id",
@@ -91,6 +97,7 @@ Notification.belongsTo(GeneralData, {
 
 // Core Model Export
 export * from "./user-sequelize";
+
 // Apps Model Export
 export * from "./customer-sequelize";
 export * from "./general-data-sequelize";

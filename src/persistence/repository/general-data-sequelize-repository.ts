@@ -1,9 +1,11 @@
 import { EGeneralDataLastStep, GeneralData, IGeneralData } from "@/domain/models/general-data";
 import { TableData } from "@/domain/models/table-data";
 import { GeneralDataRepository } from "@/domain/service/general-data-repository";
-import { TDataTableParam } from "@/domain/service/types";
+import { TApprovalDataTableParam, TDataTableParam } from "@/domain/service/types";
+import { EGeneralDataStatus, IApprovalDataTable, IGeneralDataDataTable } from "@/dto/general-data-dto";
 import {
     AccuracyCheck as AccuracyCheckDB,
+    CheckLoadTonnage as CheckLoadTonnageDB,
     Customer as CustomerDB,
     GeneralData as GeneralDataDB,
     InspectionData as InspectionDataDB,
@@ -13,6 +15,7 @@ import {
     MachineData as MachineDatumDB,
     User as UserDB,
 } from "@/infrastructure/database/models";
+import { InspectionResult as InspectionResultDB } from "@/infrastructure/database/models/inspection-result-sequelize";
 import { ResumeCheck as ResumeCheckDB } from "@/infrastructure/database/models/resume-check-sequelize";
 import { sequelize } from "@/infrastructure/database/sequelize";
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
@@ -21,11 +24,86 @@ import { Op } from "sequelize";
 
 @injectable()
 export class GeneralDataSequelizeRepository implements GeneralDataRepository {
-    async findUnapproveTable({ limit = 10, page = 1, search }: TDataTableParam): Promise<TableData<IGeneralData>> {
+    async findSubmittedDataTable({
+        limit = 10,
+        page = 1,
+        search,
+        status = EGeneralDataStatus.ALL_STATUS,
+    }: TApprovalDataTableParam): Promise<TableData<IApprovalDataTable>> {
+        const generalDatum = await GeneralDataDB.findAll({
+            where: {
+                submitted_at: {
+                    [Op.not]: null,
+                },
+                ...(search !== ""
+                    ? {
+                        [Op.or]: {
+                            ["$customer.customer_name$"]: {
+                                [Op.iLike]: `%${search}%`,
+                            },
+                            ["$machineDatum.machine_type$"]: {
+                                [Op.iLike]: `%${search}%`,
+                            },
+                            ["$inspector.fullname$"]: {
+                                [Op.iLike]: `%${search}%`,
+                            },
+                        },
+                    }
+                    : undefined),
+                ...(status !== EGeneralDataStatus.ALL_STATUS
+                    ? {
+                        approved_at: {
+                            [status === EGeneralDataStatus.CONFIRMED ? Op.not : Op.is]: null,
+                        },
+                    }
+                    : undefined),
+            },
+            limit: limit,
+            offset: (page || 1) > 1 ? (limit || 10) * ((page || 1) - 1) : 0,
+            include: [
+                {
+                    model: CustomerDB,
+                    as: "customer",
+                    attributes: ["customer_name"],
+                },
+                {
+                    model: MachineDataDB,
+                    as: "machineDatum",
+                    attributes: ["machine_type"],
+                },
+                {
+                    model: UserDB,
+                    as: "inspector",
+                    attributes: ["fullname"],
+                },
+            ],
+        });
+        return TableData.create({
+            search: search || "",
+            page: page,
+            limit: limit,
+            data: generalDatum.map((item) => ({
+                id: item.getDataValue("id"),
+                inspectionId: item.getDataValue("inspection_id"),
+                inspectionDate: item.getDataValue("inspection_date"),
+                customerName: item.customer.getDataValue("customer_name"),
+                machineName: item.machineDatum.getDataValue("machine_type"),
+                status: item.status,
+            })),
+        });
+    }
+    async findUnapprovedTable({
+        limit = 10,
+        page = 1,
+        search,
+    }: TDataTableParam): Promise<TableData<IGeneralDataDataTable>> {
         const generalDatum = await GeneralDataDB.findAll({
             where: {
                 approved_at: {
                     [Op.is]: null,
+                },
+                submitted_at: {
+                    [Op.not]: null,
                 },
                 [Op.or]: {
                     ["$customer.customer_name$"]: {
@@ -65,83 +143,11 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
             limit: limit,
             data: generalDatum.map((item) => ({
                 id: item.getDataValue("id"),
-                customerId: item.getDataValue("customer_id"),
-                personInCharge: item.getDataValue("person_in_charge"),
+                inspectionId: item.getDataValue("inspection_id"),
                 inspectionDate: item.getDataValue("inspection_date"),
-                inspectorId: item.getDataValue("inspector_id"),
-                inspectorName: item.getDataValue("inspector_name"),
-                lastStep: item.getDataValue("last_step"),
-                submittedAt: item.getDataValue("submitted_at"),
-                approvedAt: item.getDataValue("approved_at"),
-                approvedBy: item.getDataValue("approved_by"),
-                inspectionDatum: item.getDataValue("inspection_datum"),
-                machineCheck: item.getDataValue("machine_check"),
-                accuracyCheck: item.getDataValue("accuracy_check"),
-                resumeCheck: item.getDataValue("resume_check"),
-                customer: {
-                    id: item.customer.getDataValue("id"),
-                    customerId: item.customer.getDataValue("customer_id"),
-                    customerName: item.customer.getDataValue("customer_name"),
-                    address: item.customer.getDataValue("address"),
-                    phone: item.customer.getDataValue("phone"),
-                    parallelism1Path: item.customer.getDataValue("parallelism1_path"),
-                    parallelism2Path: item.customer.getDataValue("parallelism2_path"),
-                    gibClearance1Path: item.customer.getDataValue("gib_clearance1_path"),
-                    gibClearance2Path: item.customer.getDataValue("gib_clearance2_path"),
-                    perpendicularity1Path: item.customer.getDataValue("perpendicularity1_path"),
-                    perpendicularity2Path: item.customer.getDataValue("perpendicularity2_path"),
-                    createdAt: item.customer.getDataValue("created_at"),
-                    updatedAt: item.customer.getDataValue("updated_at"),
-                    deletedAt: item.customer.getDataValue("deleted_at"),
-                },
-                machineDatum: {
-                    id: item.machineDatum.getDataValue("id"),
-                    machineType: item.machineDatum.getDataValue("machine_type"),
-                    serialNo: item.machineDatum.getDataValue("serial_no"),
-                    manufactureDate: item.machineDatum.getDataValue("manufacture_date"),
-                    capacity: item.machineDatum.getDataValue("capacity"),
-                    slideStroke: item.machineDatum.getDataValue("slide_stroke"),
-                    strokePerMinute: item.machineDatum.getDataValue("stroke_per_minute"),
-                    dieHeight: item.machineDatum.getDataValue("die_height"),
-                    slideAdjustment: item.machineDatum.getDataValue("slide_adjustment"),
-                    areaBlosterDimentionX: item.machineDatum.getDataValue("area_bloster_dimention_x"),
-                    areaBlosterDimentionY: item.machineDatum.getDataValue("area_bloster_dimention_y"),
-                    areaSlideDimentionX: item.machineDatum.getDataValue("area_slide_dimention_x"),
-                    areaSlideDimentionY: item.machineDatum.getDataValue("area_slide_dimention_y"),
-                    crankPressC: item.machineDatum.getDataValue("crank_press_c"),
-                    crankPressH: item.machineDatum.getDataValue("crank_press_h"),
-                    cranklessPress: item.machineDatum.getDataValue("crankless_press"),
-                    knucklePress: item.machineDatum.getDataValue("knuckle_press"),
-                    linkPress: item.machineDatum.getDataValue("link_press"),
-                    combinationType: item.machineDatum.getDataValue("combination_type"),
-                    separateType: item.machineDatum.getDataValue("separate_type"),
-                    dryFriction: item.machineDatum.getDataValue("dry_friction"),
-                    wetFriction: item.machineDatum.getDataValue("wet_friction"),
-                    other: item.machineDatum.getDataValue("other"),
-                    intermittent: item.machineDatum.getDataValue("intermittent"),
-                    continues: item.machineDatum.getDataValue("continues"),
-                    safetyGuard: item.machineDatum.getDataValue("safety_guard"),
-                    safetyLight: item.machineDatum.getDataValue("safety_light"),
-                    doubleSolenoidValve: item.machineDatum.getDataValue("double_solenoid_valve"),
-                    generalDataId: item.machineDatum.getDataValue("general_data_id"),
-                    createdAt: item.machineDatum.getDataValue("created_at"),
-                    updatedAt: item.machineDatum.getDataValue("updated_at"),
-                },
-                inspector: {
-                    id: item.inspector.getDataValue("id"),
-                    email: item.inspector.getDataValue("email"),
-                    password: item.inspector.getDataValue("password"),
-                    fullname: item.inspector.getDataValue("fullname"),
-                    isActive: item.inspector.getDataValue("is_active"),
-                    avatarPath: item.inspector.getDataValue("avatar_path"),
-                    role: item.inspector.getDataValue("role"),
-                    createdAt: item.inspector.getDataValue("created_at"),
-                    updatedAt: item.inspector.getDataValue("updated_at"),
-                    deletedAt: item.inspector.getDataValue("deleted_at"),
-                },
-                createdAt: item.getDataValue("created_at"),
-                updatedAt: item.getDataValue("updated_at"),
-                deletedAt: item.getDataValue("deleted_at"),
+                customerName: item.customer.getDataValue("customer_name"),
+                machineName: item.machineDatum.getDataValue("machine_type"),
+                inspectorName: item.inspector.getDataValue("fullname"),
             })),
         });
     }
@@ -163,6 +169,7 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
         }
         return GeneralData.create({
             id: found.getDataValue("id"),
+            inspectionId: found.getDataValue("inspection_id"),
             customerId: found.getDataValue("customer_id"),
             personInCharge: found.getDataValue("person_in_charge"),
             inspectionDate: found.getDataValue("inspection_date"),
@@ -188,6 +195,7 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
         }
         return GeneralData.create({
             id: found.getDataValue("id"),
+            inspectionId: found.getDataValue("inspection_id"),
             customerId: found.getDataValue("customer_id"),
             personInCharge: found.getDataValue("person_in_charge"),
             inspectionDate: found.getDataValue("inspection_date"),
@@ -211,10 +219,12 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
         }
         await updated.update(
             {
+                inspection_id: generalData.inspectionId,
                 customer_id: generalData.customerId,
                 person_in_charge: generalData.personInCharge,
                 inspection_date: generalData.inspectionDate,
                 inspector_id: generalData.inspectorId,
+                inspection_result_id: generalData.inspectionResultId,
                 created_at: generalData.createdAt,
                 updated_at: generalData.updatedAt,
                 deleted_at: generalData.deletedAt,
@@ -228,10 +238,12 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
         await updated.reload();
         return GeneralData.create({
             id: updated.getDataValue("id"),
+            inspectionId: updated.getDataValue("inspection_id"),
             customerId: updated.getDataValue("customer_id"),
             personInCharge: updated.getDataValue("person_in_charge"),
             inspectionDate: updated.getDataValue("inspection_date"),
             inspectorId: updated.getDataValue("inspector_id"),
+            inspectionResultId: updated.getDataValue("inspection_result_id"),
             createdAt: updated.getDataValue("created_at"),
             updatedAt: updated.getDataValue("updated_at"),
             deletedAt: updated.getDataValue("deleted_at"),
@@ -265,8 +277,16 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
                         as: "accuracyCheck",
                     },
                     {
+                        model: CheckLoadTonnageDB,
+                        as: "loadTonnages",
+                    },
+                    {
                         model: ResumeCheckDB,
                         as: "resumeCheck",
+                    },
+                    {
+                        model: InspectionResultDB,
+                        as: "inspectionResult",
                     },
                 ]
                 : undefined,
@@ -279,6 +299,7 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
         }
         return GeneralData.create({
             id: generalData.getDataValue("id"),
+            inspectionId: generalData.getDataValue("inspection_id"),
             customerId: generalData.getDataValue("customer_id"),
             personInCharge: generalData.getDataValue("person_in_charge"),
             inspectionDate: generalData.getDataValue("inspection_date"),
@@ -290,6 +311,7 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
             submittedAt: generalData.getDataValue("submitted_at"),
             approvedAt: generalData.getDataValue("approved_at"),
             approvedBy: generalData.getDataValue("approved_by"),
+            inspectionResultId: generalData.getDataValue("inspection_result_id"),
             customer:
                 relation && generalData.customer
                     ? {
@@ -426,11 +448,80 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
                         updatedAt: generalData.resumeCheck.getDataValue("updated_at"),
                     }
                     : undefined,
+            inspectionResult:
+                relation && generalData.inspectionResult
+                    ? {
+                        id: generalData.inspectionResult.getDataValue("id"),
+                        option: generalData.inspectionResult.getDataValue("option"),
+                        color: generalData.inspectionResult.getDataValue("color"),
+                        description: generalData.inspectionResult.getDataValue("description"),
+                        createdAt: generalData.inspectionResult.getDataValue("created_at"),
+                        updatedAt: generalData.inspectionResult.getDataValue("updated_at"),
+                    }
+                    : undefined,
+            machineDatum:
+                relation && generalData.machineDatum
+                    ? {
+                        id: generalData.machineDatum.getDataValue("id"),
+                        machineType: generalData.machineDatum.getDataValue("machine_type"),
+                        serialNo: generalData.machineDatum.getDataValue("serial_no"),
+                        manufactureDate: generalData.machineDatum.getDataValue("manufacture_date"),
+                        capacity: generalData.machineDatum.getDataValue("capacity"),
+                        slideStroke: generalData.machineDatum.getDataValue("slide_stroke"),
+                        strokePerMinute: generalData.machineDatum.getDataValue("stroke_per_minute"),
+                        dieHeight: generalData.machineDatum.getDataValue("die_height"),
+                        slideAdjustment: generalData.machineDatum.getDataValue("slide_adjustment"),
+                        areaBlosterDimentionX: generalData.machineDatum.getDataValue("area_bloster_dimention_x"),
+                        areaBlosterDimentionY: generalData.machineDatum.getDataValue("area_bloster_dimention_y"),
+                        areaSlideDimentionX: generalData.machineDatum.getDataValue("area_slide_dimention_x"),
+                        areaSlideDimentionY: generalData.machineDatum.getDataValue("area_slide_dimention_y"),
+                        crankPressC: generalData.machineDatum.getDataValue("crank_press_c"),
+                        crankPressH: generalData.machineDatum.getDataValue("crank_press_h"),
+                        cranklessPress: generalData.machineDatum.getDataValue("crankless_press"),
+                        knucklePress: generalData.machineDatum.getDataValue("knuckle_press"),
+                        linkPress: generalData.machineDatum.getDataValue("link_press"),
+                        combinationType: generalData.machineDatum.getDataValue("combination_type"),
+                        separateType: generalData.machineDatum.getDataValue("separate_type"),
+                        dryFriction: generalData.machineDatum.getDataValue("dry_friction"),
+                        wetFriction: generalData.machineDatum.getDataValue("wet_friction"),
+                        other: generalData.machineDatum.getDataValue("other"),
+                        intermittent: generalData.machineDatum.getDataValue("intermittent"),
+                        continues: generalData.machineDatum.getDataValue("continues"),
+                        safetyGuard: generalData.machineDatum.getDataValue("safety_guard"),
+                        safetyLight: generalData.machineDatum.getDataValue("safety_light"),
+                        doubleSolenoidValve: generalData.machineDatum.getDataValue("double_solenoid_valve"),
+                        generalDataId: generalData.machineDatum.getDataValue("general_data_id"),
+                        createdAt: generalData.machineDatum.getDataValue("created_at"),
+                        updatedAt: generalData.machineDatum.getDataValue("updated_at"),
+                    }
+                    : undefined,
+            loadTonnages:
+                relation && generalData.loadTonnages
+                    ? generalData.loadTonnages.map((item) => ({
+                        id: item.getDataValue("id"),
+                        name: item.getDataValue("name"),
+                        lfActLoad: item.getDataValue("lf_act_load"),
+                        lfLoadMonitor: item.getDataValue("lf_load_monitor"),
+                        lrActLoad: item.getDataValue("lr_act_load"),
+                        lrLoadMonitor: item.getDataValue("lr_load_monitor"),
+                        rfActLoad: item.getDataValue("rf_act_load"),
+                        rfLoadMonitor: item.getDataValue("rf_load_monitor"),
+                        rrActLoad: item.getDataValue("rr_act_load"),
+                        rrLoadMonitor: item.getDataValue("rr_load_monitor"),
+                        totalActLoad: item.getDataValue("total_act_load"),
+                        totalLoadMonitor: item.getDataValue("total_load_monitor"),
+                        dieHeight: item.getDataValue("die_height"),
+                        generalDataId: item.getDataValue("general_data_id"),
+                        createdAt: item.getDataValue("created_at"),
+                        updatedAt: item.getDataValue("updated_at"),
+                    }))
+                    : undefined,
         });
     }
     async store(generalData: GeneralData): Promise<GeneralData> {
         const created = await GeneralDataDB.create({
             id: generalData.id,
+            inspection_id: generalData.inspectionId,
             customer_id: generalData.customerId,
             person_in_charge: generalData.personInCharge,
             inspection_date: generalData.inspectionDate,
@@ -439,6 +530,7 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
         });
         return GeneralData.create({
             id: created.getDataValue("id"),
+            inspectionId: created.getDataValue("inspection_id"),
             customerId: created.getDataValue("customer_id"),
             personInCharge: created.getDataValue("person_in_charge"),
             inspectionDate: created.getDataValue("inspection_date"),

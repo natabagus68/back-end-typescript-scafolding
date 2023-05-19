@@ -1,4 +1,5 @@
 #! /usr/bin/bash
+PWD=/home/ubuntu/apps/nig-backend
 echo "Pull from Repository "
 sudo git checkout main 
 sudo git pull origin main || (sudo git stash && sudo git pull origin main)
@@ -11,6 +12,8 @@ echo "Installing depedencies"
 yarn
 echo "Build"
 yarn build
+rm $PWD/public/storage || echo "Failed to remove linked storage folder"
+ln -s $PWD/storage $PWD/public/storage || echo "Failed to create symlink"
 echo "Restart PM2"
 pm2 restart all
 echo "Wait 10 Sec for live server testing"

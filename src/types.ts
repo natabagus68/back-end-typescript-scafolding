@@ -16,6 +16,7 @@ const TYPES = {
     MachineCheckRepository: Symbol.for("MachineCheckRepository"),
     ResumeCheckRepository: Symbol.for("ResumeCheckRepository"),
     NotificationRepository: Symbol.for("NotificationRepository"),
+    InspectionResultRepository: Symbol.for("InspectionResult"),
 
     // Service Layer
     UserService: Symbol.for("UserService"),
@@ -34,6 +35,8 @@ const TYPES = {
     MobileHistoryReportService: Symbol.for("MobileHistoryReportService"),
     MobileProfileService: Symbol.for("MobileProfileService"),
     WebadminReportService: Symbol.for("WebadminReportService"),
+    WebadminApprovalService: Symbol.for("WebadminApprovalService"),
+    WebadminInspectionResultService: Symbol.for("WebadminInspectionResultService"),
 };
 
 export { TYPES };

@@ -20,6 +20,8 @@ import { MobileNotificationRoute } from "./presentation/routes/mobile/notificati
 import { MobileProfileRoute } from "./presentation/routes/mobile/profile-route";
 import { MobileHistoryReportRoute } from "./presentation/routes/mobile/history-report-route";
 import { WebadminReportRoute } from "./presentation/routes/web-admin/report-route";
+import { WebadminApprovalRoute } from "./presentation/routes/web-admin/approval-route";
+import { WebadminInspectionResultRoute } from "./presentation/routes/web-admin/inspection-result-route";
 
 // Domain Repository
 import { UserRepository } from "@/domain/service/user-repository";
@@ -29,6 +31,7 @@ import { MachineDataRepository } from "./domain/service/machine-data-repository"
 import { InspectionFormRepository } from "./domain/service/inspection-form-repository";
 import { InspectionDataRepository } from "./domain/service/inspection-data-repository";
 import { NotificationRepository } from "./domain/service/notification-repository";
+import { InspectionResultRepository } from "./domain/service/inspection-result-repository";
 
 // Domain Repository / Infrastructur implementation
 import { UserSequelizeRepository } from "@/persistence/repository/user-sequelize-repository";
@@ -41,6 +44,7 @@ import { CheckLoadTonnageSequelizeRepository } from "./persistence/repository/lo
 import { MachineCheckSequelizeRepository } from "./persistence/repository/machine-check-sequelize-repository";
 import { ResumeCheckSequelizeRepository } from "./persistence/repository/resume-check-sequelize-repository";
 import { NotificationSequelizeRepository } from "./persistence/repository/notification-sequelize-repository";
+import { InspectionResultSequelizeRepository } from "./persistence/repository/inspection-result-sequelize-repository";
 
 // Service Implementation
 import { UserService } from "@/services/user-service";
@@ -60,6 +64,8 @@ import { MobileHistoryReportService } from "./services/mobile/history-report-ser
 import { MobileNotificationService } from "./services/mobile/notification-service";
 import { MobileProfileService } from "./services/mobile/profile-service";
 import { WebadminReportService } from "./services/web-admin/report-service";
+import { WebadminApprovalService } from "./services/web-admin/approval-service";
+import { WebadminInspectionResultService } from "./services/web-admin/inspection-result-service";
 
 // Controller
 import UserController from "@/presentation/controllers/user-controller";
@@ -78,6 +84,8 @@ import { MobileNotificationController } from "./presentation/controllers/mobile/
 import { MobileProfileController } from "./presentation/controllers/mobile/profile-controller";
 import { MobileHistoryReportController } from "./presentation/controllers/mobile/history-report-controller";
 import { WebadminReportController } from "./presentation/controllers/web-admin/report-controller";
+import { WebadminApprovalController } from "./presentation/controllers/web-admin/approval-controller";
+import { WebadminInspectionResultController } from "./presentation/controllers/web-admin/inspection-result-controller";
 
 //Middleware
 import { MobileAuthMiddleware } from "./presentation/middleware/auth-middleware";
@@ -112,6 +120,8 @@ container.bind<MobileHistoryReportRoute>(MobileHistoryReportRoute).toSelf().inSi
 container.bind<MobileNotificationRoute>(MobileNotificationRoute).toSelf().inSingletonScope();
 container.bind<MobileProfileRoute>(MobileProfileRoute).toSelf().inSingletonScope();
 container.bind<WebadminReportRoute>(WebadminReportRoute).toSelf().inSingletonScope();
+container.bind<WebadminApprovalRoute>(WebadminApprovalRoute).toSelf().inSingletonScope();
+container.bind<WebadminInspectionResultRoute>(WebadminInspectionResultRoute).toSelf().inSingletonScope();
 
 // Service Layer
 container.bind(TYPES.MobileAuthService).to(MobileAuthService);
@@ -130,6 +140,8 @@ container.bind(TYPES.MobileHistoryReportService).to(MobileHistoryReportService);
 container.bind(TYPES.MobileNotificationService).to(MobileNotificationService);
 container.bind(TYPES.MobileProfileService).to(MobileProfileService);
 container.bind(TYPES.WebadminReportService).to(WebadminReportService);
+container.bind(TYPES.WebadminApprovalService).to(WebadminApprovalService);
+container.bind(TYPES.WebadminInspectionResultService).to(WebadminInspectionResultService);
 
 // Controller
 container.bind(UserController).toSelf();
@@ -148,6 +160,8 @@ container.bind(MobileHistoryReportController).toSelf();
 container.bind(MobileNotificationController).toSelf();
 container.bind(MobileProfileController).toSelf();
 container.bind(WebadminReportController).toSelf();
+container.bind(WebadminApprovalController).toSelf();
+container.bind(WebadminInspectionResultController).toSelf();
 
 // Middleware
 container.bind(MobileAuthMiddleware).toSelf();
@@ -164,5 +178,6 @@ container.bind<CheckLoadTonnageRepository>(TYPES.CheckLoadTonnageRepository).to(
 container.bind<MachineCheckRepository>(TYPES.MachineCheckRepository).to(MachineCheckSequelizeRepository);
 container.bind<ResumeCheckRepository>(TYPES.ResumeCheckRepository).to(ResumeCheckSequelizeRepository);
 container.bind<NotificationRepository>(TYPES.NotificationRepository).to(NotificationSequelizeRepository);
+container.bind<InspectionResultRepository>(TYPES.InspectionResultRepository).to(InspectionResultSequelizeRepository);
 
 export { container };

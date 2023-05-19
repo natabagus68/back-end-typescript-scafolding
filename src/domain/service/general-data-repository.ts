@@ -1,6 +1,7 @@
 import { GeneralData, IGeneralData } from "@/domain/models/general-data";
-import { TDataTableParam } from "./types";
+import { TApprovalDataTableParam, TDataTableParam } from "./types";
 import { TableData } from "../models/table-data";
+import { IApprovalDataTable, IGeneralDataDataTable } from "@/dto/general-data-dto";
 
 export interface GeneralDataRepository {
     store(generalData: GeneralData): Promise<GeneralData>;
@@ -9,6 +10,7 @@ export interface GeneralDataRepository {
     getHistoryReportList(param: TDataTableParam, start?: Date, end?: Date): Promise<TableData<IGeneralData>>;
     findByCustAndDate(customerId: string, date: Date): Promise<GeneralData | null>;
     findUnsubmittedByInspectorId(inspectorId: string): Promise<GeneralData>;
-    findUnapproveTable(param:TDataTableParam): Promise<TableData<IGeneralData>>;
+    findSubmittedDataTable(param:TApprovalDataTableParam): Promise<TableData<IApprovalDataTable>>;
+    findUnapprovedTable(param:TDataTableParam): Promise<TableData<IGeneralDataDataTable>>;
     update(generalData: GeneralData): Promise<GeneralData>;
 }

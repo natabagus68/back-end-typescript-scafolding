@@ -6,6 +6,9 @@ import { IMachineCheck, MachineCheck } from "./machine-check";
 import { IResumeCheck, ResumeCheck } from "./resume-check";
 import { IMachineData, MachineData } from "./machine-data";
 import { IUser, User } from "./user";
+import moment from "moment";
+import { IInspectionResult, InspectionResult } from "./inspection-result";
+import { CheckLoadTonnage, ICheckLoadTonnage } from "./check-load-tonnage";
 
 export enum EGeneralDataLastStep {
     GENERAL_DATA = "GENERAL_DATA",
@@ -23,6 +26,7 @@ export interface IGeneralData {
     id?: string;
     customerId: string;
     personInCharge: string;
+    inspectionId?: string;
     inspectionDate: Date;
     inspectorId: string;
     inspectorName?: string;
@@ -37,6 +41,9 @@ export interface IGeneralData {
     accuracyCheck?: IAccuracyCheck;
     resumeCheck?: IResumeCheck;
     inspector?: IUser;
+    inspectionResultId?: string;
+    inspectionResult?: IInspectionResult;
+    loadTonnages?: ICheckLoadTonnage[];
     createdAt?: Date;
     updatedAt?: Date | null;
     deletedAt?: Date | null;
@@ -46,6 +53,9 @@ export class GeneralData extends Entity<IGeneralData> {
     constructor(props: IGeneralData) {
         const { id, ...data } = props;
         super(data, id);
+        this.props.inspectionId =
+            (data.inspectionId && data.inspectionId !== "" && data.inspectionId) ||
+            `IID${moment().format("YYYYMMDD")}${Math.round(Math.random() * 9999)}`;
     }
     static create(props: IGeneralData): GeneralData {
         return new GeneralData(props);
@@ -54,6 +64,7 @@ export class GeneralData extends Entity<IGeneralData> {
         return {
             id: this._id,
             customerId: this.customerId,
+            inspectionId: this.inspectionId,
             personInCharge: this.personInCharge,
             inspectionDate: this.inspectionDate,
             inspectorId: this.inspectorId,
@@ -72,10 +83,25 @@ export class GeneralData extends Entity<IGeneralData> {
             accuracyCheck: this.accuracyCheck?.unmarshal(),
             resumeCheck: this.resumeCheck?.unmarshal(),
             inspector: this.inspector?.unmarshal(),
+            inspectionResultId: this.inspectionResultId,
+            inspectionResult: this.inspectionResult?.unmarshal(),
+            loadTonnages: this.loadTonnages?.map((item) => item?.unmarshal()),
         };
+    }
+    public approve(approvedBy: string): GeneralData {
+        this.props.approvedAt = new Date();
+        this.props.approvedBy = approvedBy;
+        return this;
+    }
+    public submit(): GeneralData {
+        this.props.submittedAt = new Date();
+        return this;
     }
     get id(): string {
         return this._id;
+    }
+    get inspectionId(): string | undefined {
+        return this.props.inspectionId;
     }
     get customerId(): string {
         return this.props.customerId;
@@ -145,5 +171,17 @@ export class GeneralData extends Entity<IGeneralData> {
     }
     get inspector(): undefined | User {
         return this.props.inspector ? User.create(this.props.inspector) : undefined;
+    }
+    get inspectionResultId(): undefined | string {
+        return this.props.inspectionResultId;
+    }
+    set inspectionResultId(val: undefined | string) {
+        this.props.inspectionResultId = val;
+    }
+    get inspectionResult(): undefined | InspectionResult {
+        return this.props.inspectionResult ? InspectionResult.create(this.props.inspectionResult) : undefined;
+    }
+    get loadTonnages(): undefined | CheckLoadTonnage[] {
+        return this.props.loadTonnages ? this.props.loadTonnages.map((item) => CheckLoadTonnage.create(item)) : [];
     }
 }
