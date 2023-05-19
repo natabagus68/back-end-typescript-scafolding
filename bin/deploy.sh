@@ -12,6 +12,7 @@ echo "Installing depedencies"
 yarn
 echo "Build"
 yarn build
+cd $PWD/public || mkdir $PWD/public
 rm $PWD/public/storage || echo "Failed to remove linked storage folder"
 mkdir $PWD/storage || echo "Folder Exist"
 ln -s $PWD/public/storage $PWD/storage || echo "Failed to create symlink"
