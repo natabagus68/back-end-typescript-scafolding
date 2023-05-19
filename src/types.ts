@@ -34,6 +34,7 @@ const TYPES = {
     MobileHistoryReportService: Symbol.for("MobileHistoryReportService"),
     MobileProfileService: Symbol.for("MobileProfileService"),
     WebadminReportService: Symbol.for("WebadminReportService"),
+    WebAdminCustomerService: Symbol.for("WebAdminCustomerService"),
 };
 
 export { TYPES };
