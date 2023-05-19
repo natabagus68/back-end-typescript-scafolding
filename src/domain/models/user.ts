@@ -1,7 +1,7 @@
-import { File } from "buffer";
 import { Entity } from "./entity";
 import bcrypt from "bcrypt";
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
+import { IMulterFile } from "@/presentation/validation/types";
 
 export enum EUserRole {
     SUPER_ADMIN = "SUPER_ADMIN",
@@ -15,7 +15,7 @@ export interface IUser {
     password?: string | null;
     fullname: string;
     isActive: boolean;
-    avatarPath?: string | File;
+    avatarPath?: string | IMulterFile;
     role: string | EUserRole;
     createdAt?: Date;
     updatedAt?: Date;
@@ -80,8 +80,11 @@ export class User extends Entity<IUser> {
     get isActive(): boolean {
         return this.props.isActive;
     }
-    get avatarPath(): undefined | string | File {
+    get avatarPath(): undefined | string | IMulterFile {
         return this.props.avatarPath;
+    }
+    set avatarPath(val: undefined | string | IMulterFile) {
+        this.props.avatarPath = val;
     }
     get role(): string | EUserRole {
         return this.props.role;
