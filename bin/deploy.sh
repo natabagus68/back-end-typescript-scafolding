@@ -12,7 +12,8 @@ echo "Installing depedencies"
 yarn
 echo "Build"
 yarn build
-cd $PWD/public || mkdir $PWD/public
+echo "trying to create public folder if doesnt exist"
+mkdir $PWD/public || echo "public folder already exist"
 rm $PWD/public/storage || echo "Failed to remove linked storage folder"
 mkdir $PWD/storage || echo "Folder Exist"
 ln -s $PWD/public/storage $PWD/storage || echo "Failed to create symlink"
