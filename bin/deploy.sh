@@ -14,7 +14,7 @@ echo "Build"
 yarn build
 rm $PWD/public/storage || echo "Failed to remove linked storage folder"
 mkdir $PWD/public/storage || echo "Folder Exist"
-ln -s $PWD/storage $PWD/public/storage || echo "Failed to create symlink"
+ln -s $PWD/public/storage $PWD/storage || echo "Failed to create symlink"
 echo "Restart PM2"
 pm2 restart all
 echo "Wait 10 Sec for live server testing"
