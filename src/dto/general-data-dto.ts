@@ -1,12 +1,13 @@
-export interface IGeneralDataDataTable {
+export interface IReportDataTable {
     id?: string;
+    inspectionId: string;
     inspectionDate: Date;
     customerName: string;
     machineName: string;
     inspectorName: string;
 }
 
-export interface IGeneralDataReportDetail {
+export interface IReportDetail {
     inspectionId: string;
     inspectionDate: string;
     confirmationDate: string;
