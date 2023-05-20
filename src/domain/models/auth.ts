@@ -43,4 +43,7 @@ export class Auth {
     get user(): User {
         return User.create(this.props.user);
     }
+    set user(val: IUser) {
+        this.props.user = val;
+    }
 }

@@ -34,6 +34,7 @@ const TYPES = {
     MobileNotificationService: Symbol.for("MobileNotificationService"),
     MobileHistoryReportService: Symbol.for("MobileHistoryReportService"),
     MobileProfileService: Symbol.for("MobileProfileService"),
+    WebadminAuthService: Symbol.for("WebadminAuthService"),
     WebadminReportService: Symbol.for("WebadminReportService"),
     WebadminApprovalService: Symbol.for("WebadminApprovalService"),
     WebadminInspectionResultService: Symbol.for("WebadminInspectionResultService"),

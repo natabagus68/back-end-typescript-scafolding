@@ -22,6 +22,7 @@ import { MobileHistoryReportRoute } from "./presentation/routes/mobile/history-r
 import { WebadminReportRoute } from "./presentation/routes/web-admin/report-route";
 import { WebadminApprovalRoute } from "./presentation/routes/web-admin/approval-route";
 import { WebadminInspectionResultRoute } from "./presentation/routes/web-admin/inspection-result-route";
+import { WebadminAuthRoute } from "./presentation/routes/web-admin/auth-route";
 
 // Domain Repository
 import { UserRepository } from "@/domain/service/user-repository";
@@ -66,6 +67,7 @@ import { MobileProfileService } from "./services/mobile/profile-service";
 import { WebadminReportService } from "./services/web-admin/report-service";
 import { WebadminApprovalService } from "./services/web-admin/approval-service";
 import { WebadminInspectionResultService } from "./services/web-admin/inspection-result-service";
+import { WebadminAuthService } from "./services/web-admin/auth-service";
 
 // Controller
 import UserController from "@/presentation/controllers/user-controller";
@@ -86,6 +88,7 @@ import { MobileHistoryReportController } from "./presentation/controllers/mobile
 import { WebadminReportController } from "./presentation/controllers/web-admin/report-controller";
 import { WebadminApprovalController } from "./presentation/controllers/web-admin/approval-controller";
 import { WebadminInspectionResultController } from "./presentation/controllers/web-admin/inspection-result-controller";
+import { WebadminAuthController } from "./presentation/controllers/web-admin/auth-controller";
 
 //Middleware
 import { MobileAuthMiddleware } from "./presentation/middleware/auth-middleware";
@@ -122,6 +125,7 @@ container.bind<MobileProfileRoute>(MobileProfileRoute).toSelf().inSingletonScope
 container.bind<WebadminReportRoute>(WebadminReportRoute).toSelf().inSingletonScope();
 container.bind<WebadminApprovalRoute>(WebadminApprovalRoute).toSelf().inSingletonScope();
 container.bind<WebadminInspectionResultRoute>(WebadminInspectionResultRoute).toSelf().inSingletonScope();
+container.bind<WebadminAuthRoute>(WebadminAuthRoute).toSelf().inSingletonScope();
 
 // Service Layer
 container.bind(TYPES.MobileAuthService).to(MobileAuthService);
@@ -142,6 +146,7 @@ container.bind(TYPES.MobileProfileService).to(MobileProfileService);
 container.bind(TYPES.WebadminReportService).to(WebadminReportService);
 container.bind(TYPES.WebadminApprovalService).to(WebadminApprovalService);
 container.bind(TYPES.WebadminInspectionResultService).to(WebadminInspectionResultService);
+container.bind(TYPES.WebadminAuthService).to(WebadminAuthService);
 
 // Controller
 container.bind(UserController).toSelf();
@@ -162,6 +167,7 @@ container.bind(MobileProfileController).toSelf();
 container.bind(WebadminReportController).toSelf();
 container.bind(WebadminApprovalController).toSelf();
 container.bind(WebadminInspectionResultController).toSelf();
+container.bind(WebadminAuthController).toSelf();
 
 // Middleware
 container.bind(MobileAuthMiddleware).toSelf();

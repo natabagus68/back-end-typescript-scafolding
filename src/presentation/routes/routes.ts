@@ -18,6 +18,7 @@ import { MobileProfileRoute } from "./mobile/profile-route";
 import { WebadminReportRoute } from "./web-admin/report-route";
 import { WebadminApprovalRoute } from "./web-admin/approval-route";
 import { WebadminInspectionResultRoute } from "./web-admin/inspection-result-route";
+import { WebadminAuthRoute } from "./web-admin/auth-route";
 
 @injectable()
 export class Routes {
@@ -39,7 +40,8 @@ export class Routes {
         private mobileProfileRoute: MobileProfileRoute,
         private webadminReportRoute: WebadminReportRoute,
         private webadminApprovalRoute: WebadminApprovalRoute,
-        private webadminInspectionResultRoute: WebadminInspectionResultRoute
+        private webadminInspectionResultRoute: WebadminInspectionResultRoute,
+        private webadminAuthRoute: WebadminAuthRoute,
     ) {}
 
     public setRoutes(router: Router) {
@@ -61,5 +63,6 @@ export class Routes {
         this.webadminReportRoute.setRoutes(router);
         this.webadminApprovalRoute.setRoutes(router);
         this.webadminInspectionResultRoute.setRoutes(router);
+        this.webadminAuthRoute.setRoutes(router);
     }
 }
