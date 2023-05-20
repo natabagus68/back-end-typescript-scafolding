@@ -289,6 +289,10 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
                         model: InspectionResultDB,
                         as: "inspectionResult",
                     },
+                    {
+                        model: MachineDatumDB,
+                        as: "machineDatum",
+                    },
                 ]
                 : undefined,
         });
