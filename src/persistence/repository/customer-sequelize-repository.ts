@@ -58,7 +58,7 @@ export class CustomerSequelizeRepository implements CustomerRepository {
     async findAllDataTable(param: TDataTableParam): Promise<TableData<ICustomer>> {
         const customers = await CustomerDB.findAll({
             where: {
-                fullname: {
+                customer_name: {
                     [Op.iLike]: `%${param.search}%`,
                 },
             },
