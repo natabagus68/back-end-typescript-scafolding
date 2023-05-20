@@ -15,7 +15,9 @@ yarn build
 echo "trying to create public folder if doesnt exist"
 mkdir $PWD/public || echo "public folder already exist"
 rm $PWD/public/storage || echo "Failed to remove linked storage folder"
-mkdir $PWD/storage || echo "Folder Exist"
+mkdir $PWD/storage || echo "Folder Storage Exist"
+mkdir $PWD/storage/assets || echo "Folder Storage/Assets Exist"
+cp -R $PWD/assets/* $PWD/storage/assets
 ln -s $PWD/storage $PWD/public/storage || echo "Failed to create symlink"
 echo "Restart PM2"
 pm2 restart all
