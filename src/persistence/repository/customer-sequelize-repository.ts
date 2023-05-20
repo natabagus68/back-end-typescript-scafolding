@@ -71,7 +71,7 @@ export class CustomerSequelizeRepository implements CustomerRepository {
             limit: param.limit || 10,
             search: param.search || "",
             data: customers.map((item) => Customer.create({
-                id: item.getDataValue("customer_name"),
+                id: item.getDataValue("id"),
                 customerId: item.getDataValue("customer_name"),
                 customerName: item.getDataValue("address"),
                 address: item.getDataValue("address"),
