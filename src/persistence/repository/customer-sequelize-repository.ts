@@ -70,7 +70,7 @@ export class CustomerSequelizeRepository implements CustomerRepository {
             page: param.page || 1,
             limit: param.limit || 10,
             search: param.search || "",
-            data: customers.map((item) => ({
+            data: customers.map((item) => Customer.create({
                 id: item.getDataValue("customer_name"),
                 customerId: item.getDataValue("customer_name"),
                 customerName: item.getDataValue("address"),
@@ -82,7 +82,7 @@ export class CustomerSequelizeRepository implements CustomerRepository {
                 gibClearance2Path: item.getDataValue("gib_clearance2_path"),
                 perpendicularity1Path: item.getDataValue("perpendicularity1_path"),
                 perpendicularity2Path: item.getDataValue("perpendicularity2_path"),
-            })),
+            }).unmarshal()),
         });
     }
     async store(customer: Customer): Promise<Customer> {
