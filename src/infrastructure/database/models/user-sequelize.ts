@@ -1,22 +1,13 @@
-import {
-    CreationOptional,
-    DataTypes,
-    InferAttributes,
-    InferCreationAttributes,
-    Model,
-} from "sequelize";
+import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from "sequelize";
 import { sequelize } from "../sequelize";
 
-export class User extends Model<
-    InferAttributes<User>,
-    InferCreationAttributes<User>
-> {
+export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare id: CreationOptional<string>;
     declare email: string;
     declare password: CreationOptional<string> | null;
     declare fullname: string;
     declare is_active: boolean;
-    declare avatar_path: string;
+    declare avatarPath: string;
     declare role: string;
     declare created_at: CreationOptional<Date>;
     declare updated_at: CreationOptional<Date>;
@@ -39,7 +30,7 @@ User.init(
             defaultValue: false,
             type: DataTypes.BOOLEAN,
         },
-        avatar_path: {
+        avatarPath: {
             defaultValue: "",
             type: DataTypes.STRING,
         },
