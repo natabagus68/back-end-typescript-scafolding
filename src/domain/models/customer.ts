@@ -59,37 +59,67 @@ export class Customer extends Entity<ICustomer> {
     get phone(): string {
         return this.props.phone;
     }
-    get parallelism1Path(): string | IMulterFile{
+    get parallelism1Path(): string | IMulterFile {
+        if (typeof this.props.parallelism1Path === "string") {
+            if (this.props.parallelism1Path.trim() === "") {
+                return "storage/assets/customer/parallelism_1.png";
+            }
+        }
         return this.props.parallelism1Path;
     }
     set parallelism1Path(val: string | IMulterFile) {
         this.props.parallelism1Path = val;
     }
-    get parallelism2Path(): string | IMulterFile{
+    get parallelism2Path(): string | IMulterFile {
+        if (typeof this.props.parallelism2Path === "string") {
+            if (this.props.parallelism2Path.trim() === "") {
+                return "storage/assets/customer/parallelism_2png";
+            }
+        }
         return this.props.parallelism2Path;
     }
     set parallelism2Path(val: string | IMulterFile) {
         this.props.parallelism2Path = val;
     }
-    get gibClearance1Path(): string | IMulterFile{
+    get gibClearance1Path(): string | IMulterFile {
+        if (typeof this.props.gibClearance1Path === "string") {
+            if (this.props.gibClearance1Path.trim() === "") {
+                return "storage/assets/customer/gib_1.png";
+            }
+        }
         return this.props.gibClearance1Path;
     }
     set gibClearance1Path(val: string | IMulterFile) {
         this.props.gibClearance1Path = val;
     }
     get gibClearance2Path(): string | IMulterFile {
+        if (typeof this.props.gibClearance2Path === "string") {
+            if (this.props.gibClearance2Path.trim() === "") {
+                return "storage/assets/customer/gib_2.png";
+            }
+        }
         return this.props.gibClearance2Path;
     }
     set gibClearance2Path(val: string | IMulterFile) {
         this.props.gibClearance2Path = val;
     }
-    get perpendicularity1Path(): string | IMulterFile{
+    get perpendicularity1Path(): string | IMulterFile {
+        if (typeof this.props.perpendicularity1Path === "string") {
+            if (this.props.perpendicularity1Path.trim() === "") {
+                return "storage/assets/customer/perpendicularity_1.png";
+            }
+        }
         return this.props.perpendicularity1Path;
     }
     set perpendicularity1Path(val: string | IMulterFile) {
         this.props.perpendicularity1Path = val;
     }
-    get perpendicularity2Path(): string |IMulterFile {
+    get perpendicularity2Path(): string | IMulterFile {
+        if (typeof this.props.perpendicularity2Path === "string") {
+            if (this.props.perpendicularity2Path.trim() === "") {
+                return "storage/assets/customer/perpendicularity_2.png";
+            }
+        }
         return this.props.perpendicularity2Path;
     }
     set perpendicularity2Path(val: string | IMulterFile) {
