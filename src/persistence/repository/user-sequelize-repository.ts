@@ -28,7 +28,7 @@ export class UserSequelizeRepository implements UserRepository {
             password: user.getDataValue("password"),
             fullname: user.getDataValue("fullname"),
             isActive: user.getDataValue("is_active"),
-            avatarPath: user.getDataValue("avatar_path"),
+            avatarPath: user.getDataValue("avatarPath"),
             role: user.getDataValue("role"),
             createdAt: user.getDataValue("created_at"),
             updatedAt: user.getDataValue("updated_at"),
@@ -55,7 +55,7 @@ export class UserSequelizeRepository implements UserRepository {
                 password: item.password,
                 fullname: item.fullname,
                 isActive: item.is_active,
-                avatarPath: item.avatar_path,
+                avatarPath: item.avatarPath,
                 role: item.role,
                 createdAt: item.created_at,
                 updatedAt: item.updated_at,
@@ -74,7 +74,7 @@ export class UserSequelizeRepository implements UserRepository {
                 password: user.password,
                 fullname: user.fullname,
                 isActive: user.is_active,
-                avatarPath: user.avatar_path,
+                avatarPath: user.avatarPath,
                 role: user.role,
                 createdAt: user.created_at,
                 updatedAt: user.updated_at,
@@ -97,7 +97,7 @@ export class UserSequelizeRepository implements UserRepository {
             password: user.password,
             fullname: user.fullname,
             isActive: user.is_active,
-            avatarPath: user.avatar_path,
+            avatarPath: user.avatarPath,
             role: user.role,
             createdAt: user.created_at,
             updatedAt: user.updated_at,
@@ -108,6 +108,7 @@ export class UserSequelizeRepository implements UserRepository {
     async store(userDomain: EntityUser): Promise<EntityUser> {
         const transaction = await sequelize.transaction();
         try {
+            console.log(userDomain);
             const user = await User.create(
                 {
                     id: userDomain.id,
@@ -115,7 +116,7 @@ export class UserSequelizeRepository implements UserRepository {
                     password: userDomain.password,
                     fullname: userDomain.fullname,
                     is_active: userDomain.isActive,
-                    avatar_path: typeof userDomain.avatarPath === "string" ? userDomain.avatarPath : "",
+                    avatarPath: typeof userDomain.avatarPath === "string" ? userDomain.avatarPath : "",
                     role: userDomain.role,
                 },
                 {
@@ -129,7 +130,7 @@ export class UserSequelizeRepository implements UserRepository {
                 password: user.password,
                 fullname: user.fullname,
                 isActive: user.is_active,
-                avatarPath: user.avatar_path,
+                avatarPath: user.avatarPath,
                 role: user.role,
                 createdAt: user.created_at,
                 updatedAt: user.updated_at,
@@ -154,7 +155,10 @@ export class UserSequelizeRepository implements UserRepository {
                 description: "User was not found",
             });
         }
-        await user.update(userDomain.unmarshal());
+        await user.update({
+            ...userDomain.unmarshal(),
+            avatarPath: userDomain.avatarPath?.toString(),
+        });
         await user.reload();
         return EntityUser.create({
             id: user.id,
@@ -162,7 +166,7 @@ export class UserSequelizeRepository implements UserRepository {
             password: user.password,
             fullname: user.fullname,
             isActive: user.is_active,
-            avatarPath: user.avatar_path,
+            avatarPath: userDomain.avatarPath,
             role: user.role,
             createdAt: user.created_at,
             updatedAt: user.updated_at,

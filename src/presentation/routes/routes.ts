@@ -16,6 +16,7 @@ import { MobileHistoryReportRoute } from "./mobile/history-report-route";
 import { MobileNotificationRoute } from "./mobile/notification-route";
 import { MobileProfileRoute } from "./mobile/profile-route";
 import { WebadminReportRoute } from "./web-admin/report-route";
+import { WebAdminCustomerRoute } from "./web-admin/customer-route";
 import { WebadminApprovalRoute } from "./web-admin/approval-route";
 import { WebadminInspectionResultRoute } from "./web-admin/inspection-result-route";
 
@@ -38,6 +39,7 @@ export class Routes {
         private mobileNotificationRoute: MobileNotificationRoute,
         private mobileProfileRoute: MobileProfileRoute,
         private webadminReportRoute: WebadminReportRoute,
+        private webAdminCustomerRoute: WebAdminCustomerRoute,
         private webadminApprovalRoute: WebadminApprovalRoute,
         private webadminInspectionResultRoute: WebadminInspectionResultRoute
     ) {}
@@ -59,6 +61,7 @@ export class Routes {
         this.mobileNotificationRoute.setRoutes(router);
         this.mobileProfileRoute.setRoutes(router);
         this.webadminReportRoute.setRoutes(router);
+        this.webAdminCustomerRoute.setRoutes(router);
         this.webadminApprovalRoute.setRoutes(router);
         this.webadminInspectionResultRoute.setRoutes(router);
     }

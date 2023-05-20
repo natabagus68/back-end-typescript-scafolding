@@ -17,41 +17,49 @@ export default class UserController {
 
     public async findUserById(req: Request, res: Response): Promise<Response> {
         const user = await this._userService.findById(req.params.id);
-        return res.status(200).send(user);
+        return res.json({
+            message: "success",
+            data: user,
+        });
     }
 
     public async createUser(req: Request, res: Response): Promise<Response> {
-        const parseBody = userCreateScheme.safeParse({
-            ...req.body,
-            avatar_path: req.file,
-        });
-        if (!parseBody.success) {
+        const validatedReq = userCreateScheme.safeParse({ ...req.body, avatarPath: req.file });
+        if (!validatedReq.success) {
             throw new AppError({
                 statusCode: HttpCode.VALIDATION_ERROR,
                 description: "Request validation error",
-                data: parseBody.error.flatten().fieldErrors,
+                data: validatedReq.error.flatten().fieldErrors,
             });
         }
-        const createdUser = await this._userService.store(parseBody.data);
-        return res.status(200).send({ message: "success", data: createdUser });
+        const created = await this._userService.store(validatedReq.data);
+        return res.json({
+            message: "success",
+            data: created,
+        });
     }
 
     public async updateUser(req: Request, res: Response): Promise<Response> {
-        const parseBody = userUpdateScheme.safeParse(req.body);
-        if (!parseBody.success) {
+        const validatedReq = userUpdateScheme.safeParse({ ...req.body, avatarPath: req.file });
+        if (!validatedReq.success) {
             throw new AppError({
-                statusCode: HttpCode.BAD_REQUEST,
+                statusCode: HttpCode.VALIDATION_ERROR,
                 description: "Request validation error",
-                data: parseBody.error.flatten(),
+                data: validatedReq.error.flatten().fieldErrors,
             });
         }
-        const updatedUser = await this._userService.update(req.params.id, parseBody.data);
-        return res.status(200).send({ message: "success", data: updatedUser });
+        const created = await this._userService.update(req.params.id, validatedReq.data);
+        return res.json({
+            message: "success",
+            data: created,
+        });
     }
 
     public async deleteUser(req: Request, res: Response): Promise<Response> {
-        const user = await this._userService.destroy(req.params.id);
-        return res.status(200).send(user);
+        await this._userService.destroy(req.params.id);
+        return res.json({
+            message: "User has been deleted",
+        });
     }
 
     public async getDataTable(req: AuthRequest, res: Response): Promise<Response> {

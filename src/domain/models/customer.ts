@@ -1,4 +1,5 @@
 import { Entity } from "./entity";
+import { IMulterFile } from "@/presentation/validation/types";
 
 export interface ICustomer {
     id?: string;
@@ -6,12 +7,12 @@ export interface ICustomer {
     customerName: string;
     address: string;
     phone: string;
-    parallelism1Path: string;
-    parallelism2Path: string;
-    gibClearance1Path: string;
-    gibClearance2Path: string;
-    perpendicularity1Path: string;
-    perpendicularity2Path: string;
+    parallelism1Path: string | IMulterFile;
+    parallelism2Path: string | IMulterFile;
+    gibClearance1Path: string | IMulterFile;
+    gibClearance2Path: string | IMulterFile;
+    perpendicularity1Path: string | IMulterFile;
+    perpendicularity2Path: string | IMulterFile;
     createdAt?: Date | null;
     updatedAt?: Date | null;
     deletedAt?: Date | null;
@@ -58,23 +59,41 @@ export class Customer extends Entity<ICustomer> {
     get phone(): string {
         return this.props.phone;
     }
-    get parallelism1Path(): string {
+    get parallelism1Path(): string | IMulterFile{
         return this.props.parallelism1Path;
     }
-    get parallelism2Path(): string {
+    set parallelism1Path(val: string | IMulterFile) {
+        this.props.parallelism1Path = val;
+    }
+    get parallelism2Path(): string | IMulterFile{
         return this.props.parallelism2Path;
     }
-    get gibClearance1Path(): string {
+    set parallelism2Path(val: string | IMulterFile) {
+        this.props.parallelism2Path = val;
+    }
+    get gibClearance1Path(): string | IMulterFile{
         return this.props.gibClearance1Path;
     }
-    get gibClearance2Path(): string {
+    set gibClearance1Path(val: string | IMulterFile) {
+        this.props.gibClearance1Path = val;
+    }
+    get gibClearance2Path(): string | IMulterFile {
         return this.props.gibClearance2Path;
     }
-    get perpendicularity1Path(): string {
+    set gibClearance2Path(val: string | IMulterFile) {
+        this.props.gibClearance2Path = val;
+    }
+    get perpendicularity1Path(): string | IMulterFile{
         return this.props.perpendicularity1Path;
     }
-    get perpendicularity2Path(): string {
+    set perpendicularity1Path(val: string | IMulterFile) {
+        this.props.perpendicularity1Path = val;
+    }
+    get perpendicularity2Path(): string |IMulterFile {
         return this.props.perpendicularity2Path;
+    }
+    set perpendicularity2Path(val: string | IMulterFile) {
+        this.props.perpendicularity2Path = val;
     }
     get createdAt(): undefined | Date | null {
         return this.props.createdAt;
