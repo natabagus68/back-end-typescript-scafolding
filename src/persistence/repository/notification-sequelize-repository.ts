@@ -11,7 +11,7 @@ export class NotificationSequelizeRepository implements NotificationRepository {
         const notifications = await NotificationDB.findAll({
             where: {
                 inspector_id: inspectorId,
-                inspection_date: {
+                created_at: {
                     ...(today
                         ? { [Op.between]: [moment().startOf("day").toDate(), moment().endOf("day").toDate()] }
                         : { [Op.lt]: moment().startOf("day").toDate() }),
