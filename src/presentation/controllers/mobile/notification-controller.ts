@@ -8,7 +8,11 @@ import { inject, injectable } from "inversify";
 export class MobileNotificationController {
     constructor(@inject(TYPES.MobileNotificationService) private _notificationService: MobileNotificationService) {}
     public async get(req: AuthRequest, res: Response): Promise<Response> {
-        const notifications = await this._notificationService.getByInspectorId(req.auth.user.id);
+        const notifications = await this._notificationService.getByInspectorId(
+            req.auth.user.id,
+            req.params["today"] !== ""
+        );
+
         return res.json({
             message: "success",
             data: notifications,

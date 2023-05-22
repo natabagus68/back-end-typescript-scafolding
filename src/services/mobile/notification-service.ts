@@ -6,8 +6,8 @@ import { inject, injectable } from "inversify";
 @injectable()
 export class MobileNotificationService {
     constructor(@inject(TYPES.NotificationRepository) private _notificationRepo: NotificationRepository) {}
-    public async getByInspectorId(inspectorId: string): Promise<INotification[]> {
-        const notifications = await this._notificationRepo.getByInspectorId(inspectorId);
+    public async getByInspectorId(inspectorId: string, today = false): Promise<INotification[]> {
+        const notifications = await this._notificationRepo.getByInspectorId(inspectorId, today);
         return notifications.map((item) => item.unmarshal());
     }
     public async store(param: INotification): Promise<INotification> {

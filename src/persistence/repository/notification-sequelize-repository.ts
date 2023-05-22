@@ -2,13 +2,20 @@ import { Notification } from "@/domain/models/notification";
 import { NotificationRepository } from "@/domain/service/notification-repository";
 import { injectable } from "inversify";
 import { Notification as NotificationDB } from "@/infrastructure/database/models/notification-sequelize";
+import { Op } from "sequelize";
+import moment from "moment";
 
 @injectable()
 export class NotificationSequelizeRepository implements NotificationRepository {
-    async getByInspectorId(inspectorId: string): Promise<Notification[]> {
+    async getByInspectorId(inspectorId: string, today = false): Promise<Notification[]> {
         const notifications = await NotificationDB.findAll({
             where: {
                 inspector_id: inspectorId,
+                inspection_date: {
+                    ...(today
+                        ? { [Op.between]: [moment().startOf("day").toDate(), moment().endOf("day").toDate()] }
+                        : { [Op.lt]: moment().startOf("day").toDate() }),
+                },
             },
         });
         return notifications.map((item) =>
