@@ -15,6 +15,8 @@ export class MobileCustomerService {
             id: item.id || "",
             customerId: item.customerId || "",
             customerName: item.customerName,
+            address: item.address,
+            phone: item.phone,
         }));
     }
 }

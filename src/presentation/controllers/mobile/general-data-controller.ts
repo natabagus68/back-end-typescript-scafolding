@@ -26,7 +26,6 @@ export class MobileGeneralDataController {
         const createdUser = await this._generalDataService.store({
             customerId: validatedData.data.customerId,
             personInCharge: validatedData.data.personInCharge,
-            inspectionDate: validatedData.data.inspectionDate,
             inspectorId: req.auth.user.id,
             lastStep: EGeneralDataLastStep.GENERAL_DATA,
         });
