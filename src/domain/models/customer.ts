@@ -17,6 +17,10 @@ export interface ICustomer {
     updatedAt?: Date | null;
     deletedAt?: Date | null;
 }
+export interface IPathFile {
+    path: string;
+    mimeType: string;
+}
 
 export class Customer extends Entity<ICustomer> {
     constructor(props: ICustomer) {

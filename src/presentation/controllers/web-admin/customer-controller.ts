@@ -3,6 +3,7 @@ import { AuthRequest } from "@/presentation/utils/types/jwt-request";
 import {
     webAdminCustomerCreateSchema,
     webAdminCustomerUpdateSchema,
+    webAdminCustomerUploadSchema,
 } from "@/presentation/validation/web-admin/customer-validation";
 import { getDataTableScheme } from "@/presentation/validation/data-table-validation";
 import { WebAdminCustomerService } from "@/services/web-admin/customer-service";
@@ -15,23 +16,7 @@ import { z } from "zod";
 export class WebAdminCustomerController {
     constructor(@inject(TYPES.WebAdminCustomerService) private _customerService: WebAdminCustomerService) {}
     public async store(req: AuthRequest, res: Response): Promise<Response> {
-        // throw req.files;
-        if (!req.files) {
-            throw new AppError({
-                statusCode: HttpCode.VALIDATION_ERROR,
-                description: "Upload file required",
-            });
-        }
-        // console.log(req.files);
-        const validatedReq = webAdminCustomerCreateSchema.safeParse({
-            ...req.body,
-            parallelism1Path: req.files,
-            parallelism2Path: req.files,
-            gibClearance1Path: req.files,
-            gibClearance2Path: req.files,
-            perpendicularity1Path: req.files,
-            perpendicularity2Path: req.files,
-        });
+        const validatedReq = webAdminCustomerCreateSchema.safeParse(req.body);
         if (!validatedReq.success) {
             throw new AppError({
                 statusCode: HttpCode.VALIDATION_ERROR,
@@ -39,15 +24,7 @@ export class WebAdminCustomerController {
                 data: validatedReq.error.flatten().fieldErrors,
             });
         }
-        const created = await this._customerService.store({
-            ...req.body,
-            parallelism1Path: req.files,
-            parallelism2Path: req.files,
-            gibClearance1Path: req.files,
-            gibClearance2Path: req.files,
-            perpendicularity1Path: req.files,
-            perpendicularity2Path: req.files,
-        });
+        const created = await this._customerService.store(validatedReq.data);
         return res.json({
             message: "success",
             data: created,
@@ -123,6 +100,22 @@ export class WebAdminCustomerController {
         await this._customerService.destroy(validatedReq.data.id);
         return res.json({
             message: "Data Customer has been deleted",
+        });
+    }
+
+    public async uploadSingle(req: Request, res: Response): Promise<Response> {
+        const validatedReq = webAdminCustomerUploadSchema.safeParse({ file: req.file });
+        if (!validatedReq.success) {
+            throw new AppError({
+                statusCode: HttpCode.VALIDATION_ERROR,
+                description: "Request validation error",
+                data: validatedReq.error.flatten().fieldErrors,
+            });
+        }
+        const created = await this._customerService.uploadSingle(validatedReq.data.file);
+        return res.json({
+            message: "success",
+            data: created,
         });
     }
 }

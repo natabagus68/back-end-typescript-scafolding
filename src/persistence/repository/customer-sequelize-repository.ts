@@ -85,6 +85,7 @@ export class CustomerSequelizeRepository implements CustomerRepository {
             }).unmarshal()),
         });
     }
+
     async store(customer: Customer): Promise<Customer> {
         const created = await CustomerDB.create({
             id: customer.id,
@@ -99,21 +100,22 @@ export class CustomerSequelizeRepository implements CustomerRepository {
             perpendicularity1_path: customer.perpendicularity1Path,
             perpendicularity2_path: customer.perpendicularity2Path,
         });
-        return Customer.create({
+        const customerData = Customer.create({
             id: created.getDataValue("id"),
             customerId: created.getDataValue("customerId"),
             customerName: created.getDataValue("customerName"),
             address: created.getDataValue("address"),
             phone: created.getDataValue("phone"),
-            parallelism1Path: created.getDataValue("parallelism1Path"),
-            parallelism2Path: created.getDataValue("parallelism2Path"),
-            gibClearance1Path: created.getDataValue("gibClearance1Path"),
-            gibClearance2Path: created.getDataValue("gibClearance2Path"),
-            perpendicularity1Path: created.getDataValue("perpendicularity1Path"),
-            perpendicularity2Path: created.getDataValue("perpendicularity2Path"),
+            parallelism1Path: created.getDataValue("parallelism1_path"),
+            parallelism2Path: created.getDataValue("parallelism2_path"),
+            gibClearance1Path: created.getDataValue("gib_clearance1_path"),
+            gibClearance2Path: created.getDataValue("gib_clearance2_path"),
+            perpendicularity1Path: created.getDataValue("perpendicularity1_path"),
+            perpendicularity2Path: created.getDataValue("perpendicularity2_path"),
             createdAt: created.getDataValue("created_at"),
             updatedAt: created.getDataValue("updated_at"),
         });
+        return customerData;
     }
     async update(id: string, customerData: Customer): Promise<Customer> {
         const customer = await CustomerDB.findByPk(id);

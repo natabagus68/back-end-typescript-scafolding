@@ -58,5 +58,13 @@ export class WebAdminCustomerRoute {
             this.MobileAuthMiddlewareInstance.handle.bind(this.MobileAuthMiddlewareInstance),
             asyncWrap(this.WebAdminCustomerControllerInstance.delete.bind(this.WebAdminCustomerControllerInstance))
         );
+        router.post(
+            `/${this.route}/upload`,
+            tmpUploadedFiles.single("file"),
+            this.MobileAuthMiddlewareInstance.handle.bind(this.MobileAuthMiddlewareInstance),
+            asyncWrap(
+                this.WebAdminCustomerControllerInstance.uploadSingle.bind(this.WebAdminCustomerControllerInstance)
+            )
+        );
     }
 }

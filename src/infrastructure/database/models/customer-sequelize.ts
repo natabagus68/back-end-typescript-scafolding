@@ -24,7 +24,7 @@ Customer.init(
             type: DataTypes.STRING,
             primaryKey: true,
         },
-        customer_id: DataTypes.STRING,
+        customer_id: { type: DataTypes.STRING, unique: true },
         customer_name: DataTypes.STRING,
         address: DataTypes.STRING,
         phone: DataTypes.STRING,
