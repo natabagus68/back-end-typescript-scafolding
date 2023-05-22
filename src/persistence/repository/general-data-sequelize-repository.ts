@@ -296,6 +296,10 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
                         model: MachineDatumDB,
                         as: "machineDatum",
                     },
+                    {
+                        model: UserDB,
+                        as: "inspector",
+                    },
                 ]
                 : undefined,
         });
@@ -523,6 +527,21 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
                         createdAt: item.getDataValue("created_at"),
                         updatedAt: item.getDataValue("updated_at"),
                     }))
+                    : undefined,
+            inspector:
+                relation && generalData.inspector
+                    ? {
+                        id: generalData.inspector.getDataValue("id"),
+                        email: generalData.inspector.getDataValue("email"),
+                        password: generalData.inspector.getDataValue("password"),
+                        fullname: generalData.inspector.getDataValue("fullname"),
+                        isActive: generalData.inspector.getDataValue("is_active"),
+                        avatarPath: generalData.inspector.getDataValue("avatarPath"),
+                        role: generalData.inspector.getDataValue("role"),
+                        createdAt: generalData.inspector.getDataValue("created_at"),
+                        updatedAt: generalData.inspector.getDataValue("updated_at"),
+                        deletedAt: generalData.inspector.getDataValue("deleted_at"),
+                    }
                     : undefined,
         });
     }

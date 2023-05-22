@@ -68,7 +68,7 @@ export class GeneralData extends Entity<IGeneralData> {
             personInCharge: this.personInCharge,
             inspectionDate: this.inspectionDate,
             inspectorId: this.inspectorId,
-            inspectorName: this.inspectorId,
+            inspectorName: this.inspector?.fullname || "~",
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
             deletedAt: this.deletedAt,
