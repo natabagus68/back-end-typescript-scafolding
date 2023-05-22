@@ -54,3 +54,4 @@ package-lock.json
 storage/*
 upload/*
 tmp/*
+public/storage
