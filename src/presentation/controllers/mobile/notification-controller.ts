@@ -10,7 +10,7 @@ export class MobileNotificationController {
     public async get(req: AuthRequest, res: Response): Promise<Response> {
         const notifications = await this._notificationService.getByInspectorId(
             req.auth.user.id,
-            req.params["today"] !== ""
+            req.query["today"] !== ""
         );
 
         return res.json({
