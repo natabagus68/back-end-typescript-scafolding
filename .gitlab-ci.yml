@@ -15,4 +15,4 @@ deploy_to_dev:
     - chmod 400 ./admin.pem || echo "Gagal Edit Permission admin.pem"
     - ssh -i "./admin.pem" $SSH_USERNAME@$SSH_HOST "cd /home/ubuntu/apps/nig-backend && (sudo ./bin/deploy.sh || sudo chmod u+x ./bin/deploy.sh && sudo ./bin/deploy.sh) && exit"
   only:
-    - development
+    - main
