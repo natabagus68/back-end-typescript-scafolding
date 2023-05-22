@@ -15,7 +15,7 @@ export class GeneralData extends Model {
     declare id: CreationOptional<string>;
     declare customer_id: string;
     declare person_in_charge: string;
-    declare inspection_date: Date;
+    declare inspection_date: CreationOptional<Date | null>;
     declare inspection_id: NonAttribute<string | undefined>;
     declare inspector_id: string;
     declare inspector_name: NonAttribute<string | undefined>;
@@ -59,7 +59,10 @@ GeneralData.init(
         inspection_id: DataTypes.STRING,
         customer_id: DataTypes.STRING,
         person_in_charge: DataTypes.STRING,
-        inspection_date: DataTypes.DATE,
+        inspection_date: {
+            allowNull : true,
+            type : DataTypes.DATE
+        },
         inspector_id: DataTypes.STRING,
         submitted_at: { type: DataTypes.DATE, allowNull: true },
         approved_at: { type: DataTypes.DATE, allowNull: true },

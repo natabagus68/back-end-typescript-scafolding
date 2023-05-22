@@ -14,7 +14,7 @@ export class MobileGeneralDataService {
     ) {}
     async store(generalData: IGeneralData): Promise<IGeneralData> {
         const customer = await this._customerRepo.findById(generalData.customerId);
-        const existingGeneralData = await this._repository.findByCustAndDate(customer.id, generalData.inspectionDate);
+        const existingGeneralData = await this._repository.findByCustAndDate(customer.id, new Date());
         const data = GeneralData.create({
             ...generalData,
             id: existingGeneralData?.id,

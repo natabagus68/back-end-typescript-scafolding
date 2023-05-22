@@ -27,7 +27,7 @@ export interface IGeneralData {
     customerId: string;
     personInCharge: string;
     inspectionId?: string;
-    inspectionDate: Date;
+    inspectionDate?: Date | null;
     inspectorId: string;
     inspectorName?: string;
     lastStep: EGeneralDataLastStep | string;
@@ -109,7 +109,7 @@ export class GeneralData extends Entity<IGeneralData> {
     get personInCharge(): string {
         return this.props.personInCharge;
     }
-    get inspectionDate(): Date {
+    get inspectionDate(): undefined | Date | null {
         return this.props.inspectionDate;
     }
     get inspectorId(): string {

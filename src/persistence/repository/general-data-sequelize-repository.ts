@@ -20,6 +20,7 @@ import { ResumeCheck as ResumeCheckDB } from "@/infrastructure/database/models/r
 import { sequelize } from "@/infrastructure/database/sequelize";
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
 import { injectable } from "inversify";
+import moment from "moment";
 import { Op } from "sequelize";
 
 @injectable()
@@ -188,7 +189,9 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
         const found = await GeneralDataDB.findOne({
             where: {
                 customer_id: customerId,
-                inspection_date: date,
+                inspection_date: {
+                    [Op.between]: [moment(date).startOf("day").toDate(), moment(date).endOf("day").toDate()],
+                },
             },
         });
         if (!found) {
@@ -529,7 +532,6 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
             inspection_id: generalData.inspectionId,
             customer_id: generalData.customerId,
             person_in_charge: generalData.personInCharge,
-            inspection_date: generalData.inspectionDate,
             inspector_id: generalData.inspectorId,
             last_step: generalData.lastStep,
         });
@@ -538,7 +540,6 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
             inspectionId: created.getDataValue("inspection_id"),
             customerId: created.getDataValue("customer_id"),
             personInCharge: created.getDataValue("person_in_charge"),
-            inspectionDate: created.getDataValue("inspection_date"),
             inspectorId: created.getDataValue("inspector_id"),
             createdAt: created.getDataValue("created_at"),
             updatedAt: created.getDataValue("updated_at"),
