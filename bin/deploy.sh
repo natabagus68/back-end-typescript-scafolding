@@ -1,5 +1,6 @@
 #! /usr/bin/bash
 PWD=/home/ubuntu/apps/nig-backend
+PWD_FE=/home/ubuntu/apps/nig-frontend
 echo "Pull from Repository "
 sudo git checkout main 
 sudo git pull origin main || (sudo git stash && sudo git pull origin main)
@@ -22,6 +23,8 @@ pm2 restart all
 echo "Wait 10 Sec for live server testing"
 sleep 10
 curl http://localhost/api/
-echo "Finish"
+echo "Finish BE"
+echo "Start Redeploy FE"
+cd $PWD_FE && (sudo ./bin/deploy.sh || sudo chmod u+x ./bin/deploy.sh && sudo ./bin/deploy.sh)
 exit
 
