@@ -29,7 +29,7 @@ export class MobileInspectionFormController {
             });
         }
         const createdData = await this._inspectionFormService.storeData(
-            validatedData.data.map((item, i) => ({ ...item, order: i + 1 }))
+            validatedData.data.inspectionDatum.map((item, i) => ({ ...item, order: i + 1 }))
         );
         return res.json({
             message: "success",
