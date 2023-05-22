@@ -43,8 +43,6 @@ export class UserService {
 
     public async update(id: string, _user: IUser): Promise<IUser> {
         const userData = await this._repository.findById(id);
-
-        // FileSystem.destroy(<string>userData.avatarPath);
         const userProps = User.create(_user);
         if (typeof _user.avatarPath === "object") {
             const avatarPath = FileSystem.update(_user.avatarPath, "user", <string>userData.avatarPath);
@@ -62,15 +60,12 @@ export class UserService {
                 role: _user.role,
             })
         );
-        // console.log(user);
-
         return user.unmarshal();
     }
 
     public async destroy(id: string): Promise<boolean> {
         const userData = await this._repository.findById(id);
         if (userData.avatarPath) {
-            // fs.pathExists(<string>userData.avatarPath);
             FileSystem.destroy(<string>userData.avatarPath);
         }
         await this._repository.destroy(id);
