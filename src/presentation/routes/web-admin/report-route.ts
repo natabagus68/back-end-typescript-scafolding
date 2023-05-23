@@ -17,5 +17,10 @@ export class WebadminReportRoute {
             this.MobileAuthMiddlewareInstance.handle.bind(this.MobileAuthMiddlewareInstance),
             asyncWrap(this.WebadminReportControllerInstance.dataTable.bind(this.WebadminReportControllerInstance))
         );
+        router.get(
+            `/${this.route}/:generalDataId/download`,
+            // this.MobileAuthMiddlewareInstance.handle.bind(this.MobileAuthMiddlewareInstance),
+            asyncWrap(this.WebadminReportControllerInstance.download.bind(this.WebadminReportControllerInstance))
+        );
     }
 }

@@ -17,4 +17,8 @@ export class WebadminReportController {
             data: dataTable,
         });
     }
+    public async download(req: AuthRequest, res: Response): Promise<void> {
+        const arrayBuffer = await this._reportService.download("asd");
+        res.download(arrayBuffer);
+    }
 }
