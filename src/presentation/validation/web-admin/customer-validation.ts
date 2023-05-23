@@ -6,12 +6,12 @@ export const webAdminCustomerCreateSchema = z.object({
     customerName: z.string(),
     address: z.string(),
     phone: z.string(),
-    parallelism1Path: z.any().transform((val) => val || ""),
-    parallelism2Path: z.any().transform((val) => val || ""),
-    gibClearance1Path: z.any().transform((val) => val || ""),
-    gibClearance2Path: z.any().transform((val) => val || ""),
-    perpendicularity1Path: z.any().transform((val) => val || ""),
-    perpendicularity2Path: z.any().transform((val) => val || ""),
+    parallelism1Path: z.any().transform((val) => <string>val || ""),
+    parallelism2Path: z.any().transform((val) => <string>val || ""),
+    gibClearance1Path: z.any().transform((val) => <string>val || ""),
+    gibClearance2Path: z.any().transform((val) => <string>val || ""),
+    perpendicularity1Path: z.any().transform((val) => <string>val || ""),
+    perpendicularity2Path: z.any().transform((val) => <string>val || ""),
 });
 
 export const webAdminCustomerUpdateSchema = z.object({
@@ -19,12 +19,12 @@ export const webAdminCustomerUpdateSchema = z.object({
     customerName: z.string(),
     address: z.string(),
     phone: z.string(),
-    parallelism1Path: z.any().transform((val) => val || ""),
-    parallelism2Path: z.any().transform((val) => val || ""),
-    gibClearance1Path: z.any().transform((val) => val || ""),
-    gibClearance2Path: z.any().transform((val) => val || ""),
-    perpendicularity1Path: z.any().transform((val) => val || ""),
-    perpendicularity2Path: z.any().transform((val) => val || ""),
+    parallelism1Path: z.any().transform((val) => <string>val || ""),
+    parallelism2Path: z.any().transform((val) => <string>val || ""),
+    gibClearance1Path: z.any().transform((val) => <string>val || ""),
+    gibClearance2Path: z.any().transform((val) => <string>val || ""),
+    perpendicularity1Path: z.any().transform((val) => <string>val || ""),
+    perpendicularity2Path: z.any().transform((val) => <string>val || ""),
 });
 
 export const webAdminCustomerUploadSchema = z.object({
