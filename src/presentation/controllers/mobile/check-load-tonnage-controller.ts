@@ -21,7 +21,7 @@ export class MobileCheckLoadTonnageController {
                 data: validatedData.error.flatten().fieldErrors,
             });
         }
-        const createdData = await this._checkLoadTonnageService.storeData(validatedData.data);
+        const createdData = await this._checkLoadTonnageService.storeData(validatedData.data.checkLoadTonnage);
         return res.json({
             message: "success",
             data: createdData,
