@@ -79,7 +79,7 @@ export class Customer extends Entity<ICustomer> {
     get parallelism2Path(): string | IMulterFile {
         if (typeof this.props.parallelism2Path === "string") {
             if (this.props.parallelism2Path.trim() === "") {
-                return "storage/assets/customer/parallelism_2png";
+                return "storage/assets/customer/parallelism_2.png";
             }
         }
         return this.props.parallelism2Path;
