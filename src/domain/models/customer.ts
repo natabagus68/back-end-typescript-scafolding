@@ -52,7 +52,7 @@ export class Customer extends Entity<ICustomer> {
         return this._id;
     }
     get customerId(): undefined | string {
-        return !this.props.customerId || this.props.customerId === ""
+        return !this.props.customerId || (this.props.customerId && this.props.customerId).trim() === ""
             ? `CID${Math.round(Math.random() * 9999)}`
             : this.props.customerId;
     }
