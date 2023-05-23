@@ -17,18 +17,30 @@ export class WebAdminCustomerService {
     }
 
     public async store(customerData: ICustomer): Promise<ICustomer> {
-        const _parallelism1Path = FileSystem.copyImageCustomer(<string>customerData.parallelism1Path, "customer");
-        const _parallelism2Path = FileSystem.copyImageCustomer(<string>customerData.parallelism2Path, "customer");
-        const _gibClearance1Path = FileSystem.copyImageCustomer(<string>customerData.gibClearance1Path, "customer");
-        const _gibClearance2Path = FileSystem.copyImageCustomer(<string>customerData.gibClearance2Path, "customer");
-        const _perpendicularity1Path = FileSystem.copyImageCustomer(
-            <string>customerData.perpendicularity1Path,
-            "customer"
-        );
-        const _perpendicularity2Path = FileSystem.copyImageCustomer(
-            <string>customerData.perpendicularity2Path,
-            "customer"
-        );
+        const _parallelism1Path =
+            customerData.parallelism1Path && customerData.parallelism1Path !== ""
+                ? FileSystem.copyImageCustomer(<string>customerData.parallelism1Path, "customer")
+                : "";
+        const _parallelism2Path =
+            customerData.parallelism2Path && customerData.parallelism2Path !== ""
+                ? FileSystem.copyImageCustomer(<string>customerData.parallelism2Path, "customer")
+                : "";
+        const _gibClearance1Path =
+            customerData.gibClearance1Path && customerData.gibClearance1Path !== ""
+                ? FileSystem.copyImageCustomer(<string>customerData.gibClearance1Path, "customer")
+                : "";
+        const _gibClearance2Path =
+            customerData.gibClearance2Path && customerData.gibClearance2Path !== ""
+                ? FileSystem.copyImageCustomer(<string>customerData.gibClearance2Path, "customer")
+                : "";
+        const _perpendicularity1Path =
+            customerData.perpendicularity1Path && customerData.perpendicularity1Path !== ""
+                ? FileSystem.copyImageCustomer(<string>customerData.perpendicularity1Path, "customer")
+                : "";
+        const _perpendicularity2Path =
+            customerData.perpendicularity2Path && customerData.perpendicularity2Path !== ""
+                ? FileSystem.copyImageCustomer(<string>customerData.perpendicularity2Path, "customer")
+                : "";
         const customer = await this._customerRepo.store(
             Customer.create({
                 customerId: customerData.customerId,
@@ -61,39 +73,45 @@ export class WebAdminCustomerService {
             _perpendicularity2Path;
         if (customerData.gibClearance1Path) {
             FileSystem.destroy(<string>customerData.gibClearance1Path);
-            _gibClearance1Path = FileSystem.copyImageCustomer(
-                <string>_customerData.gibClearance1Path,
-                "customer"
-            );
+            _gibClearance1Path =
+                _customerData.gibClearance1Path && _customerData.gibClearance1Path !== ""
+                    ? FileSystem.copyImageCustomer(<string>_customerData.gibClearance1Path, "customer")
+                    : "";
         }
         if (customerData.gibClearance2Path) {
             FileSystem.destroy(<string>customerData.gibClearance2Path);
-            _gibClearance2Path = FileSystem.copyImageCustomer(
-                <string>_customerData.gibClearance2Path,
-                "customer"
-            );
+            _gibClearance2Path =
+                _customerData.gibClearance2Path && _customerData.gibClearance2Path !== ""
+                    ? FileSystem.copyImageCustomer(<string>_customerData.gibClearance2Path, "customer")
+                    : "";
         }
         if (customerData.parallelism1Path) {
             FileSystem.destroy(<string>customerData.parallelism1Path);
-            _parallelism1Path = FileSystem.copyImageCustomer(<string>_customerData.parallelism1Path, "customer");
+            _parallelism1Path =
+                _customerData.parallelism1Path && _customerData.parallelism1Path !== ""
+                    ? FileSystem.copyImageCustomer(<string>_customerData.parallelism1Path, "customer")
+                    : "";
         }
         if (customerData.parallelism2Path) {
             FileSystem.destroy(<string>customerData.parallelism2Path);
-            _parallelism2Path = FileSystem.copyImageCustomer(<string>_customerData.parallelism2Path, "customer");
+            _parallelism2Path =
+                _customerData.parallelism2Path && _customerData.parallelism2Path !== ""
+                    ? FileSystem.copyImageCustomer(<string>_customerData.parallelism2Path, "customer")
+                    : "";
         }
         if (customerData.perpendicularity1Path) {
             FileSystem.destroy(<string>customerData.perpendicularity1Path);
-            _perpendicularity1Path = FileSystem.copyImageCustomer(
-                <string>_customerData.perpendicularity1Path,
-                "customer"
-            );
+            _perpendicularity1Path =
+                _customerData.perpendicularity1Path && _customerData.perpendicularity1Path !== ""
+                    ? FileSystem.copyImageCustomer(<string>_customerData.perpendicularity1Path, "customer")
+                    : "";
         }
         if (customerData.perpendicularity2Path) {
             FileSystem.destroy(<string>customerData.perpendicularity2Path);
-            _perpendicularity2Path = FileSystem.copyImageCustomer(
-                <string>_customerData.perpendicularity2Path,
-                "customer"
-            );
+            _perpendicularity2Path =
+                _customerData.perpendicularity2Path && _customerData.perpendicularity2Path !== ""
+                    ? FileSystem.copyImageCustomer(<string>_customerData.perpendicularity2Path, "customer")
+                    : "";
         }
         const customer = await this._customerRepo.update(
             id,
@@ -102,12 +120,12 @@ export class WebAdminCustomerService {
                 customerName: customerData.customerName,
                 address: customerData.address,
                 phone: customerData.phone,
-                gibClearance1Path: _gibClearance1Path || "image-default_gibClearance1Path.jpg",
-                gibClearance2Path: _gibClearance2Path || "image-default_gibClearance2Path.jpg",
-                parallelism1Path: _parallelism1Path || "image-default_parallelism1Path.jpg",
-                parallelism2Path: _parallelism2Path || "image-default_parallelism2Path.jpg",
-                perpendicularity1Path: _perpendicularity1Path || "image-default_perpendicularity1Path.jpg",
-                perpendicularity2Path: _perpendicularity2Path || "image-default_perpendicularity2Path.jpg",
+                gibClearance1Path: _gibClearance1Path || "",
+                gibClearance2Path: _gibClearance2Path || "",
+                parallelism1Path: _parallelism1Path || "",
+                parallelism2Path: _parallelism2Path || "",
+                perpendicularity1Path: _perpendicularity1Path || "",
+                perpendicularity2Path: _perpendicularity2Path || "",
             })
         );
         return customer.unmarshal();
