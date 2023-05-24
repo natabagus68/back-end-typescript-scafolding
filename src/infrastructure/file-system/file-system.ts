@@ -60,6 +60,7 @@ export class FileSystem {
     public static copyImageCustomer(file: string, dest: string): string {
         const destPath = path.join("storage", dest, file.split("\\").reverse()[0]);
         if (!fs.pathExistsSync(file)) {
+            return file;
             throw new AppError({
                 statusCode: HttpCode.NOT_FOUND,
                 description: "Image path is not recognized",
