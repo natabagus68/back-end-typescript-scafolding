@@ -50,7 +50,8 @@ export class FileSystem {
     }
 
     public static copyImageCustomer(file: string, dest: string): string {
-        const destPath = path.join("storage", dest, file.split("\\").reverse()[0]);
+        const splittedPath = path.parse(file);
+        const destPath = path.join("storage", dest, splittedPath.base);
         try {
             if (!fs.pathExistsSync(file)) {
                 return "";
