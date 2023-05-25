@@ -2,7 +2,7 @@ import { Auth, IAuth } from "@/domain/models/auth";
 import { UserRepository } from "@/domain/service/user-repository";
 import { TYPES } from "@/types";
 import { inject, injectable } from "inversify";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
 import { mobileLoginSchema } from "@/presentation/validation/mobile/auth-validation";
 

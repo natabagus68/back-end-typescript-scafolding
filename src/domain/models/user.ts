@@ -1,5 +1,5 @@
 import { Entity } from "./entity";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
 import { IMulterFile } from "@/presentation/validation/types";
 

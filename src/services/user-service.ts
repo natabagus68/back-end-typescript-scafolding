@@ -2,7 +2,7 @@ import { IUser, User } from "@/domain/models/user";
 import { UserRepository } from "@/domain/service/user-repository";
 import { TYPES } from "@/types";
 import { inject, injectable } from "inversify";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { ITableData } from "@/domain/models/table-data";
 import { TDataTableParam } from "@/domain/service/types";
 import { FileSystem } from "@/infrastructure/file-system";
