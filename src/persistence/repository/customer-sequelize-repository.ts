@@ -70,19 +70,21 @@ export class CustomerSequelizeRepository implements CustomerRepository {
             page: param.page || 1,
             limit: param.limit || 10,
             search: param.search || "",
-            data: customers.map((item) => Customer.create({
-                id: item.getDataValue("id"),
-                customerId: item.getDataValue("customer_id"),
-                customerName: item.getDataValue("customer_name"),
-                address: item.getDataValue("address"),
-                phone: item.getDataValue("phone"),
-                parallelism1Path: item.getDataValue("parallelism1_path"),
-                parallelism2Path: item.getDataValue("parallelism2_path"),
-                gibClearance1Path: item.getDataValue("gib_clearance1_path"),
-                gibClearance2Path: item.getDataValue("gib_clearance2_path"),
-                perpendicularity1Path: item.getDataValue("perpendicularity1_path"),
-                perpendicularity2Path: item.getDataValue("perpendicularity2_path"),
-            }).unmarshal()),
+            data: customers.map((item) =>
+                Customer.create({
+                    id: item.getDataValue("id"),
+                    customerId: item.getDataValue("customer_id"),
+                    customerName: item.getDataValue("customer_name"),
+                    address: item.getDataValue("address"),
+                    phone: item.getDataValue("phone"),
+                    parallelism1Path: item.getDataValue("parallelism1_path"),
+                    parallelism2Path: item.getDataValue("parallelism2_path"),
+                    gibClearance1Path: item.getDataValue("gib_clearance1_path"),
+                    gibClearance2Path: item.getDataValue("gib_clearance2_path"),
+                    perpendicularity1Path: item.getDataValue("perpendicularity1_path"),
+                    perpendicularity2Path: item.getDataValue("perpendicularity2_path"),
+                }).unmarshal()
+            ),
         });
     }
 
@@ -125,7 +127,18 @@ export class CustomerSequelizeRepository implements CustomerRepository {
                 description: "Customer Not Found",
             });
         }
-        await customer.update(customerData.unmarshal());
+        await customer.update({
+            customer_id: customerData.customerId,
+            customer_name: customerData.customerName,
+            address: customerData.address,
+            phone: customerData.phone,
+            parallelism1_path: customerData.parallelism1Path,
+            parallelism2_path: customerData.parallelism2Path,
+            gib_clearance1_path: customerData.gibClearance1Path,
+            gib_clearance2_path: customerData.gibClearance2Path,
+            perpendicularity1_path: customerData.perpendicularity1Path,
+            perpendicularity2_path: customerData.perpendicularity2Path,
+        });
         await customer.reload();
         return Customer.create({
             id: customer.id,

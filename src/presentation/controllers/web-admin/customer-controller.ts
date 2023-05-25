@@ -76,7 +76,7 @@ export class WebAdminCustomerController {
                 data: validatedReq.error.flatten().fieldErrors,
             });
         }
-        const customer = await this._customerService.update(req.params.id, req.body);
+        const customer = await this._customerService.update(req.params.id, validatedReq.data);
         return res.json({
             message: "success",
             data: customer,

@@ -82,7 +82,7 @@ export class Bootstrap {
     private setRoutes(): void {
         const router = express.Router();
         this.app.use(APP_URL_PREFIX, router);
-        router.get("/", (req, res, next) => {
+        router.get("/health-check", (req, res, next) => {
             res.json({
                 message: "server is up boys",
             });

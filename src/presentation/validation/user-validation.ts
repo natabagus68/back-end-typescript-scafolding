@@ -19,23 +19,31 @@ export const userCreateScheme = z.object({
 
 export const userUpdateScheme = z.object({
     email: z.string().email(),
-    password: z.string(),
+    password: z
+        .any()
+        .transform((val) => <string | undefined>val),
     fullname: z.string(),
     isActive: z
         .any()
-        .refine((val) => !(!val || val == "0" || val == "false" || val == ""), "Is Active must boolean")
-        .transform((val) => !!val),
+        .refine((val) => ["0", "1", true, false].includes(val), "Is Active must boolean")
+        .transform((val) => !!(val === "1" || val === true)),
     role: z.string(),
     avatarPath: z
         .any()
         .nullish()
-        .refine((val) => typeof val === "object", "Avatar is required")
+        .refine((val) => typeof val === "object" || !val, "Avatar is required")
         .transform((val) => <IMulterFile>val),
 });
 
 export const userDataTableScheme = z.object({
-    page: z.preprocess((val) => Number(val), z.number()).nullish().transform((value) => value ?? undefined),
-    limit: z.preprocess((val) => Number(val), z.number()).nullish().transform((value) => value ?? undefined),
+    page: z
+        .preprocess((val) => Number(val), z.number())
+        .nullish()
+        .transform((value) => value ?? undefined),
+    limit: z
+        .preprocess((val) => Number(val), z.number())
+        .nullish()
+        .transform((value) => value ?? undefined),
     search: z
         .string()
         .nullish()

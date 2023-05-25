@@ -63,82 +63,123 @@ export class WebAdminCustomerService {
         return customer.unmarshal();
     }
 
-    public async update(id: string, _customerData: Customer): Promise<ICustomer> {
+    public async update(id: string, _customerData: ICustomer): Promise<ICustomer> {
         const customerData = await this._customerRepo.findById(id);
-        let _gibClearance1Path,
-            _gibClearance2Path,
-            _parallelism1Path,
-            _perpendicularity1Path,
-            _parallelism2Path,
-            _perpendicularity2Path;
-        if (customerData.gibClearance1Path) {
-            FileSystem.destroy(<string>customerData.gibClearance1Path);
-            _gibClearance1Path =
-                _customerData.gibClearance1Path && _customerData.gibClearance1Path !== ""
-                    ? FileSystem.copyImageCustomer(<string>_customerData.gibClearance1Path, "customer")
-                    : "";
+        const newCustomer = Customer.create(_customerData);
+        if (_customerData.parallelism1Path !== "storage/assets/customer/parallelism_1.png") {
+            newCustomer.parallelism1Path = FileSystem.copyImageCustomer(
+                <string>_customerData.parallelism1Path,
+                "customer"
+            );
         }
-        if (customerData.gibClearance2Path) {
-            FileSystem.destroy(<string>customerData.gibClearance2Path);
-            _gibClearance2Path =
-                _customerData.gibClearance2Path && _customerData.gibClearance2Path !== ""
-                    ? FileSystem.copyImageCustomer(<string>_customerData.gibClearance2Path, "customer")
-                    : "";
+        if (_customerData.parallelism2Path !== "storage/assets/customer/parallelism_2.png") {
+            newCustomer.parallelism2Path = FileSystem.copyImageCustomer(
+                <string>_customerData.parallelism2Path,
+                "customer"
+            );
         }
-        if (customerData.parallelism1Path) {
+        if (_customerData.gibClearance1Path !== "storage/assets/customer/gib_1.png") {
+            newCustomer.gibClearance1Path = FileSystem.copyImageCustomer(
+                <string>_customerData.gibClearance1Path,
+                "customer"
+            );
+        }
+        if (_customerData.gibClearance2Path !== "storage/assets/customer/gib_2.png") {
+            newCustomer.gibClearance2Path = FileSystem.copyImageCustomer(
+                <string>_customerData.gibClearance2Path,
+                "customer"
+            );
+        }
+        if (_customerData.perpendicularity1Path !== "storage/assets/customer/perpendicularity_1.png") {
+            newCustomer.perpendicularity1Path = FileSystem.copyImageCustomer(
+                <string>_customerData.perpendicularity1Path,
+                "customer"
+            );
+        }
+        if (_customerData.perpendicularity2Path !== "storage/assets/customer/perpendicularity_2.png") {
+            newCustomer.perpendicularity2Path = FileSystem.copyImageCustomer(
+                <string>_customerData.perpendicularity2Path,
+                "customer"
+            );
+        }
+        if (customerData.parallelism1Path !== "storage/assets/customer/parallelism_1.png" && _customerData.parallelism1Path !== customerData.parallelism1Path) {
             FileSystem.destroy(<string>customerData.parallelism1Path);
-            _parallelism1Path =
-                _customerData.parallelism1Path && _customerData.parallelism1Path !== ""
-                    ? FileSystem.copyImageCustomer(<string>_customerData.parallelism1Path, "customer")
-                    : "";
         }
-        if (customerData.parallelism2Path) {
+        if (customerData.parallelism2Path !== "storage/assets/customer/parallelism_2.png" && _customerData.parallelism2Path !== customerData.parallelism2Path) {
             FileSystem.destroy(<string>customerData.parallelism2Path);
-            _parallelism2Path =
-                _customerData.parallelism2Path && _customerData.parallelism2Path !== ""
-                    ? FileSystem.copyImageCustomer(<string>_customerData.parallelism2Path, "customer")
-                    : "";
         }
-        if (customerData.perpendicularity1Path) {
+        if (customerData.gibClearance1Path !== "storage/assets/customer/gib_1.png" && _customerData.gibClearance1Path !== customerData.gibClearance1Path) {
+            FileSystem.destroy(<string>customerData.gibClearance1Path);
+        }
+        if (customerData.gibClearance2Path !== "storage/assets/customer/gib_2.png" && _customerData.gibClearance2Path !== customerData.gibClearance2Path) {
+            FileSystem.destroy(<string>customerData.gibClearance2Path);
+        }
+        if (customerData.perpendicularity1Path !== "storage/assets/customer/perpendicularity_1.png" && _customerData.perpendicularity1Path !== customerData.perpendicularity1Path) {
             FileSystem.destroy(<string>customerData.perpendicularity1Path);
-            _perpendicularity1Path =
-                _customerData.perpendicularity1Path && _customerData.perpendicularity1Path !== ""
-                    ? FileSystem.copyImageCustomer(<string>_customerData.perpendicularity1Path, "customer")
-                    : "";
         }
-        if (customerData.perpendicularity2Path) {
+        if (customerData.perpendicularity2Path !== "storage/assets/customer/perpendicularity_2.png" && _customerData.perpendicularity2Path !== customerData.perpendicularity2Path) {
             FileSystem.destroy(<string>customerData.perpendicularity2Path);
-            _perpendicularity2Path =
-                _customerData.perpendicularity2Path && _customerData.perpendicularity2Path !== ""
-                    ? FileSystem.copyImageCustomer(<string>_customerData.perpendicularity2Path, "customer")
-                    : "";
         }
-        const customer = await this._customerRepo.update(
-            id,
-            Customer.create({
-                customerId: customerData.customerId,
-                customerName: customerData.customerName,
-                address: customerData.address,
-                phone: customerData.phone,
-                gibClearance1Path: _gibClearance1Path || "",
-                gibClearance2Path: _gibClearance2Path || "",
-                parallelism1Path: _parallelism1Path || "",
-                parallelism2Path: _parallelism2Path || "",
-                perpendicularity1Path: _perpendicularity1Path || "",
-                perpendicularity2Path: _perpendicularity2Path || "",
-            })
-        );
+        const customer = await this._customerRepo.update(id, newCustomer);
         return customer.unmarshal();
     }
 
     public async destroy(id: string): Promise<boolean> {
         const customerData = await this._customerRepo.findById(id);
-        if (customerData.gibClearance1Path) FileSystem.destroy(<string>customerData.gibClearance1Path);
-        if (customerData.gibClearance2Path) FileSystem.destroy(<string>customerData.gibClearance2Path);
-        if (customerData.parallelism1Path) FileSystem.destroy(<string>customerData.parallelism1Path);
-        if (customerData.parallelism2Path) FileSystem.destroy(<string>customerData.parallelism2Path);
-        if (customerData.perpendicularity1Path) FileSystem.destroy(<string>customerData.perpendicularity1Path);
-        if (customerData.perpendicularity2Path) FileSystem.destroy(<string>customerData.perpendicularity2Path);
+        try {
+            if (
+                customerData.gibClearance1Path &&
+                customerData.gibClearance1Path !== "storage/assets/customer/gib_1.png"
+            )
+                FileSystem.destroy(<string>customerData.gibClearance1Path);
+        } catch (e) {
+            //
+        }
+        try {
+            if (
+                customerData.gibClearance2Path &&
+                customerData.gibClearance2Path !== "storage/assets/customer/gib_2.png"
+            )
+                FileSystem.destroy(<string>customerData.gibClearance2Path);
+        } catch (e) {
+            //
+        }
+        try {
+            if (
+                customerData.parallelism1Path &&
+                customerData.parallelism1Path !== "storage/assets/customer/parallelism_1.png"
+            )
+                FileSystem.destroy(<string>customerData.parallelism1Path);
+        } catch (e) {
+            //
+        }
+        try {
+            if (
+                customerData.parallelism2Path &&
+                customerData.parallelism2Path !== "storage/assets/customer/parallelism_2.png"
+            )
+                FileSystem.destroy(<string>customerData.parallelism2Path);
+        } catch (e) {
+            //
+        }
+        try {
+            if (
+                customerData.perpendicularity1Path &&
+                customerData.perpendicularity1Path !== "storage/assets/customer/perpendicularity_1.png"
+            )
+                FileSystem.destroy(<string>customerData.perpendicularity1Path);
+        } catch (e) {
+            //
+        }
+        try {
+            if (
+                customerData.perpendicularity2Path &&
+                customerData.perpendicularity2Path !== "storage/assets/customer/perpendicularity_2.png"
+            )
+                FileSystem.destroy(<string>customerData.perpendicularity2Path);
+        } catch (e) {
+            //
+        }
         await this._customerRepo.delete(id);
         return true;
     }

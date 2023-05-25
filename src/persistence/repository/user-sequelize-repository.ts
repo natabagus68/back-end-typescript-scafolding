@@ -156,7 +156,11 @@ export class UserSequelizeRepository implements UserRepository {
             });
         }
         await user.update({
-            ...userDomain.unmarshal(),
+            email: userDomain.email,
+            password: userDomain.password ? userDomain.password : user.getDataValue("password"),
+            fullname: userDomain.fullname,
+            is_active: userDomain.isActive,
+            role: userDomain.role,
             avatarPath: userDomain.avatarPath?.toString(),
         });
         await user.reload();
@@ -166,7 +170,7 @@ export class UserSequelizeRepository implements UserRepository {
             password: user.password,
             fullname: user.fullname,
             isActive: user.is_active,
-            avatarPath: userDomain.avatarPath,
+            avatarPath: user.avatarPath,
             role: user.role,
             createdAt: user.created_at,
             updatedAt: user.updated_at,

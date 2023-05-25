@@ -48,18 +48,16 @@ export class UserService {
             const avatarPath = FileSystem.update(_user.avatarPath, "user", <string>userData.avatarPath);
             userProps.avatarPath = avatarPath;
         }
-        const user = await this._repository.update(
-            id,
-            User.create({
-                id: _user.id,
-                email: _user.email,
-                password: bcrypt.hashSync(_user.password || "", 10),
-                fullname: _user.fullname,
-                isActive: _user.isActive,
-                avatarPath: userProps.avatarPath,
-                role: _user.role,
-            })
-        );
+        const toUpdateUser = User.create({
+            id: _user.id,
+            email: _user.email,
+            password: _user.password ? bcrypt.hashSync(_user.password || "", 10) : undefined,
+            fullname: _user.fullname,
+            isActive: _user.isActive,
+            avatarPath: userProps.avatarPath,
+            role: _user.role,
+        });
+        const user = await this._repository.update(id, toUpdateUser);
         return user.unmarshal();
     }
 

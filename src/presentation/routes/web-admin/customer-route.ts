@@ -41,7 +41,7 @@ export class WebAdminCustomerRoute {
                 { name: "perpendicularity2Path", maxCount: 1 },
             ]),
             this.MobileAuthMiddlewareInstance.handle.bind(this.MobileAuthMiddlewareInstance),
-            asyncWrap(this.WebAdminCustomerControllerInstance.store.bind(this.WebAdminCustomerControllerInstance))
+            asyncWrap(this.WebAdminCustomerControllerInstance.update.bind(this.WebAdminCustomerControllerInstance))
         );
         router.get(
             `/${this.route}/:id`,
