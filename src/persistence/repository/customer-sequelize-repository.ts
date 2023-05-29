@@ -58,9 +58,14 @@ export class CustomerSequelizeRepository implements CustomerRepository {
     async findAllDataTable(param: TDataTableParam): Promise<TableData<ICustomer>> {
         const customers = await CustomerDB.findAll({
             where: {
-                customer_name: {
-                    [Op.iLike]: `%${param.search}%`,
-                },
+                ...(param.search &&
+                    param.search !== "" && {
+                    [Op.and]: {
+                        customer_name: {
+                            [Op.iLike]: `%${param.search}%`,
+                        },
+                    },
+                }),
             },
             limit: param.limit ? param.limit : undefined,
             order: [["customer_name", "ASC"]],
