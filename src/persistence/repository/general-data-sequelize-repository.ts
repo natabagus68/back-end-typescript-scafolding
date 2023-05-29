@@ -451,11 +451,11 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
                 relation && generalData.resumeCheck
                     ? {
                         id: generalData.resumeCheck.getDataValue("id"),
-                        checkDate: generalData.resumeCheck.getDataValue("checkDate"),
-                        photoPath: generalData.resumeCheck.getDataValue("photoPath"),
+                        checkDate: generalData.resumeCheck.getDataValue("check_date"),
+                        photoPath: generalData.resumeCheck.getDataValue("photo_path"),
                         notes: generalData.resumeCheck.getDataValue("notes"),
                         recommendation: generalData.resumeCheck.getDataValue("recommendation"),
-                        generalDataId: generalData.resumeCheck.getDataValue("generalDataId"),
+                        generalDataId: generalData.resumeCheck.getDataValue("general_data_id"),
                         createdAt: generalData.resumeCheck.getDataValue("created_at"),
                         updatedAt: generalData.resumeCheck.getDataValue("updated_at"),
                     }
