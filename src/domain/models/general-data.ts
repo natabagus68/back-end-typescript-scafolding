@@ -112,6 +112,9 @@ export class GeneralData extends Entity<IGeneralData> {
     get inspectionDate(): undefined | Date | null {
         return this.props.inspectionDate;
     }
+    set inspectionDate(val: undefined | Date | null) {
+        this.props.inspectionDate = val;
+    }
     get inspectorId(): string {
         return this.props.inspectorId;
     }

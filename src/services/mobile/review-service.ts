@@ -19,6 +19,7 @@ export class MobileReviewService {
     }
     public async submit(generalDataId: string): Promise<void> {
         const generalData = await this._generalDataRepo.findById(generalDataId);
+        generalData.inspectionDate = new Date();
         generalData.lastStep = EGeneralDataLastStep.SUBMITTED;
         generalData.submittedAt = new Date();
         this._notificationRepo.store(
