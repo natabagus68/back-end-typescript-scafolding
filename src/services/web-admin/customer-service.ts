@@ -102,22 +102,40 @@ export class WebAdminCustomerService {
                 "customer"
             );
         }
-        if (customerData.parallelism1Path !== "storage/assets/customer/parallelism_1.png" && _customerData.parallelism1Path !== customerData.parallelism1Path) {
+        if (
+            customerData.parallelism1Path !== "storage/assets/customer/parallelism_1.png" &&
+            _customerData.parallelism1Path !== customerData.parallelism1Path
+        ) {
             FileSystem.destroy(<string>customerData.parallelism1Path);
         }
-        if (customerData.parallelism2Path !== "storage/assets/customer/parallelism_2.png" && _customerData.parallelism2Path !== customerData.parallelism2Path) {
+        if (
+            customerData.parallelism2Path !== "storage/assets/customer/parallelism_2.png" &&
+            _customerData.parallelism2Path !== customerData.parallelism2Path
+        ) {
             FileSystem.destroy(<string>customerData.parallelism2Path);
         }
-        if (customerData.gibClearance1Path !== "storage/assets/customer/gib_1.png" && _customerData.gibClearance1Path !== customerData.gibClearance1Path) {
+        if (
+            customerData.gibClearance1Path !== "storage/assets/customer/gib_1.png" &&
+            _customerData.gibClearance1Path !== customerData.gibClearance1Path
+        ) {
             FileSystem.destroy(<string>customerData.gibClearance1Path);
         }
-        if (customerData.gibClearance2Path !== "storage/assets/customer/gib_2.png" && _customerData.gibClearance2Path !== customerData.gibClearance2Path) {
+        if (
+            customerData.gibClearance2Path !== "storage/assets/customer/gib_2.png" &&
+            _customerData.gibClearance2Path !== customerData.gibClearance2Path
+        ) {
             FileSystem.destroy(<string>customerData.gibClearance2Path);
         }
-        if (customerData.perpendicularity1Path !== "storage/assets/customer/perpendicularity_1.png" && _customerData.perpendicularity1Path !== customerData.perpendicularity1Path) {
+        if (
+            customerData.perpendicularity1Path !== "storage/assets/customer/perpendicularity_1.png" &&
+            _customerData.perpendicularity1Path !== customerData.perpendicularity1Path
+        ) {
             FileSystem.destroy(<string>customerData.perpendicularity1Path);
         }
-        if (customerData.perpendicularity2Path !== "storage/assets/customer/perpendicularity_2.png" && _customerData.perpendicularity2Path !== customerData.perpendicularity2Path) {
+        if (
+            customerData.perpendicularity2Path !== "storage/assets/customer/perpendicularity_2.png" &&
+            _customerData.perpendicularity2Path !== customerData.perpendicularity2Path
+        ) {
             FileSystem.destroy(<string>customerData.perpendicularity2Path);
         }
         const customer = await this._customerRepo.update(id, newCustomer);
@@ -185,6 +203,12 @@ export class WebAdminCustomerService {
     }
 
     public async uploadSingle(file?: IMulterFile): Promise<string> {
+        if (!file?.mimetype.match(/(image\/)(\w*)/)) {
+            throw new AppError({
+                statusCode: HttpCode.VALIDATION_ERROR,
+                description: "Must be image",
+            });
+        }
         if (typeof file !== "object") {
             throw new AppError({
                 statusCode: HttpCode.VALIDATION_ERROR,
