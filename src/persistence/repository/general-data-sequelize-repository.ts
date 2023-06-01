@@ -261,44 +261,44 @@ export class GeneralDataSequelizeRepository implements GeneralDataRepository {
         const generalData = await GeneralDataDB.findByPk(id, {
             include: relation
                 ? [
-                    { model: CustomerDB, as: "customer" },
+                    { model: CustomerDB, as: "customer", separate : true },
                     {
                         model: InspectionDataDB,
-                        as: "inspectionDatum",
+                        as: "inspectionDatum", separate : true,
                         include: [
                             {
                                 model: InspectionDataItemDB,
-                                as: "items",
+                                as: "items", separate : true,
                             },
                         ],
                     },
                     {
                         model: MachineCheckDB,
-                        as: "machineCheck",
+                        as: "machineCheck", separate : true,
                     },
                     {
                         model: AccuracyCheckDB,
-                        as: "accuracyCheck",
+                        as: "accuracyCheck", separate : true,
                     },
                     {
                         model: CheckLoadTonnageDB,
-                        as: "loadTonnages",
+                        as: "loadTonnages", separate : true,
                     },
                     {
                         model: ResumeCheckDB,
-                        as: "resumeCheck",
+                        as: "resumeCheck", separate : true,
                     },
                     {
                         model: InspectionResultDB,
-                        as: "inspectionResult",
+                        as: "inspectionResult", separate : true,
                     },
                     {
                         model: MachineDatumDB,
-                        as: "machineDatum",
+                        as: "machineDatum", separate : true,
                     },
                     {
                         model: UserDB,
-                        as: "inspector",
+                        as: "inspector", separate : true,
                     },
                 ]
                 : undefined,
