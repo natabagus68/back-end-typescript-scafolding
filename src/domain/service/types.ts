@@ -1,5 +1,3 @@
-import { EGeneralDataStatus } from "@/dto/general-data-dto";
-
 export type TDataTableParam = {
     search?: string;
     page?: number;
@@ -11,8 +9,4 @@ export type TDataTableParamFilterDate = {
     page?: number;
     limit?: number;
     filterDate?: string;
-};
-
-export type TApprovalDataTableParam = TDataTableParam & {
-    status: EGeneralDataStatus;
 };

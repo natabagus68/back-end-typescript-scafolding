@@ -3,7 +3,7 @@ import asyncWrap from "@/libs/asyncWrapper";
 import { Router } from "express";
 import { injectable } from "inversify";
 import multer from "multer";
-import UserController from "@/presentation/controllers/user-controller";
+import UserController from "@/presentation/controllers/web-admin/user-controller";
 
 const tmpUploadedFiles = multer({
     dest: "tmp_uploaded_files/user",

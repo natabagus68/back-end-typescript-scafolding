@@ -1,10 +1,10 @@
 import { AppError, HttpCode } from "@/libs/exceptions/app-error";
-import { UserService } from "@/services/user-service";
+import { UserService } from "@/services/web-admin/user-service";
 import { TYPES } from "@/types";
 import { Request, Response } from "express";
 import { injectable, inject } from "inversify";
-import { userCreateScheme, userDataTableScheme, userUpdateScheme } from "../validation/user-validation";
-import { AuthRequest } from "../utils/types/jwt-request";
+import { userCreateScheme, userDataTableScheme, userUpdateScheme } from "../../validation/user-validation";
+import { AuthRequest } from "../../utils/types/jwt-request";
 
 @injectable()
 export default class UserController {
