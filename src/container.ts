@@ -35,7 +35,10 @@ container.bind<IServer>(TYPES.Server).to(Server).inSingletonScope();
 // Router
 container.bind<Routes>(Routes).toSelf().inSingletonScope();
 container.bind<UserRoutes>(UserRoutes).toSelf().inSingletonScope();
-container.bind<WebadminAuthRoute>(WebadminAuthRoute).toSelf().inSingletonScope();
+container
+    .bind<WebadminAuthRoute>(WebadminAuthRoute)
+    .toSelf()
+    .inSingletonScope();
 
 // Service Layer
 // Mobile Service
@@ -52,6 +55,8 @@ container.bind(WebadminAuthController).toSelf();
 container.bind(MobileAuthMiddleware).toSelf();
 
 // implement infrastructur
-container.bind<UserRepository>(TYPES.UserRepository).to(UserSequelizeRepository);
+container
+    .bind<UserRepository>(TYPES.UserRepository)
+    .to(UserSequelizeRepository);
 
 export { container };
